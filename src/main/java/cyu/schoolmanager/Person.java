@@ -11,15 +11,15 @@ import org.mindrot.jbcrypt.BCrypt;
 public abstract class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "personId", nullable = false)
+	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@Column(name = "lastName", nullable = false)
+	@Column(name = "last_name", nullable = false)
 	@NotBlank(message = "Le nom de famille ne peut pas être vide")
 	@Size(min = 2, message = "Le nom de famille doit comporter au moins 2 caractères")
 	private String lastName;
 
-	@Column(name = "firstName", nullable = false)
+	@Column(name = "first_name", nullable = false)
 	@NotBlank(message = "Le prénom ne peut pas être vide")
 	@Size(min = 2, message = "Le prénom doit comporter au moins 2 caractères")
 	private String firstName;
@@ -39,7 +39,7 @@ public abstract class Person {
 	private String password;
 
 	@OneToOne(cascade = CascadeType.ALL) // supprime l'adresse si la personne est supprimée
-	@JoinColumn(name = "addressId")
+	@JoinColumn(name = "address_id")
 	@NotNull(message = "L'adresse' ne peut pas être vide")
 	private Address address;
 
