@@ -8,6 +8,12 @@ public class Main {
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
+        session.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+        session.createQuery("DELETE FROM Address").executeUpdate();
+        session.createQuery("DELETE FROM Pathway").executeUpdate();
+        session.createQuery("DELETE FROM Promo").executeUpdate();
+        session.createQuery("DELETE FROM Admin").executeUpdate();
+        session.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
 
         try {
             Address address = new Address();
