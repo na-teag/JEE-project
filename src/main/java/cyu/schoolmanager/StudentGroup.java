@@ -3,7 +3,7 @@ package cyu.schoolmanager;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-@MappedSuperclass
+@Entity
 public abstract class StudentGroup extends Emailable {
 
 	@Column(name = "name")

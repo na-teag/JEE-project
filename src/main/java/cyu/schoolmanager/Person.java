@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-@MappedSuperclass
-public abstract class Person extends Emailable{
+@Entity
+public abstract class Person extends Emailable {
 
 	@Column(name = "last_name", nullable = false)
 	@NotBlank(message = "Le nom de famille ne peut pas être vide")
@@ -16,10 +16,6 @@ public abstract class Person extends Emailable{
 	@NotBlank(message = "Le prénom ne peut pas être vide")
 	@Size(min = 2, message = "Le prénom doit comporter au moins 2 caractères")
 	private String firstName;
-
-	@Column(name = "email", nullable = false, unique = true)
-	@Email(message = "L'email doit être valide")
-	private String emailAddress;
 
 	@Column(name = "login", nullable = false, unique = true)
 	@NotBlank(message = "Le login ne peut pas être vide")
@@ -43,18 +39,6 @@ public abstract class Person extends Emailable{
 
 	public String getFirstName() { return firstName; }
 	public void setFirstName(String firstName) { this.firstName = firstName; }
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getPassword() {
-		return password;
-	}
 
 	public String getLogin() { return login; }
 	public void setLogin(String login) { this.login = login; }
