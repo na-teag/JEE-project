@@ -2,17 +2,10 @@ package cyu.schoolmanager;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Date;
 import org.mindrot.jbcrypt.BCrypt;
 
 @MappedSuperclass
-public abstract class Person {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+public abstract class Person extends Emailable{
 
 	@Column(name = "last_name", nullable = false)
 	@NotBlank(message = "Le nom de famille ne peut pas être vide")
@@ -43,19 +36,7 @@ public abstract class Person {
 	@NotNull(message = "L'adresse' ne peut pas être vide")
 	private Address address;
 
-	@CreationTimestamp // permet une gestion automatique
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", updatable = false)
-	private Date createdAt;
 
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	private Date updatedAt;
-
-
-
-	public Long getId() { return id; }
 
 	public String getLastName() { return lastName; }
 	public void setLastName(String lastName) { this.lastName = lastName; }

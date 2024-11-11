@@ -10,7 +10,6 @@ public class Main {
         Transaction transaction = session.beginTransaction();
 
         try {
-            // Créez une nouvelle adresse
             Address address = new Address();
             address.setNumber("1");
             address.setStreet("rue Lebon");
@@ -19,7 +18,6 @@ public class Main {
             address.setCountry("France");
             session.persist(address);
 
-            // Créez un nouvel utilisateur
             Admin admin = new Admin();
             admin.setFirstName("gaetan");
             admin.setLastName("retel");
@@ -27,8 +25,6 @@ public class Main {
             admin.setLogin("root");
             admin.setEmailAddress("retelgaeta@cy-tech.fr");
             admin.setAddress(address);
-
-            // Sauvegardez l'utilisateur dans la base
             session.persist(admin);
 
             //Créez une promo

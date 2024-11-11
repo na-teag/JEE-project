@@ -23,7 +23,7 @@ public class Address {
 	private String street;
 
 	@Column(name = "city")
-	@NotBlank(message = "Lea ville ne peut pas être vide")
+	@NotBlank(message = "La ville ne peut pas être vide")
 	private String city;
 
 	@Column(name = "postal_code")
@@ -61,4 +61,7 @@ public class Address {
 
 	public String getCountry() { return country; }
 	public void setCountry(String country) { this.country = country; }
+	
+	public Date getCreatedAt() { return createdAt; }
+	public Date getUpdatedAt() { return updatedAt; }
 }
