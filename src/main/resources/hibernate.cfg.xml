@@ -8,7 +8,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ENT</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.password">MyP@ssw0rd123</property>
 
         <!-- JDBC connection pool settings -->
         <property name="hibernate.c3p0.min_size">5</property>
@@ -32,5 +32,7 @@
         <mapping class="cyu.schoolmanager.Address"/>
         <mapping class="cyu.schoolmanager.Person"/>
         <mapping class="cyu.schoolmanager.Admin"/>
+        <mapping class="cyu.schoolmanager.Promo"/>
+        <mapping class="cyu.schoolmanager.Pathway"/>
     </session-factory>
 </hibernate-configuration>
