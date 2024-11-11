@@ -34,5 +34,12 @@
         <mapping class="cyu.schoolmanager.Admin"/>
         <mapping class="cyu.schoolmanager.Promo"/>
         <mapping class="cyu.schoolmanager.Pathway"/>
+        <mapping class="cyu.schoolmanager.ClassCategory"/>
+        <mapping class="cyu.schoolmanager.Professor"/>
+        <mapping class="cyu.schoolmanager.ProfessorStatus"/>
+        <mapping class="cyu.schoolmanager.Subject"/>
+        <mapping class="cyu.schoolmanager.Classe"/>
+        <mapping class="cyu.schoolmanager.Course"/>
+        <mapping class="cyu.schoolmanager.Student"/>
     </session-factory>
 </hibernate-configuration>

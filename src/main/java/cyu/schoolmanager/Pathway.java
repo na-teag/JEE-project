@@ -4,4 +4,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pathway")
-public class Pathway extends StudentGroup {}
+public class Pathway extends StudentGroup {
+
+}

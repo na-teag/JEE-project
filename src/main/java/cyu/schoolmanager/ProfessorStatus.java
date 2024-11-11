@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 @Entity
-@Table(name = "professorstatus")
+@Table(name = "professor_status")
 public class ProfessorStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

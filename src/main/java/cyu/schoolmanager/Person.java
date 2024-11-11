@@ -44,8 +44,17 @@ public abstract class Person extends Emailable{
 	public String getFirstName() { return firstName; }
 	public void setFirstName(String firstName) { this.firstName = firstName; }
 
-	public String getEmailAddress() { return emailAddress; }
-	public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getPassword() {
+		return password;
+	}
 
 	public String getLogin() { return login; }
 	public void setLogin(String login) { this.login = login; }

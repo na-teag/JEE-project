@@ -9,11 +9,17 @@ import java.util.ArrayList;
 @Table(name = "professor")
 public class Professor extends Person{
 
-    @Column(name = "status")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "professor_status_id", referencedColumnName = "id") // Utilisation de la clé étrangère
     @NotBlank(message = "le status ne peut pas être vide")
     private ProfessorStatus status;
 
-    @Column(name = "teachingsubjects")
-    @NotBlank(message = "teachingSubjects ne peut pas être vide")
+    @ManyToMany
+    @JoinTable(
+            name = "professor_subject",  // Nom de la table de jointure
+            joinColumns = @JoinColumn(name = "professor_id"),  // Clé étrangère vers Professor
+            inverseJoinColumns = @JoinColumn(name = "subject_id")  // Clé étrangère vers Course
+    )
     private ArrayList<Subject> teachingSubjects;
 }
