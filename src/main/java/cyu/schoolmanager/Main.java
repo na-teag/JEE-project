@@ -31,6 +31,16 @@ public class Main {
             // Sauvegardez l'utilisateur dans la base
             session.persist(admin);
 
+            //Créez une promo
+            Promo promo = new Promo();
+            promo.setName("ING2");
+            session.persist(promo);
+
+            //Créez une filière
+            Pathway pathway = new Pathway();
+            pathway.setName("GSI");
+            session.persist(pathway);
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
