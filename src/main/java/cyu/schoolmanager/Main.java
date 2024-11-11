@@ -124,6 +124,14 @@ public class Main {
 
 
 			transaction.commit();
+
+
+			// LoginManager
+			String login = "student";
+			String password = "student";
+			Person user = LoginManager.getInstance().authenticate(login, password);
+			System.out.println("Bonjour " + user.getFirstName());
+
 		} catch (Exception e) {
 			if (transaction != null) transaction.rollback();
 			e.printStackTrace();

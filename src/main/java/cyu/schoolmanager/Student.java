@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "student")
 public class Student extends Person {
 
-	@Column(name = "student_number")
+	@Column(name = "student_number", unique = true)
 	@NotBlank
 	@Pattern(regexp = "^[0-9]+$")
 	private String studentNumber;
