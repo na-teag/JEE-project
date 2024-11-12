@@ -27,17 +27,16 @@ public class LoginManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-			// TODO throw an exception ?
 		} finally {
 			session.close();
 		}
 	}
 
-	public Person authenticate(String username, String password) {
+	public Person authenticate(String username, String password) throws IllegalAccessException {
 		Person person = findPersonByUsername(username);
 		if (person != null && BCrypt.checkpw(password, person.getPasswordHash())) {
 			return person;
 		}
-		return null;
+		throw new IllegalAccessException("Invalid username or password");
 	}
 }
