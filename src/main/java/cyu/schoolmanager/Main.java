@@ -129,8 +129,13 @@ public class Main {
 			// LoginManager
 			String login = "student";
 			String password = "student";
-			Person user = LoginManager.getInstance().authenticate(login, password);
-			System.out.println("Bonjour " + user.getFirstName());
+			try {
+				Person user = LoginManager.getInstance().authenticate(login, password);
+				System.out.println("Bonjour " + user.getFirstName());
+			}catch (IllegalAccessException e){
+				System.out.println("Identifiant ou mot de passe incorrecte");
+			}
+
 
 		} catch (Exception e) {
 			if (transaction != null) transaction.rollback();
