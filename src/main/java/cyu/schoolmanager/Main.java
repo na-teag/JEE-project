@@ -3,6 +3,7 @@ package cyu.schoolmanager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class Main {
 		session.createQuery("DELETE FROM ClassCategory").executeUpdate();
 		session.createQuery("DELETE FROM Classe").executeUpdate();
 		session.createQuery("DELETE FROM Course").executeUpdate();
+		session.createQuery("DELETE FROM CourseOccurence").executeUpdate();
+		session.createQuery("DELETE FROM Email").executeUpdate();
 		session.createQuery("DELETE FROM Pathway").executeUpdate();
 		session.createQuery("DELETE FROM Professor").executeUpdate();
 		session.createQuery("DELETE FROM Promo").executeUpdate();
@@ -96,6 +99,7 @@ public class Main {
 			course.setCategory(classCategory);
 			course.setSubject(subject);
 			course.setProfessor(professor);
+			course.setClassroom("A656");
 			session.persist(course);
 
 			List<Course> courses = new ArrayList<>();
@@ -122,8 +126,32 @@ public class Main {
 			student.setPassword("student");
 			session.persist(student);
 
+			// Email
+			Email email = new Email();
+			email.setObject("Mail important");
+			email.setBody("Ce mail est important");
+			session.persist(email);
+
+			// CourseOccurence
+			CourseOccurence courseOccurence1 = new CourseOccurence();
+			courseOccurence1.setCourse(course);
+			courseOccurence1.setClassroom("A688");
+			courseOccurence1.setProfessor(professor);
+			courseOccurence1.setDay(LocalDate.now());
+			courseOccurence1.setBeginning(LocalDate.now());
+			courseOccurence1.setEnd(LocalDate.now());
+			session.persist(courseOccurence1);
+
+			CourseOccurence courseOccurence = new CourseOccurence();
+			courseOccurence.setCourse(course);
+			courseOccurence.setDay(LocalDate.now());
+			courseOccurence.setBeginning(LocalDate.now());
+			courseOccurence.setEnd(LocalDate.now());
+			session.persist(courseOccurence);
 
 			transaction.commit();
+
+			System.out.println(courseOccurence.getProfessor().getFirstName() + " " + courseOccurence.getClassroom());
 
 
 			// LoginManager

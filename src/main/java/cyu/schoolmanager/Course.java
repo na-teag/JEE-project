@@ -1,6 +1,7 @@
 package cyu.schoolmanager;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.security.InvalidParameterException;
@@ -28,11 +29,14 @@ public class Course extends Model {
 	@NotNull(message = "Le sujet ne peut pas être vide")
 	private Subject subject;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du professeur
-	@JoinColumn(name = "professor_id")
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du professeur
+	@JoinColumn(name = "professor_id", nullable = false)
 	@NotNull(message = "Le professeur doit exister")
 	private Professor professor;
 
+
+	@NotBlank(message = "La salle ne peut pas être vide")
+	private String classroom;
 
 
 
@@ -61,4 +65,8 @@ public class Course extends Model {
 		}
 		this.professor = professor;
 	}
+
+	public String getClassroom(){return this.classroom;}
+
+	public void setClassroom(String classroom){this.classroom=classroom;}
 }
