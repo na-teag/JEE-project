@@ -17,10 +17,10 @@ public abstract class Person extends Emailable {
 	@Size(min = 2, message = "Le prénom doit comporter au moins 2 caractères")
 	private String firstName;
 
-	@Column(name = "login", nullable = false, unique = true)
+	@Column(name = "username", nullable = false, unique = true)
 	@NotBlank(message = "Le login ne peut pas être vide")
 	@Size(min = 4, message = "Le login doit comporter au moins 4 caractères")
-	private String login;
+	private String username;
 
 	@Column(name = "password", nullable = false)
 	@NotBlank(message = "Le mot de passe ne peut pas être vide")
@@ -40,8 +40,8 @@ public abstract class Person extends Emailable {
 	public String getFirstName() { return firstName; }
 	public void setFirstName(String firstName) { this.firstName = firstName; }
 
-	public String getLogin() { return login; }
-	public void setLogin(String login) { this.login = login; }
+	public String getUsername() { return username; }
+	public void setUsername(String username) { this.username = username; }
 
 	public String getPasswordHash() { return password; }
 	public void setPassword(String password) { this.password = BCrypt.hashpw(password, BCrypt.gensalt()); }
