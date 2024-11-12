@@ -3,7 +3,6 @@ package cyu.schoolmanager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +17,6 @@ public class Main {
 		session.createQuery("DELETE FROM ClassCategory").executeUpdate();
 		session.createQuery("DELETE FROM Classe").executeUpdate();
 		session.createQuery("DELETE FROM Course").executeUpdate();
-		session.createQuery("DELETE FROM CourseOccurence").executeUpdate();
-		session.createQuery("DELETE FROM Email").executeUpdate();
 		session.createQuery("DELETE FROM Pathway").executeUpdate();
 		session.createQuery("DELETE FROM Professor").executeUpdate();
 		session.createQuery("DELETE FROM Promo").executeUpdate();
@@ -42,7 +39,7 @@ public class Main {
 			admin.setFirstName("gaetan");
 			admin.setLastName("retel");
 			admin.setPassword("admin");
-			admin.setLogin("admin");
+			admin.setUsername("admin");
 			admin.setEmail("retelgaeta@cy-tech.fr");
 			admin.setAddress(address);
 			session.persist(admin);
@@ -82,7 +79,7 @@ public class Main {
 			professor.setAddress(admin.getAddress());
 			professor.setEmail("guyotjulie@cy-tech.fr");
 			professor.setPassword("prof");
-			professor.setLogin("prof");
+			professor.setUsername("prof");
 			professor.setFirstName("Julien");
 			professor.setLastName("Guyot");
 			professor.setStatus(professorStatus);
@@ -99,7 +96,6 @@ public class Main {
 			course.setCategory(classCategory);
 			course.setSubject(subject);
 			course.setProfessor(professor);
-			course.setClassroom("A656");
 			session.persist(course);
 
 			List<Course> courses = new ArrayList<>();
@@ -122,44 +118,20 @@ public class Main {
 			student.setLastName("Androny");
 			student.setFirstName("Guillaume");
 			student.setEmail("andronygui@cy-tech.fr");
-			student.setLogin("student");
+			student.setUsername("student");
 			student.setPassword("student");
 			session.persist(student);
 
-			// Email
-			Email email = new Email();
-			email.setObject("Mail important");
-			email.setBody("Ce mail est important");
-			session.persist(email);
-
-			// CourseOccurence
-			CourseOccurence courseOccurence1 = new CourseOccurence();
-			courseOccurence1.setCourse(course);
-			courseOccurence1.setClassroom("A688");
-			courseOccurence1.setProfessor(professor);
-			courseOccurence1.setDay(LocalDate.now());
-			courseOccurence1.setBeginning(LocalDate.now());
-			courseOccurence1.setEnd(LocalDate.now());
-			session.persist(courseOccurence1);
-
-			CourseOccurence courseOccurence = new CourseOccurence();
-			courseOccurence.setCourse(course);
-			courseOccurence.setDay(LocalDate.now());
-			courseOccurence.setBeginning(LocalDate.now());
-			courseOccurence.setEnd(LocalDate.now());
-			session.persist(courseOccurence);
 
 			transaction.commit();
 
-			System.out.println(courseOccurence.getProfessor().getFirstName() + " " + courseOccurence.getClassroom());
-
 
 			// LoginManager
-			String login = "student";
-			String password = "student";
+			String login = "prof";
+			String password = "prof";
 			try {
 				Person user = LoginManager.getInstance().authenticate(login, password);
-				System.out.println("Bonjour " + user.getFirstName());
+				System.out.println("Bonjour " + user.getClass().getName() + " " + user.getFirstName());
 			}catch (IllegalAccessException e){
 				System.out.println("Identifiant ou mot de passe incorrecte");
 			}
@@ -174,3 +146,4 @@ public class Main {
 		}
 	}
 }
+
