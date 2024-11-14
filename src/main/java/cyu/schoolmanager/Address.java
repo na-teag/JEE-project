@@ -7,24 +7,24 @@ import jakarta.validation.constraints.*;
 @Table(name = "address")
 public class Address extends Model {
 
-	@Column(name = "number")
+	@Column(name = "number", nullable = false)
 	@NotBlank(message = "Le numéro ne peut pas être vide")
 	private String number;
 
-	@Column(name = "street")
+	@Column(name = "street", nullable = false)
 	@NotBlank(message = "La rue ne peut pas être vide")
 	private String street;
 
-	@Column(name = "city")
+	@Column(name = "city", nullable = false)
 	@NotBlank(message = "La ville ne peut pas être vide")
 	private String city;
 
-	@Column(name = "postal_code")
+	@Column(name = "postal_code", nullable = false)
 	@Positive
 	@Digits(integer = 10, fraction = 0)
 	private int postalCode;
 
-	@Column(name = "country")
+	@Column(name = "country", nullable = false)
 	private String country;
 
 

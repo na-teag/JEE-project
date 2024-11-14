@@ -16,11 +16,11 @@ public class LoginManager {
 		return instance;
 	}
 
-	public <T extends Person> T findUserByUsername(String username, Class<T> type) {
+	public Person findUserByUsername(String username) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			String request = "FROM " + type.getSimpleName() + " WHERE username = :username";
-			Query<T> query = session.createQuery(request, type);
+			String request = "FROM Person WHERE username = :username";
+			Query<Person> query = session.createQuery(request, Person.class);
 			query.setParameter("username", username);
 
 			return query.uniqueResult();
@@ -33,17 +33,9 @@ public class LoginManager {
 	}
 
 	public Person authenticate(String username, String password) throws IllegalAccessException {
-		Admin admin = findUserByUsername(username, Admin.class);
-		if (admin != null && BCrypt.checkpw(password, admin.getPasswordHash())) {
-			return admin;
-		}
-		Professor professor = findUserByUsername(username, Professor.class);
-		if (professor != null && BCrypt.checkpw(password, professor.getPasswordHash())) {
-			return professor;
-		}
-		Student student = findUserByUsername(username, Student.class);
-		if (student != null && BCrypt.checkpw(password, student.getPasswordHash())) {
-			return student;
+		Person person = findUserByUsername(username);
+		if (person != null && BCrypt.checkpw(password, person.getPasswordHash())) {
+			return person;
 		}
 		throw new IllegalAccessException("Invalid username or password");
 	}

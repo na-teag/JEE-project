@@ -9,13 +9,13 @@ import java.util.List;
 @Table(name = "student")
 public class Student extends Person {
 
-	@Column(name = "student_number", unique = true)
+	@Column(name = "student_number", unique = true, nullable = false)
 	@NotBlank
 	@Pattern(regexp = "^[0-9]+$")
 	private String studentNumber;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la classe
-	@JoinColumn(name = "classe_id")
+	@JoinColumn(name = "classe_id", nullable = false)
 	@NotBlank(message = "La classe ne peut pas être vide")
 	private Classe classe;
 

@@ -30,19 +30,22 @@
         <!-- Mappage des entités -->
         <!-- Reprend un format de ce genre pour tes entitées -->
         <mapping class="cyu.schoolmanager.Address"/>
-        <mapping class="cyu.schoolmanager.Person"/>
         <mapping class="cyu.schoolmanager.Admin"/>
-        <mapping class="cyu.schoolmanager.Promo"/>
-        <mapping class="cyu.schoolmanager.Pathway"/>
         <mapping class="cyu.schoolmanager.ClassCategory"/>
-        <mapping class="cyu.schoolmanager.Professor"/>
-        <mapping class="cyu.schoolmanager.ProfessorStatus"/>
-        <mapping class="cyu.schoolmanager.Subject"/>
         <mapping class="cyu.schoolmanager.Classe"/>
         <mapping class="cyu.schoolmanager.Course"/>
-        <mapping class="cyu.schoolmanager.Student"/>
-        <mapping class="cyu.schoolmanager.Email"/>
         <mapping class="cyu.schoolmanager.CourseOccurence"/>
+        <mapping class="cyu.schoolmanager.Email"/>
+        <mapping class="cyu.schoolmanager.Emailable"/>
         <mapping class="cyu.schoolmanager.Grade"/>
+        <mapping class="cyu.schoolmanager.Model"/>
+        <mapping class="cyu.schoolmanager.Pathway"/>
+        <mapping class="cyu.schoolmanager.Person"/>
+        <mapping class="cyu.schoolmanager.Professor"/>
+        <mapping class="cyu.schoolmanager.ProfessorStatus"/>
+        <mapping class="cyu.schoolmanager.Promo"/>
+        <mapping class="cyu.schoolmanager.Student"/>
+        <mapping class="cyu.schoolmanager.StudentGroup"/>
+        <mapping class="cyu.schoolmanager.Subject"/>
     </session-factory>
 </hibernate-configuration>
