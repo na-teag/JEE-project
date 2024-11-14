@@ -45,10 +45,10 @@ public class Grade extends Model{
     public void setDay(LocalDate day){this.day=day;}
 
     public String getContext(){return this.context;}
-    public void setcontext(String context){this.context=context;}
+    public void setContext(String context){this.context=context;}
 
     public String getComment(){return this.comment;}
-    public void setcomment(String comment){this.comment=comment;}
+    public void setComment(String comment){this.comment=comment;}
 
     public double getResult(){return this.result;}
     public void setResult(double result){this.result=result;}

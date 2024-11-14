@@ -3,6 +3,7 @@ package cyu.schoolmanager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Main {
 		session.createQuery("DELETE FROM Promo").executeUpdate();
 		session.createQuery("DELETE FROM Student").executeUpdate();
 		session.createQuery("DELETE FROM Subject").executeUpdate();
+		session.createQuery("DELETE FROM Grade").executeUpdate();
 		session.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
 
 		try {
@@ -121,6 +123,17 @@ public class Main {
 			student.setUsername("student");
 			student.setPassword("student");
 			session.persist(student);
+
+			// Grade
+			Grade grade = new Grade();
+			grade.setStudent(student);
+			grade.setCourse(course);
+			grade.setDay(LocalDate.now());
+			grade.setContext("Final exam DP");
+			grade.setComment("GG");
+			grade.setResult(20);
+			grade.setSession(1);
+			session.persist(grade);
 
 
 			transaction.commit();

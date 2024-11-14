@@ -43,5 +43,6 @@
         <mapping class="cyu.schoolmanager.Student"/>
         <mapping class="cyu.schoolmanager.Email"/>
         <mapping class="cyu.schoolmanager.CourseOccurence"/>
+        <mapping class="cyu.schoolmanager.Grade"/>
     </session-factory>
 </hibernate-configuration>
