@@ -2,7 +2,9 @@ package cyu.schoolmanager;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import java.util.List;
 
 @Entity
@@ -10,8 +12,6 @@ import java.util.List;
 public class Student extends Person {
 
 	@Column(name = "student_number", unique = true, nullable = false)
-	@NotBlank
-	@Pattern(regexp = "^[0-9]+$")
 	private String studentNumber;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la classe
@@ -32,8 +32,17 @@ public class Student extends Person {
 	public String getStudentNumber() {
 		return studentNumber;
 	}
-	public void setStudentNumber(String studentNumber) {
-		this.studentNumber = studentNumber;
+	public void setStudentNumber() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		String request = "SELECT COUNT(s) FROM Student s";
+		Query<Long> query = session.createQuery(request, Long.class);
+		int count = Math.toIntExact(query.uniqueResult());
+		session.close();
+		try{
+			this.studentNumber = String.format("%08d", count+1); // set the number based on the student population, (int)42 = (String)"00000042"
+		}catch (Exception e){
+			this.studentNumber = String.format("%08d", count+2); // if two students are saved at the exact same time
+		}
 	}
 
 	public Classe getClasse() {

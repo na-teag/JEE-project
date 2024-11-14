@@ -20,8 +20,8 @@ public class Address extends Model {
 	private String city;
 
 	@Column(name = "postal_code", nullable = false)
-	@Positive
-	@Digits(integer = 10, fraction = 0)
+	@Positive(message = "le code postal doit être positif")
+	@Digits(integer = 10, fraction = 0, message = "le code postal doit être un nombre entier à 10 chiffres ou moins")
 	private int postalCode;
 
 	@Column(name = "country", nullable = false)

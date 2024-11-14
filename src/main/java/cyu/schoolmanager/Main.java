@@ -38,13 +38,30 @@ public class Main {
 			address.setCountry("France");
 			session.persist(address);
 
+			Address address2 = new Address();
+			address2.setNumber("1");
+			address2.setStreet("rue Lebon");
+			address2.setCity("Cergy");
+			address2.setPostalCode(95000);
+			address2.setCountry("France");
+			session.persist(address2);
+
+			Address address3 = new Address();
+			address3.setNumber("1");
+			address3.setStreet("rue Lebon");
+			address3.setCity("Cergy");
+			address3.setPostalCode(95000);
+			address3.setCountry("France");
+			session.persist(address3);
+
+
 			// Admin
 			Admin admin = new Admin();
 			admin.setFirstName("gaetan");
-			admin.setLastName("retel");
+			admin.setLastName("gaetan");
 			admin.setPassword("admin");
 			admin.setUsername("admin");
-			admin.setEmail("retelgaeta@cy-tech.fr");
+			admin.setEmail("gaetan@cy-tech.fr");
 			admin.setAddress(address);
 			session.persist(admin);
 
@@ -80,12 +97,12 @@ public class Main {
 
 			// Professor
 			Professor professor = new Professor();
-			professor.setAddress(admin.getAddress());
-			professor.setEmail("guyotjulie@cy-tech.fr");
+			professor.setAddress(address2);
+			professor.setEmail("julien@cy-tech.fr");
 			professor.setPassword("prof");
 			professor.setUsername("prof");
-			professor.setFirstName("Julien");
-			professor.setLastName("Guyot");
+			professor.setFirstName("julien");
+			professor.setLastName("julien");
 			professor.setStatus(professorStatus);
 			professor.setTeachingSubjects(subjects);
 			session.persist(professor);
@@ -116,13 +133,12 @@ public class Main {
 
 			//Student
 			Student student = new Student();
-			student.setStudentNumber("0123456789");
+			student.setStudentNumber();
 			student.setClasse(classe);
-			student.setCourses(null);
-			student.setAddress(address);
-			student.setLastName("Androny");
-			student.setFirstName("Guillaume");
-			student.setEmail("andronygui@cy-tech.fr");
+			student.setAddress(address3);
+			student.setLastName("guillaume");
+			student.setFirstName("guillaume");
+			student.setEmail("guillaume@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
 			session.persist(student);
@@ -142,6 +158,7 @@ public class Main {
 			courseOccurence1.setBeginning(LocalDate.now());
 			courseOccurence1.setEnd(LocalDate.now());
 			session.persist(courseOccurence1);
+
 			CourseOccurence courseOccurence = new CourseOccurence();
 			courseOccurence.setCourse(course);
 			courseOccurence.setDay(LocalDate.now());
@@ -160,8 +177,9 @@ public class Main {
 			grade.setSession(1);
 			session.persist(grade);
 
-
 			transaction.commit();
+
+			System.out.println(student.getStudentNumber());
 
 
 			// LoginManager
