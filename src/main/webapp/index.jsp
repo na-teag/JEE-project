@@ -1,11 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<%@ include file="fragments/header.jsp" %>
-<%@ include file="fragments/navbar.jsp" %>
+<%@ include file="views/fragments/header.jsp" %>
 
 <div class="main-content">
-    <h2>Bienvenue sur l'Espace Numérique de Travail du Lycée Virtuel</h2>
+    <c:choose>
+        <c:when test="${not empty sessionScope.user}">
+            <h2>Bienvenue, ${sessionScope.role} ${sessionScope.user.name} !</h2>
+        </c:when>
+        <c:otherwise>
+            <h2>Bienvenue sur l'Espace Numérique de Travail du Lycée Virtuel</h2>
+        </c:otherwise>
+    </c:choose>
     <p>Découvrez les fonctionnalités de notre ENT : gestion des cours, des étudiants, des enseignants et plus encore.</p>
     
     <div class="featured-sections">
@@ -22,8 +26,7 @@
             <p>Accédez à la gestion des enseignants et suivez leurs plannings et disponibilités.</p>
         </section>
     </div>
-    <a href="hello-servlet">Hello Servlet</a>
 </div>
 
-<%@ include file="fragments/footer.jsp" %>
+<%@ include file="views/fragments/footer.jsp" %>
 </html>
