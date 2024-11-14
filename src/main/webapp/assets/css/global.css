@@ -7,7 +7,7 @@
 
 /* Corps de la page */
 html, body {
-    height: 100%; /* Utiliser toute la hauteur de la page */
+    height: 100%; /* use all the page height */
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     color: #333;
@@ -68,7 +68,7 @@ nav ul li a:hover {
 .main-content {
     padding: 30px;
     text-align: center;
-    flex: 1; /* Cela fait en sorte que .main-content prenne tout l'espace restant */
+    flex: 1;
 }
 
 /* Featured sections */
@@ -119,17 +119,3 @@ footer .social-media a {
 footer .social-media a:hover {
     color: #ffdd57;
 }
-
-/* Mobile responsiveness */
-@media screen and (max-width: 768px) {
-    .feature-sections {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .feature-sections section {
-        width: 80%;
-        margin-bottom: 20px;
-    }
-}
-

@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
 
 		if ("/logout".equals(action)) {
 			session.invalidate(); // delete all session information
-			response.sendRedirect(request.getContextPath() + "/index.jsp");
+			response.sendRedirect(request.getContextPath());
 		} else {
 			request.getRequestDispatcher("views/login.jsp").forward(request, response);
 		}
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 			if (user != null) {
 				request.getSession().setAttribute("user", user);
 				request.getSession().setAttribute("role", user.getClass().getName());
-				response.sendRedirect(request.getContextPath() + "/index.jsp");
+				response.sendRedirect(request.getContextPath());
 			}
 		} catch (IllegalAccessException e) {
 			request.setAttribute("errorMessage", "Nom d'utilisateur ou mot de passe incorrect.");

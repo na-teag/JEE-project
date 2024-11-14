@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="views/fragments/header.jsp" %>
+<%@ include file="fragments/header.jsp" %>
 
 <div class="main-content">
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
-            <h2>Bienvenue, ${sessionScope.role} ${sessionScope.user.name} !</h2>
+            <h2>Bienvenue, ${sessionScope.role} ${sessionScope.user.firstName} !</h2>
         </c:when>
         <c:otherwise>
             <h2>Bienvenue sur l'Espace Numérique de Travail du Lycée Virtuel</h2>
@@ -28,5 +28,5 @@
     </div>
 </div>
 
-<%@ include file="views/fragments/footer.jsp" %>
+<%@ include file="fragments/footer.jsp" %>
 </html>

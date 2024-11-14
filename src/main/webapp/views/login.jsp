@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="fragments/header.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
 
 <div class="main-content">
   <h2>Connexion</h2>
