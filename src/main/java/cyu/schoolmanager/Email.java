@@ -8,11 +8,11 @@ import jakarta.validation.constraints.*;
 @Entity
 @Table(name = "email")
 public class Email extends Model{
-    @Column(name = "object")
+    @Column(name = "object", nullable = false)
     @NotNull(message = "L'objet ne peut pas être null")
     private String object;
 
-    @Column(name = "body")
+    @Column(name = "body", nullable = false)
     @NotNull(message = "Le corps du mail ne peut pas être null")
     private String body;
 

@@ -13,22 +13,22 @@ public class CourseOccurence extends Model{
     @NotNull(message = "Le cours ne peut pas être null")
     private Course course;
 
-    @Column(name = "classroom")
+    @Column(name = "classroom", nullable = true)
     private String classroom;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du professeur
-    @JoinColumn(name = "professor_id")
+    @JoinColumn(name = "professor_id", nullable = true)
     private Professor professor;
 
-    @Column(name = "day")
+    @Column(name = "day", nullable = false)
     @NotNull(message = "Le jour ne peut pas être null")
     private LocalDate day;
 
-    @Column(name = "beginning")
+    @Column(name = "beginning", nullable = false)
     @NotNull(message = "Le début du cours ne peut pas être null")
     private LocalDate beginning;
 
-    @Column(name = "end")
+    @Column(name = "end", nullable = false)
     @NotNull(message = "La fin du cours ne peut pas être null")
     private LocalDate end;
 

@@ -20,12 +20,12 @@ public class Course extends Model {
 	private List<StudentGroup> studentGroups;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la catégorie du cours
-	@JoinColumn(name = "class_category_id")
+	@JoinColumn(name = "class_category_id", nullable = false)
 	@NotNull(message = "La catégorie du cours ne peut pas être vide")
 	private ClassCategory category;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du sujet
-	@JoinColumn(name = "subject_id")
+	@JoinColumn(name = "subject_id", nullable = false)
 	@NotNull(message = "Le sujet ne peut pas être vide")
 	private Subject subject;
 
@@ -34,7 +34,7 @@ public class Course extends Model {
 	@NotNull(message = "Le professeur doit exister")
 	private Professor professor;
 
-
+	@Column(name = "classroom", nullable = false)
 	@NotBlank(message = "La salle ne peut pas être vide")
 	private String classroom;
 

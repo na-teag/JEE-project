@@ -12,18 +12,12 @@ public class HibernateUtil {
 
     static {
         try {
-            // Créer un StandardServiceRegistry
             StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
                     .configure("hibernate.cfg.xml") // Charge la configuration à partir de hibernate.cfg.xml
                     .build();
 
-            // Créer le MetadataSources
             MetadataSources metadataSources = new MetadataSources(standardRegistry);
-
-            // Créer le Metadata
             Metadata metadata = metadataSources.getMetadataBuilder().build();
-
-            // Créer la SessionFactory
             sessionFactory = metadata.getSessionFactoryBuilder().build();
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
@@ -36,7 +30,6 @@ public class HibernateUtil {
     }
 
     public static void shutdown() {
-        // Fermer le cache et les connexions de la SessionFactory
         if (sessionFactory != null) {
             sessionFactory.close();
         }

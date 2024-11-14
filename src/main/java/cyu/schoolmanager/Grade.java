@@ -1,7 +1,7 @@
 package cyu.schoolmanager;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public class Grade extends Model{
     @NotNull(message = "Le cours ne peut pas être null")
     private Course course;
 
-    @Column(name = "day")
+    @Column(name = "day", nullable = false)
     @NotNull(message = "Le jour ne peut pas être null")
     private LocalDate day;
 
@@ -28,11 +28,15 @@ public class Grade extends Model{
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "result")
+    @Column(name = "result", nullable = false)
+    @DecimalMin(value = "-1000", message = "La note ne peut pas être inférieure à -1000")
+    @DecimalMax(value = "1000", message = "La note ne peut pas être supérieure à 1000")
     private double result;
 
-    @Column(name = "session")
+    @Column(name = "session", nullable = false)
     @NotNull(message = "La session ne peut pas être null")
+    @Digits(integer = 1, fraction = 0, message = "la session doit être un nombre entier compris entre 1 et 9")
+    @Positive(message = "la session doit être positive")
     private int session;
 
     public Student getStudent(){return this.student;}

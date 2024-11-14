@@ -10,7 +10,7 @@ import java.util.List;
 public class Professor extends Person {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "professor_status_id", referencedColumnName = "id") // Utilisation de la clé étrangère
+	@JoinColumn(name = "professor_status_id", referencedColumnName = "id", nullable = false) // Utilisation de la clé étrangère
 	@NotBlank(message = "le status ne peut pas être vide")
 	private ProfessorStatus status;
 

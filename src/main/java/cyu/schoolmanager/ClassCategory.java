@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "class_category")
 public class ClassCategory extends Model {
 
-	@Column(name = "nom")
+	@Column(name = "nom", nullable = false)
 	@NotBlank(message = "le nom ne peut pas être vide")
 	private String name;
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "classe")
 public class Classe extends StudentGroup {
 
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	@NotBlank(message = "Le nom de la classe ne peut pas être vide")
 	private String name;
 
