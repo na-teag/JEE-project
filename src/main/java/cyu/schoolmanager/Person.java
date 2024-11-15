@@ -2,6 +2,8 @@ package cyu.schoolmanager;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
@@ -32,6 +34,9 @@ public abstract class Person extends Emailable {
 	@NotNull(message = "L'adresse' ne peut pas être vide")
 	private Address address;
 
+	@Column(name = "person_number", unique = true, nullable = false)
+	private String personNumber;
+
 
 
 	public String getLastName() { return lastName; }
@@ -48,4 +53,25 @@ public abstract class Person extends Emailable {
 
 	public Address getAddress() { return address; }
 	public void setAddress(Address address) { this.address = address; }
+
+	public void setPersonNumber() {
+		if (personNumber == null){
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			String requestMax = "SELECT MAX(p.personNumber) FROM Person p";
+			Query<String> queryMax = session.createQuery(requestMax, String.class);
+			String maxPersonNumber = queryMax.uniqueResult();
+
+			session.close();
+			if (maxPersonNumber == null) { // if there is no registered user
+				this.personNumber = "00000001";
+			} else {
+				this.personNumber =  String.format("%08d", Integer.parseInt(maxPersonNumber) + 1);
+			}
+		}
+
+	}
+
+	public String getPersonNumber(){
+		return this.personNumber;
+	}
 }

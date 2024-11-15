@@ -2,6 +2,7 @@ package cyu.schoolmanager;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,26 +39,11 @@ public class Main {
 			address.setCountry("France");
 			session.persist(address);
 
-			Address address2 = new Address();
-			address2.setNumber("1");
-			address2.setStreet("rue Lebon");
-			address2.setCity("Cergy");
-			address2.setPostalCode(95000);
-			address2.setCountry("France");
-			session.persist(address2);
-
-			Address address3 = new Address();
-			address3.setNumber("1");
-			address3.setStreet("rue Lebon");
-			address3.setCity("Cergy");
-			address3.setPostalCode(95000);
-			address3.setCountry("France");
-			session.persist(address3);
-
 
 			// Admin
 			Admin admin = new Admin();
 			admin.setFirstName("gaetan");
+			admin.setPersonNumber();
 			admin.setLastName("gaetan");
 			admin.setPassword("admin");
 			admin.setUsername("admin");
@@ -77,20 +63,29 @@ public class Main {
 			pathway.setEmail("gsi@cy-tech.fr");
 			session.persist(pathway);
 
+			transaction.commit();
+			session.close();
+			Session session2 = HibernateUtil.getSessionFactory().openSession();
+			Transaction transaction2 = session2.beginTransaction();
+
+			// Address2
+			Address address2 = new Address();
+			address2.setNumber("1");
+			address2.setStreet("rue Lebon");
+			address2.setCity("Cergy");
+			address2.setPostalCode(95000);
+			address2.setCountry("France");
+			session2.persist(address2);
+
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
-			session.persist(subject);
-
-			// ClassCategory
-			ClassCategory classCategory = new ClassCategory();
-			classCategory.setName("TD");
-			session.persist(classCategory);
+			session2.persist(subject);
 
 			// ProfessorStatus
 			ProfessorStatus professorStatus = new ProfessorStatus();
 			professorStatus.setStatus("titulaire");
-			session.persist(professorStatus);
+			session2.persist(professorStatus);
 
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
@@ -98,6 +93,7 @@ public class Main {
 			// Professor
 			Professor professor = new Professor();
 			professor.setAddress(address2);
+			professor.setPersonNumber();
 			professor.setEmail("julien@cy-tech.fr");
 			professor.setPassword("prof");
 			professor.setUsername("prof");
@@ -105,20 +101,47 @@ public class Main {
 			professor.setLastName("julien");
 			professor.setStatus(professorStatus);
 			professor.setTeachingSubjects(subjects);
-			session.persist(professor);
+			session2.persist(professor);
+
+			transaction2.commit();
+			session2.close();
+			Session session3 = HibernateUtil.getSessionFactory().openSession();
+			Transaction transaction3 = session3.beginTransaction();
+
+
+			// Address3
+			Address address3 = new Address();
+			address3.setNumber("1");
+			address3.setStreet("rue Lebon");
+			address3.setCity("Cergy");
+			address3.setPostalCode(95000);
+			address3.setCountry("France");
+			session3.persist(address3);
+
+			// ClassCategory
+			ClassCategory classCategory = new ClassCategory();
+			classCategory.setName("TD");
+			session3.persist(classCategory);
 
 			List<StudentGroup> studentGroups = new ArrayList<>();
 			studentGroups.add(pathway);
 			studentGroups.add(promo);
+
+			Session session0 = HibernateUtil.getSessionFactory().openSession();
+			String requestFirst = "FROM Professor p ORDER BY p.personNumber ASC";
+			Query<Professor> queryFirst = session0.createQuery(requestFirst, Professor.class);
+			queryFirst.setMaxResults(1); // Limiter à un seul résultat
+			Professor firstProfessor = queryFirst.uniqueResult();
 
 			// Course
 			Course course = new Course();
 			course.setStudentGroups(studentGroups);
 			course.setCategory(classCategory);
 			course.setSubject(subject);
-			course.setProfessor(professor);
+			course.setProfessor(firstProfessor);
 			course.setClassroom("A656");
-			session.persist(course);
+			session3.persist(course);
+			session0.close();
 
 			List<Course> courses = new ArrayList<>();
 			courses.add(course);
@@ -129,11 +152,11 @@ public class Main {
 			classe.setPromo(promo);
 			classe.setEmail("ing2-gsi2@cy-tech.fr");
 			classe.setCourses(courses);
-			session.persist(classe);
+			session3.persist(classe);
 
 			//Student
 			Student student = new Student();
-			student.setStudentNumber();
+			student.setPersonNumber();
 			student.setClasse(classe);
 			student.setAddress(address3);
 			student.setLastName("guillaume");
@@ -141,13 +164,13 @@ public class Main {
 			student.setEmail("guillaume@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
-			session.persist(student);
+			session3.persist(student);
 
 			// Email
 			Email email = new Email();
 			email.setObject("Mail important");
 			email.setBody("Ce mail est important");
-			session.persist(email);
+			session3.persist(email);
 
 			// CourseOccurence
 			CourseOccurence courseOccurence1 = new CourseOccurence();
@@ -157,14 +180,14 @@ public class Main {
 			courseOccurence1.setDay(LocalDate.now());
 			courseOccurence1.setBeginning(LocalDate.now());
 			courseOccurence1.setEnd(LocalDate.now());
-			session.persist(courseOccurence1);
+			session3.persist(courseOccurence1);
 
 			CourseOccurence courseOccurence = new CourseOccurence();
 			courseOccurence.setCourse(course);
 			courseOccurence.setDay(LocalDate.now());
 			courseOccurence.setBeginning(LocalDate.now());
 			courseOccurence.setEnd(LocalDate.now());
-			session.persist(courseOccurence);
+			session3.persist(courseOccurence);
 
 			// Grade
 			Grade grade = new Grade();
@@ -175,11 +198,16 @@ public class Main {
 			grade.setComment("GG");
 			grade.setResult(20);
 			grade.setSession(1);
-			session.persist(grade);
+			session3.persist(grade);
 
-			transaction.commit();
+			transaction3.commit();
+			session3.close();
 
-			System.out.println(student.getStudentNumber());
+
+
+			System.out.println(admin.getPersonNumber());
+			System.out.println(professor.getPersonNumber());
+			System.out.println(student.getPersonNumber());
 
 
 			// LoginManager
@@ -194,12 +222,13 @@ public class Main {
 
 
 		} catch (Exception e) {
-			if (transaction != null) transaction.rollback();
+			//if (transaction != null) transaction.rollback();
 			e.printStackTrace();
 		} finally {
-			session.close();
 			HibernateUtil.shutdown();
 		}
+
+
 	}
 }
 

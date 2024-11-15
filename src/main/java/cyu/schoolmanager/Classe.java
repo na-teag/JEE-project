@@ -25,7 +25,7 @@ public class Classe extends StudentGroup {
 	@NotNull(message = "La promotion ne peut pas être vide")
 	private Promo promo;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "course_classe",  // Nom de la table de jointure
 		joinColumns = @JoinColumn(name = "classe_id"),  // Clé étrangère vers Classe

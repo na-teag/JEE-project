@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "course")
 public class Course extends Model {
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "course_student_group",
 		joinColumns = @JoinColumn(name = "course_id"),
@@ -60,8 +60,13 @@ public class Course extends Model {
 
 	public Professor getProfessor() { return professor; }
 	public void setProfessor(Professor professor) throws InvalidParameterException {
-		if (this.subject != null && !professor.getTeachingSubjects().contains(subject)) {
-			throw new InvalidParameterException("Le professeur " + this.professor.getFirstName() + " " + this.professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject);
+		if (this.subject != null && !professor.getTeachingSubjects().contains(subject)) { // faire une boucle pour vérifier les id manuellement
+			String list = "cours possibles : [";
+			for (Subject subject : professor.getTeachingSubjects()) {
+				list += subject.getName() + " (" + subject.getId() + ")";
+			}
+			list += "]";
+			throw new InvalidParameterException("Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject.getId() + "\n" + list);
 		}
 		this.professor = professor;
 	}
