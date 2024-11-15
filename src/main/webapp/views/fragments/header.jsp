@@ -19,11 +19,11 @@
 
         <c:choose>
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.student}">
-                <li><a href="${pageContext.request.contextPath}/">lien pour les élèves</a></li>
+                <li><a href="${pageContext.request.contextPath}/grades">Notes</a></li>
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.professor}">
-                <li><a href="${pageContext.request.contextPath}/">lien pour les prof</a>lien pour les prof</li>
+                <li><a href="${pageContext.request.contextPath}/">lien pour les prof</a></li>
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
