@@ -79,7 +79,10 @@ public class Main {
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
+			Subject subject2 = new Subject();
+			subject2.setName("IA");
 			session2.merge(subject);
+			session2.merge(subject2);
 
 			// ProfessorStatus
 			ProfessorStatus professorStatus = new ProfessorStatus();
@@ -88,6 +91,7 @@ public class Main {
 
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
+			subjects.add(subject2);
 
 			// Professor
 			Professor professor = new Professor();
@@ -134,9 +138,18 @@ public class Main {
 			course.setProfessor(professor);
 			course.setClassroom("A656");
 			session3.merge(course);
+			Course course2 = new Course();
+			course2.setStudentGroups(studentGroups);
+			course2.setCategory(classCategory);
+			course2.setSubject(subject2);
+			course2.setProfessor(professor);
+			course2.setClassroom("A664");
+			session3.merge(course2);
+
 
 			List<Course> courses = new ArrayList<>();
 			courses.add(course);
+			//courses.add(course2);
 
 			// Classe
 			Classe classe = new Classe();
@@ -191,6 +204,15 @@ public class Main {
 			grade.setResult(20);
 			grade.setSession(1);
 			session3.merge(grade);
+			Grade grade2 = new Grade();
+			grade2.setStudent(student);
+			grade2.setCourse(course2);
+			grade2.setDay(LocalDate.now());
+			grade2.setContext("Final exam");
+			grade2.setComment("Good");
+			grade2.setResult(15);
+			grade2.setSession(1);
+			session3.merge(grade2);
 
 			transaction3.commit();
 			session3.close();

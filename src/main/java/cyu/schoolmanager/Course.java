@@ -20,7 +20,7 @@ public class Course extends Model {
 	)
 	private List<StudentGroup> studentGroups;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la catégorie du cours
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la catégorie du cours
 	@JoinColumn(name = "class_category_id", nullable = false)
 	@NotNull(message = "La catégorie du cours ne peut pas être vide")
 	private ClassCategory category;
