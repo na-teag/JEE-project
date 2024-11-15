@@ -18,6 +18,18 @@
         <li><a href="${pageContext.request.contextPath}/views/Contact.jsp">Contacts</a></li>
 
         <c:choose>
+            <c:when test="${not empty sessionScope.role and sessionScope.role == sessionScope.roles.student}">
+                <li><a href="${pageContext.request.contextPath}/logout">emploi du temps</a></li>
+            </c:when>
+
+            <c:when test="${not empty sessionScope.role and sessionScope.role == sessionScope.roles.professor}">
+            </c:when>
+
+            <c:when test="${not empty sessionScope.role and sessionScope.role == sessionScope.roles.admin}">
+            </c:when>
+        </c:choose>
+
+        <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <li><a href="${pageContext.request.contextPath}/logout">Déconnexion</a></li>
             </c:when>

@@ -4,7 +4,7 @@
 <div class="main-content">
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
-            <h2>Bienvenue, ${sessionScope.role} ${sessionScope.user.firstName} !</h2>
+            <h2>Bienvenue, ${sessionScope.user.firstName} !</h2>
         </c:when>
         <c:otherwise>
             <h2>Bienvenue sur l'Espace Numérique de Travail de CY Virtuel</h2>
