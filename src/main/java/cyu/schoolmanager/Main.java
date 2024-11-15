@@ -214,7 +214,7 @@ public class Main {
 
 
 		} catch (Exception e) {
-			//if (transaction != null) transaction.rollback();
+			if (transaction != null) transaction.rollback();
 			e.printStackTrace();
 		} finally {
 			HibernateUtil.shutdown();
