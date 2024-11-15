@@ -5,13 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "course")
 public class Course extends Model {
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "course_student_group",
 		joinColumns = @JoinColumn(name = "course_id"),
@@ -52,16 +53,31 @@ public class Course extends Model {
 
 	public Subject getSubject() { return subject; }
 	public void setSubject(Subject subject) throws InvalidParameterException {
-		if (this.professor != null && !this.professor.getTeachingSubjects().contains(subject)) {
-			throw new InvalidParameterException("Le professeur " + this.professor.getFirstName() + " " + this.professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject);
+		if (this.professor != null) {
+			List<Long> idList = new ArrayList<>();
+			for (Subject profSubject : this.professor.getTeachingSubjects()) {
+				idList.add(profSubject.getId());
+			}
+			if (!idList.contains(subject.getId())) {
+				throw new InvalidParameterException("Le professeur " + this.professor.getFirstName() + " " + this.professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject);
+			}
 		}
 		this.subject = subject;
 	}
 
 	public Professor getProfessor() { return professor; }
 	public void setProfessor(Professor professor) throws InvalidParameterException {
-		if (this.subject != null && !professor.getTeachingSubjects().contains(subject)) {
-			throw new InvalidParameterException("Le professeur " + this.professor.getFirstName() + " " + this.professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject);
+		if (this.subject != null) { // faire une boucle pour vérifier les id manuellement
+			List<Long> idList = new ArrayList<>();
+			String list = "cours possibles : [";
+			for (Subject subject : professor.getTeachingSubjects()) {
+				list += subject.getName() + " (" + subject.getId() + ")";
+				idList.add(subject.getId());
+			}
+			list += "]";
+			if (!idList.contains(this.subject.getId())) {
+				throw new InvalidParameterException("Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject.getId() + "\n" + list);
+			}
 		}
 		this.professor = professor;
 	}

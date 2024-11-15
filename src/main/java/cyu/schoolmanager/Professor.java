@@ -14,7 +14,7 @@ public class Professor extends Person {
 	@NotBlank(message = "le status ne peut pas être vide")
 	private ProfessorStatus status;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "professor_subject",  // Nom de la table de jointure
 		joinColumns = @JoinColumn(name = "professor_id"),  // Clé étrangère vers Professor
