@@ -7,7 +7,7 @@
             <h2>Bienvenue, ${sessionScope.role} ${sessionScope.user.firstName} !</h2>
         </c:when>
         <c:otherwise>
-            <h2>Bienvenue sur l'Espace Numérique de Travail du Lycée Virtuel</h2>
+            <h2>Bienvenue sur l'Espace Numérique de Travail de CY Virtuel</h2>
         </c:otherwise>
     </c:choose>
     <p>Découvrez les fonctionnalités de notre ENT : gestion des cours, des étudiants, des enseignants et plus encore.</p>
@@ -29,4 +29,3 @@
 </div>
 
 <%@ include file="fragments/footer.jsp" %>
-</html>
