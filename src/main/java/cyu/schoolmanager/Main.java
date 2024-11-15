@@ -2,7 +2,6 @@ package cyu.schoolmanager;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class Main {
 			address.setCity("Cergy");
 			address.setPostalCode(95000);
 			address.setCountry("France");
-			session.persist(address);
+			session.merge(address);
 
 
 			// Admin
@@ -49,19 +48,19 @@ public class Main {
 			admin.setUsername("admin");
 			admin.setEmail("gaetan@cy-tech.fr");
 			admin.setAddress(address);
-			session.persist(admin);
+			session.merge(admin);
 
 			// Promo
 			Promo promo = new Promo();
 			promo.setName("ING2");
 			promo.setEmail("ing2@cy-tech.fr");
-			session.persist(promo);
+			session.merge(promo);
 
 			// Pathway
 			Pathway pathway = new Pathway();
 			pathway.setName("GSI");
 			pathway.setEmail("gsi@cy-tech.fr");
-			session.persist(pathway);
+			session.merge(pathway);
 
 			transaction.commit();
 			session.close();
@@ -75,17 +74,17 @@ public class Main {
 			address2.setCity("Cergy");
 			address2.setPostalCode(95000);
 			address2.setCountry("France");
-			session2.persist(address2);
+			session2.merge(address2);
 
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
-			session2.persist(subject);
+			session2.merge(subject);
 
 			// ProfessorStatus
 			ProfessorStatus professorStatus = new ProfessorStatus();
 			professorStatus.setStatus("titulaire");
-			session2.persist(professorStatus);
+			session2.merge(professorStatus);
 
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
@@ -101,7 +100,7 @@ public class Main {
 			professor.setLastName("julien");
 			professor.setStatus(professorStatus);
 			professor.setTeachingSubjects(subjects);
-			session2.persist(professor);
+			session2.merge(professor);
 
 			transaction2.commit();
 			session2.close();
@@ -116,32 +115,25 @@ public class Main {
 			address3.setCity("Cergy");
 			address3.setPostalCode(95000);
 			address3.setCountry("France");
-			session3.persist(address3);
+			session3.merge(address3);
 
 			// ClassCategory
 			ClassCategory classCategory = new ClassCategory();
 			classCategory.setName("TD");
-			session3.persist(classCategory);
+			session3.merge(classCategory);
 
 			List<StudentGroup> studentGroups = new ArrayList<>();
 			studentGroups.add(pathway);
 			studentGroups.add(promo);
-
-			Session session0 = HibernateUtil.getSessionFactory().openSession();
-			String requestFirst = "FROM Professor p ORDER BY p.personNumber ASC";
-			Query<Professor> queryFirst = session0.createQuery(requestFirst, Professor.class);
-			queryFirst.setMaxResults(1); // Limiter à un seul résultat
-			Professor firstProfessor = queryFirst.uniqueResult();
 
 			// Course
 			Course course = new Course();
 			course.setStudentGroups(studentGroups);
 			course.setCategory(classCategory);
 			course.setSubject(subject);
-			course.setProfessor(firstProfessor);
+			course.setProfessor(professor);
 			course.setClassroom("A656");
-			session3.persist(course);
-			session0.close();
+			session3.merge(course);
 
 			List<Course> courses = new ArrayList<>();
 			courses.add(course);
@@ -152,7 +144,7 @@ public class Main {
 			classe.setPromo(promo);
 			classe.setEmail("ing2-gsi2@cy-tech.fr");
 			classe.setCourses(courses);
-			session3.persist(classe);
+			session3.merge(classe);
 
 			//Student
 			Student student = new Student();
@@ -164,13 +156,13 @@ public class Main {
 			student.setEmail("guillaume@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
-			session3.persist(student);
+			session3.merge(student);
 
 			// Email
 			Email email = new Email();
 			email.setObject("Mail important");
 			email.setBody("Ce mail est important");
-			session3.persist(email);
+			session3.merge(email);
 
 			// CourseOccurence
 			CourseOccurence courseOccurence1 = new CourseOccurence();
@@ -180,14 +172,14 @@ public class Main {
 			courseOccurence1.setDay(LocalDate.now());
 			courseOccurence1.setBeginning(LocalDate.now());
 			courseOccurence1.setEnd(LocalDate.now());
-			session3.persist(courseOccurence1);
+			session3.merge(courseOccurence1);
 
 			CourseOccurence courseOccurence = new CourseOccurence();
 			courseOccurence.setCourse(course);
 			courseOccurence.setDay(LocalDate.now());
 			courseOccurence.setBeginning(LocalDate.now());
 			courseOccurence.setEnd(LocalDate.now());
-			session3.persist(courseOccurence);
+			session3.merge(courseOccurence);
 
 			// Grade
 			Grade grade = new Grade();
@@ -198,7 +190,7 @@ public class Main {
 			grade.setComment("GG");
 			grade.setResult(20);
 			grade.setSession(1);
-			session3.persist(grade);
+			session3.merge(grade);
 
 			transaction3.commit();
 			session3.close();
