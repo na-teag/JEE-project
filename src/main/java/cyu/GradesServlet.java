@@ -1,5 +1,6 @@
 package cyu;
 
+import cyu.schoolmanager.Course;
 import cyu.schoolmanager.Grade;
 import cyu.schoolmanager.HibernateUtil;
 import cyu.schoolmanager.Student;
@@ -25,7 +26,14 @@ public class GradesServlet extends HttpServlet {
         if (session.getAttribute("user") != null && session.getAttribute("role").equals(Student.class.getName())) {
             Student student = (Student) session.getAttribute("user");
             List<Grade> grades = getGradesForStudent(student.getId());
-            request.setAttribute("grades", grades);
+            //Si l'étudiant a des notes, on calcule la moyenne de celle-ci
+            if(!grades.isEmpty()){
+                double average = getAverageForStudent(grades);
+                session.setAttribute("average", average);
+            }
+            List<Course> courses = student.getClasse().getCourses();
+            session.setAttribute("courses", courses);
+            session.setAttribute("grades", grades);
             request.getRequestDispatcher("views/grades.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("views/error.jsp").forward(request, response);
@@ -48,5 +56,13 @@ public class GradesServlet extends HttpServlet {
         // Commit de la transaction et fermeture de la session
         session.getTransaction().commit();
         return grades;
+    }
+
+    private double getAverageForStudent(List<Grade> grades) {
+        double sum = 0;
+        for(Grade grade : grades){
+            sum += grade.getResult();
+        }
+        return sum/grades.size();
     }
 }
