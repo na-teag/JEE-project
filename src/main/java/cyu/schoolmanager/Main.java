@@ -149,7 +149,7 @@ public class Main {
 
 			List<Course> courses = new ArrayList<>();
 			courses.add(course);
-			//courses.add(course2);
+			courses.add(course2);
 
 			// Classe
 			Classe classe = new Classe();
