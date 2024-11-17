@@ -1,6 +1,5 @@
 package cyu;
 
-import cyu.schoolmanager.Course;
 import cyu.schoolmanager.Grade;
 import cyu.schoolmanager.HibernateUtil;
 import cyu.schoolmanager.Student;
@@ -31,8 +30,8 @@ public class GradesServlet extends HttpServlet {
                 double average = getAverageForStudent(grades);
                 session.setAttribute("average", average);
             }
-            List<Course> courses = student.getClasse().getCourses();
-            session.setAttribute("courses", courses);
+            //List<Course> courses = student.getClasse().getCourses(); dispo dans
+            //session.setAttribute("courses", courses);
             session.setAttribute("grades", grades);
             request.getRequestDispatcher("views/grades.jsp").forward(request, response);
         } else {

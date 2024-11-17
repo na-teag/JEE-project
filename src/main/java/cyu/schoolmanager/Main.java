@@ -126,31 +126,31 @@ public class Main {
 			classCategory.setName("TD");
 			session3.merge(classCategory);
 
+			List<StudentGroup> studentGroups = new ArrayList<>();
+			studentGroups.add(pathway);
+			studentGroups.add(promo);
+
 			// Course
 			Course course = new Course();
-			course.setCategory(classCategory);
+			course.setStudentGroups(studentGroups);
 			course.setSubject(subject);
 			course.setProfessor(professor);
 			course.setClassroom("A656");
 			session3.merge(course);
+
 			Course course2 = new Course();
-			course2.setCategory(classCategory);
+			course2.setStudentGroups(studentGroups);
 			course2.setSubject(subject2);
 			course2.setProfessor(professor);
 			course2.setClassroom("A664");
 			session3.merge(course2);
 
 
-			List<Course> courses = new ArrayList<>();
-			courses.add(course);
-			courses.add(course2);
-
 			// Classe
 			Classe classe = new Classe();
 			classe.setPathway(pathway);
 			classe.setPromo(promo);
 			classe.setEmail("ing2-gsi2@cy-tech.fr");
-			classe.setCourses(courses);
 			session3.merge(classe);
 
 			//Student
@@ -179,6 +179,7 @@ public class Main {
 			courseOccurence1.setDay(LocalDate.now());
 			courseOccurence1.setBeginning(LocalDate.now());
 			courseOccurence1.setEnd(LocalDate.now());
+			courseOccurence1.setCategory(classCategory);
 			session3.merge(courseOccurence1);
 
 			CourseOccurence courseOccurence = new CourseOccurence();
@@ -186,6 +187,7 @@ public class Main {
 			courseOccurence.setDay(LocalDate.now());
 			courseOccurence.setBeginning(LocalDate.now());
 			courseOccurence.setEnd(LocalDate.now());
+			courseOccurence.setCategory(classCategory);
 			session3.merge(courseOccurence);
 
 			// Grade

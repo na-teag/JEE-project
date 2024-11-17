@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
-
 
 @Entity
 @Table(name = "classe")
@@ -24,14 +22,6 @@ public class Classe extends StudentGroup {
 	@JoinColumn(name = "promo_id", nullable = false)
 	@NotNull(message = "La promotion ne peut pas être vide")
 	private Promo promo;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "course_classe",  // Nom de la table de jointure
-		joinColumns = @JoinColumn(name = "classe_id"),  // Clé étrangère vers Classe
-		inverseJoinColumns = @JoinColumn(name = "course_id")  // Clé étrangère vers Course
-	)
-	private List<Course> courses;
 
 
 	public String getName() {
@@ -53,12 +43,5 @@ public class Classe extends StudentGroup {
 	}
 	public void setPromo(Promo promo) {
 		this.promo = promo;
-	}
-
-	public List<Course> getCourses() {
-		return courses;
-	}
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
 	}
 }
