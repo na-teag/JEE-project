@@ -2,7 +2,8 @@ package cyu.schoolmanager;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.mindrot.jbcrypt.BCrypt;
+
+import java.time.LocalDate;
 
 public class CourseManager {
 	private static CourseManager instance;
@@ -16,12 +17,12 @@ public class CourseManager {
 		return instance;
 	}
 
-	public Person findCoursesByPerson(Person person, Long requestedId) {
+	public Person findCoursesByPersonNumberAndDay(String personNumber, LocalDate day) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			String request = "FROM Person WHERE username = :username";
 			Query<Person> query = session.createQuery(request, Person.class);
-			query.setParameter("username", username);
+			query.setParameter("username", "test");
 
 			return query.uniqueResult();
 		} catch (Exception e) {
@@ -30,13 +31,5 @@ public class CourseManager {
 		} finally {
 			session.close();
 		}
-	}
-
-	public Person authenticate(String username, String password) throws IllegalAccessException {
-		Person person = findUserByUsername(username);
-		if (person != null && BCrypt.checkpw(password, person.getPasswordHash())) {
-			return person;
-		}
-		throw new IllegalAccessException("Invalid username or password");
 	}
 }
