@@ -32,6 +32,11 @@ public class CourseOccurence extends Model{
     @NotNull(message = "La fin du cours ne peut pas être null")
     private LocalDate end;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la catégorie du cours
+    @JoinColumn(name = "course_category_id", nullable = false)
+    @NotNull(message = "La catégorie du cours ne peut pas être vide")
+    private ClassCategory category;
+
     public Course getCourse(){return this.course;}
     public void setCourse(Course course){this.course=course;}
     public String getClassroom(){
@@ -47,8 +52,13 @@ public class CourseOccurence extends Model{
 
     public LocalDate getDay(){return this.day;}
     public void setDay(LocalDate day){this.day=day;}
+
     public LocalDate getBeginning(){return this.beginning;}
     public void setBeginning(LocalDate beginning){this.beginning=beginning;}
+
     public LocalDate getEnd(){return this.end;}
     public void setEnd(LocalDate end){this.end=end;}
+
+    public ClassCategory getCategory() { return category; }
+    public void setCategory(ClassCategory category) { this.category = category; }
 }

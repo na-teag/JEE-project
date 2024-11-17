@@ -18,6 +18,7 @@ public class Student extends Person {
 		return classe;
 	}
 	public void setClasse(Classe classe) {
+		// TODO envoyer un mail pour signaler le changement
 		this.classe = classe;
 	}
 

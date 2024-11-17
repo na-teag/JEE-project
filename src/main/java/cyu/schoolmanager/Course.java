@@ -12,10 +12,13 @@ import java.util.List;
 @Table(name = "course")
 public class Course extends Model {
 
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la catégorie du cours
-	@JoinColumn(name = "class_category_id", nullable = false)
-	@NotNull(message = "La catégorie du cours ne peut pas être vide")
-	private ClassCategory category;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "course_student_group",
+			joinColumns = @JoinColumn(name = "course_id"),
+			inverseJoinColumns = @JoinColumn(name = "student_group_id")
+	)
+	private List<StudentGroup> studentGroups;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du sujet
 	@JoinColumn(name = "subject_id", nullable = false)
@@ -30,9 +33,6 @@ public class Course extends Model {
 	@Column(name = "classroom", nullable = false)
 	@NotBlank(message = "La salle ne peut pas être vide")
 	private String classroom;
-
-	public ClassCategory getCategory() { return category; }
-	public void setCategory(ClassCategory category) { this.category = category; }
 
 	public Subject getSubject() { return subject; }
 	public void setSubject(Subject subject) throws InvalidParameterException {
@@ -66,6 +66,14 @@ public class Course extends Model {
 	}
 
 	public String getClassroom(){return this.classroom;}
-
 	public void setClassroom(String classroom){this.classroom=classroom;}
+
+
+	public List<StudentGroup> getStudentGroups() {
+		return studentGroups;
+	}
+	public void setStudentGroups(List<StudentGroup> studentGroups) {
+		this.studentGroups = studentGroups;
+	}
+
 }
