@@ -55,7 +55,7 @@ function updateCalendar(data) {
 		// add new events
 		data[dayIndex].forEach(event => {
 			const eventDiv = document.createElement('div');
-			eventDiv.className = `event start-${event.startTime.replace(':', 'h')} end-${event.endTime.replace(':', 'h')} ${event.type}`;
+			eventDiv.className = `event start-${event.startTime} end-${event.endTime} ${event.type}`;
 			eventDiv.setAttribute('onclick', 'openPopup(this)');
 			eventDiv.innerHTML = `
         <p class="title">${event.title}</p>

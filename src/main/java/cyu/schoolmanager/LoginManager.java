@@ -16,7 +16,7 @@ public class LoginManager {
 		return instance;
 	}
 
-	public Person findUserByUsername(String username) {
+	public Person getUserByUsername(String username) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			String request = "FROM Person WHERE username = :username";
@@ -32,8 +32,24 @@ public class LoginManager {
 		}
 	}
 
+	public Person getUserByPersonNumber(String personNumber) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Person WHERE personNumber = :personNumber";
+			Query<Person> query = session.createQuery(request, Person.class);
+			query.setParameter("personNumber", personNumber);
+
+			return query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
 	public Person authenticate(String username, String password) throws IllegalAccessException {
-		Person person = findUserByUsername(username);
+		Person person = getUserByUsername(username);
 		if (person != null && BCrypt.checkpw(password, person.getPasswordHash())) {
 			return person;
 		}

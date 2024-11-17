@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +80,10 @@ public class Main {
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
+			session2.merge(subject);
+
 			Subject subject2 = new Subject();
 			subject2.setName("IA");
-			session2.merge(subject);
 			session2.merge(subject2);
 
 			// ProfessorStatus
@@ -177,16 +179,16 @@ public class Main {
 			courseOccurence1.setClassroom("A688");
 			courseOccurence1.setProfessor(professor);
 			courseOccurence1.setDay(LocalDate.now());
-			courseOccurence1.setBeginning(LocalDate.now());
-			courseOccurence1.setEnd(LocalDate.now());
+			courseOccurence1.setBeginning(LocalTime.now());
+			courseOccurence1.setEnd(LocalTime.now());
 			courseOccurence1.setCategory(classCategory);
 			session3.merge(courseOccurence1);
 
 			CourseOccurence courseOccurence = new CourseOccurence();
 			courseOccurence.setCourse(course);
 			courseOccurence.setDay(LocalDate.now());
-			courseOccurence.setBeginning(LocalDate.now());
-			courseOccurence.setEnd(LocalDate.now());
+			courseOccurence.setBeginning(LocalTime.now());
+			courseOccurence.setEnd(LocalTime.now());
 			courseOccurence.setCategory(classCategory);
 			session3.merge(courseOccurence);
 
@@ -200,6 +202,7 @@ public class Main {
 			grade.setResult(20);
 			grade.setSession(1);
 			session3.merge(grade);
+
 			Grade grade2 = new Grade();
 			grade2.setStudent(student);
 			grade2.setCourse(course2);
@@ -229,6 +232,7 @@ public class Main {
 			}catch (IllegalAccessException e){
 				System.out.println("Identifiant ou mot de passe incorrecte");
 			}
+
 
 
 		} catch (Exception e) {
