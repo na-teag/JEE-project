@@ -126,20 +126,14 @@ public class Main {
 			classCategory.setName("TD");
 			session3.merge(classCategory);
 
-			List<StudentGroup> studentGroups = new ArrayList<>();
-			studentGroups.add(pathway);
-			studentGroups.add(promo);
-
 			// Course
 			Course course = new Course();
-			course.setStudentGroups(studentGroups);
 			course.setCategory(classCategory);
 			course.setSubject(subject);
 			course.setProfessor(professor);
 			course.setClassroom("A656");
 			session3.merge(course);
 			Course course2 = new Course();
-			course2.setStudentGroups(studentGroups);
 			course2.setCategory(classCategory);
 			course2.setSubject(subject2);
 			course2.setProfessor(professor);
