@@ -3,7 +3,6 @@ package cyu.schoolmanager;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "grade")
@@ -17,10 +16,6 @@ public class Grade extends Model{
     @JoinColumn(name = "course_id", nullable = false)
     @NotNull(message = "Le cours ne peut pas être null")
     private Course course;
-
-    @Column(name = "day", nullable = false)
-    @NotNull(message = "Le jour ne peut pas être null")
-    private LocalDate day;
 
     @Column(name = "context")
     private String context;
@@ -44,9 +39,6 @@ public class Grade extends Model{
 
     public Course getCourse(){return this.course;}
     public void setCourse(Course course){this.course=course;}
-
-    public LocalDate getDay(){return this.day;}
-    public void setDay(LocalDate day){this.day=day;}
 
     public String getContext(){return this.context;}
     public void setContext(String context){this.context=context;}

@@ -90,7 +90,6 @@ public class PDFGeneratorServlet extends HttpServlet {
                     table.addCell(createPdfPcell(String.valueOf(grade.getResult())));
                     table.addCell(createPdfPcell(grade.getContext()));
                     table.addCell(createPdfPcell(grade.getComment()));
-                    table.addCell(createPdfPcell(String.valueOf(grade.getDay())));
                     table.addCell(createPdfPcell(String.valueOf(grade.getSession())));
                 }
             } else {
