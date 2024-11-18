@@ -1,5 +1,8 @@
-package cyu.schoolmanager;
+package cyu.schoolmanager.service;
 
+import cyu.schoolmanager.Grade;
+import cyu.schoolmanager.HibernateUtil;
+import cyu.schoolmanager.Student;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

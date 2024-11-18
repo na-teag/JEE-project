@@ -1,7 +1,6 @@
-package cyu.schoolmanager;
+package cyu.schoolmanager.service;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import cyu.schoolmanager.*;
 
 import java.util.*;
 
@@ -17,44 +16,6 @@ public class MailManager {
         return instance;
     }
 
-    public List<Classe> getClassesByStudentGroup(StudentGroup studentGroup) {
-        if (Classe.class.getName().equals(studentGroup.getClass().getName())) {
-            Classe classe = (Classe)studentGroup;
-            List<Classe> classeList = new ArrayList<>();
-            classeList.add(classe);
-            return classeList;
-        }
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            String hql = "FROM Classe c WHERE c.pathway = :studentGroup OR c.promo = :studentGroup";
-            Query<Classe> query = session.createQuery(hql, Classe.class);
-            query.setParameter("studentGroup", studentGroup);
-
-            return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public List<Student> getStudentsByClasse(Classe classe) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            String hql = "FROM Student s WHERE s.classe = :classe";
-            Query<Student> query = session.createQuery(hql, Student.class);
-            query.setParameter("classe", classe);
-
-            return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
 
 
     private void sendEmailToPerson(String senderEmail, Person person, String object, String body){
@@ -62,10 +23,12 @@ public class MailManager {
     }
 
     private void sendEmailToGroup(String senderEmail, StudentGroup studentGroup, String object, String body) {
-        List<Classe> classeList = getClassesByStudentGroup(studentGroup);
+        PersonManager personManager = PersonManager.getInstance();
+        ClasseManager classeManager = ClasseManager.getInstance();
+        List<Classe> classeList = classeManager.getClassesByStudentGroup(studentGroup);
         List<Student> studentList = new ArrayList<>();
         for (Classe classe : classeList) {
-            studentList.addAll(getStudentsByClasse(classe));
+            studentList.addAll(personManager.getStudentsFromClasse(classe));
         }
         Set<Long> seenIds = new HashSet<>();
         List<Student> uniqueStudents = new ArrayList<>();

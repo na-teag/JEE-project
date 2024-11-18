@@ -1,5 +1,7 @@
 package cyu.schoolmanager;
 
+import cyu.schoolmanager.service.LoginManager;
+import cyu.schoolmanager.service.MailManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
