@@ -31,6 +31,7 @@
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
                 <li><a href="${pageContext.request.contextPath}/views/indexAdmin.jsp">éditer des objets</a></li>
                 <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
+                <li><a href="${pageContext.request.contextPath}/scheduleAdmin">Emploi du temps</a></li>
             </c:when>
         </c:choose>
 
