@@ -73,14 +73,13 @@ public class PDFGeneratorServlet extends HttpServlet {
             document.add(new Paragraph(" "));
 
             // Ajouter la table des notes
-            PdfPTable table = new PdfPTable(6);
+            PdfPTable table = new PdfPTable(5);
 
             // Définir les entêtes de la table
             table.addCell(createPdfPcell("Cours"));
             table.addCell(createPdfPcell("Note"));
             table.addCell(createPdfPcell("Contexte"));
             table.addCell(createPdfPcell("Commentaire"));
-            table.addCell(createPdfPcell("Jour"));
             table.addCell(createPdfPcell("Session"));
 
             // Ajouter les lignes de la table
@@ -96,7 +95,6 @@ public class PDFGeneratorServlet extends HttpServlet {
                 // Si aucune note, afficher uniquement les cours
                 for (Course course : courses) {
                     table.addCell(createPdfPcell(course.getSubject().getName()));
-                    table.addCell("");
                     table.addCell("");
                     table.addCell("");
                     table.addCell("");

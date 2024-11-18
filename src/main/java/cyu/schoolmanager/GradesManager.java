@@ -1,9 +1,14 @@
 package cyu.schoolmanager;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public class GradesManager{
     private static GradesManager instance;
@@ -17,6 +22,35 @@ public class GradesManager{
         return instance;
     }
 
+    public String createGrade(Grade grade){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        // Valider l'objet Grade
+        Set<ConstraintViolation<Grade>> violations = validator.validate(grade);
+
+        // Si des violations sont présentes, renvoyer les erreurs
+        if (!violations.isEmpty()) {
+            StringBuilder errorMessages = new StringBuilder();
+            for (ConstraintViolation<Grade> violation : violations) {
+                errorMessages.append(violation.getMessage()).append(" ");
+            }
+            return errorMessages.toString(); // Retourne les erreurs de validation
+        }
+
+        // Si la validation est réussie, procéder à l'enregistrement dans la base de données
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.merge(grade);
+            session.getTransaction().commit();
+            session.close();
+            return "La note a été enregistrée avec succès.";
+        } catch (Exception e) {
+            return "Erreur lors de l'enregistrement de la note : " + e.getMessage();
+        }
+
+    }
 
     public void modifyGrade(Grade grade, String context, String comment, int session, double result){
         grade.setContext(context);

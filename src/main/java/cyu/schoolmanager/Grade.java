@@ -24,8 +24,8 @@ public class Grade extends Model{
     private String comment;
 
     @Column(name = "result", nullable = false)
-    @DecimalMin(value = "-1000", message = "La note ne peut pas être inférieure à -1000")
-    @DecimalMax(value = "1000", message = "La note ne peut pas être supérieure à 1000")
+    @DecimalMin(value = "0", message = "La note ne peut pas être inférieure à 0")
+    @DecimalMax(value = "20", message = "La note ne peut pas être supérieure à 20")
     private double result;
 
     @Column(name = "session", nullable = false)

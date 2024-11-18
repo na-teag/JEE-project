@@ -128,9 +128,18 @@ public class Main {
 			classCategory.setName("TD");
 			session3.merge(classCategory);
 
+			// Classe
+			Classe classe = new Classe();
+			classe.setName("ING2 GSI2");
+			classe.setPathway(pathway);
+			classe.setPromo(promo);
+			classe.setEmail("ing2-gsi2@cy-tech.fr");
+			session3.merge(classe);
+
 			List<StudentGroup> studentGroups = new ArrayList<>();
 			studentGroups.add(pathway);
 			studentGroups.add(promo);
+			studentGroups.add(classe);
 
 			// Course
 			Course course = new Course();
@@ -147,13 +156,6 @@ public class Main {
 			course2.setClassroom("A664");
 			session3.merge(course2);
 
-
-			// Classe
-			Classe classe = new Classe();
-			classe.setPathway(pathway);
-			classe.setPromo(promo);
-			classe.setEmail("ing2-gsi2@cy-tech.fr");
-			session3.merge(classe);
 
 			//Student
 			Student student = new Student();

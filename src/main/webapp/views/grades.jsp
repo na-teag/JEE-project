@@ -21,7 +21,6 @@
             <th>Note</th>
             <th>Contexte</th>
             <th>Commentaire</th>
-            <th>Jour</th>
             <th>Session</th>
         </tr>
         </thead>
@@ -39,7 +38,6 @@
                                 <td>${grade.result}</td>
                                 <td>${grade.context}</td>
                                 <td>${grade.comment}</td>
-                                <td>${grade.day}</td>
                                 <td>${grade.session}</td>
                             </c:if>
                         </c:forEach>
