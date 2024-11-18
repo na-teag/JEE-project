@@ -3,7 +3,9 @@ package cyu.schoolmanager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +81,10 @@ public class Main {
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
+			session2.merge(subject);
+
 			Subject subject2 = new Subject();
 			subject2.setName("IA");
-			session2.merge(subject);
 			session2.merge(subject2);
 
 			// ProfessorStatus
@@ -171,22 +174,31 @@ public class Main {
 			email.setBody("Ce mail est important");
 			session3.merge(email);
 
+			LocalDate date = LocalDate.now();
+			LocalDate monday;
+			DayOfWeek dayOfWeek = date.getDayOfWeek();
+			if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+				monday = date.with(DayOfWeek.MONDAY).plusWeeks(1);
+			} else {
+				monday = date.with(DayOfWeek.MONDAY);
+			}
+
 			// CourseOccurence
 			CourseOccurence courseOccurence1 = new CourseOccurence();
 			courseOccurence1.setCourse(course);
 			courseOccurence1.setClassroom("A688");
 			courseOccurence1.setProfessor(professor);
-			courseOccurence1.setDay(LocalDate.now());
-			courseOccurence1.setBeginning(LocalDate.now());
-			courseOccurence1.setEnd(LocalDate.now());
+			courseOccurence1.setDay(monday);
+			courseOccurence1.setBeginning(LocalTime.of(8, 0));
+			courseOccurence1.setEnd(LocalTime.of(11, 0));
 			courseOccurence1.setCategory(classCategory);
 			session3.merge(courseOccurence1);
 
 			CourseOccurence courseOccurence = new CourseOccurence();
 			courseOccurence.setCourse(course);
-			courseOccurence.setDay(LocalDate.now());
-			courseOccurence.setBeginning(LocalDate.now());
-			courseOccurence.setEnd(LocalDate.now());
+			courseOccurence.setDay(monday.plusDays(3));
+			courseOccurence.setBeginning(LocalTime.of(14, 45));
+			courseOccurence.setEnd(LocalTime.of(16, 15));
 			courseOccurence.setCategory(classCategory);
 			session3.merge(courseOccurence);
 
@@ -200,6 +212,7 @@ public class Main {
 			grade.setResult(20);
 			grade.setSession(1);
 			session3.merge(grade);
+
 			Grade grade2 = new Grade();
 			grade2.setStudent(student);
 			grade2.setCourse(course2);
@@ -231,9 +244,10 @@ public class Main {
 			}
 
 
+
 		} catch (Exception e) {
-			if (transaction != null) transaction.rollback();
 			e.printStackTrace();
+			if (transaction != null) transaction.rollback();
 		} finally {
 			HibernateUtil.shutdown();
 		}
