@@ -21,7 +21,6 @@ public class Main {
 		session.createQuery("DELETE FROM Classe").executeUpdate();
 		session.createQuery("DELETE FROM Course").executeUpdate();
 		session.createQuery("DELETE FROM CourseOccurence").executeUpdate();
-		session.createQuery("DELETE FROM Email").executeUpdate();
 		session.createQuery("DELETE FROM Grade").executeUpdate();
 		session.createQuery("DELETE FROM Pathway").executeUpdate();
 		session.createQuery("DELETE FROM Professor").executeUpdate();
@@ -168,12 +167,6 @@ public class Main {
 			student.setPassword("student");
 			session3.merge(student);
 
-			// Email
-			Email email = new Email();
-			email.setObject("Mail important");
-			email.setBody("Ce mail est important");
-			session3.merge(email);
-
 			LocalDate date = LocalDate.now();
 			LocalDate monday;
 			DayOfWeek dayOfWeek = date.getDayOfWeek();
@@ -206,7 +199,6 @@ public class Main {
 			Grade grade = new Grade();
 			grade.setStudent(student);
 			grade.setCourse(course);
-			grade.setDay(LocalDate.now());
 			grade.setContext("Final exam DP");
 			grade.setComment("GG");
 			grade.setResult(20);
@@ -216,7 +208,6 @@ public class Main {
 			Grade grade2 = new Grade();
 			grade2.setStudent(student);
 			grade2.setCourse(course2);
-			grade2.setDay(LocalDate.now());
 			grade2.setContext("Final exam");
 			grade2.setComment("Good");
 			grade2.setResult(15);
@@ -239,6 +230,11 @@ public class Main {
 			try {
 				Person user = LoginManager.getInstance().authenticate(login, password);
 				System.out.println("Bonjour " + user.getClass().getName() + " " + user.getFirstName());
+
+				List<Emailable> list = new ArrayList<>();
+				list.add(student);
+				MailManager.getInstance().sendEmail(professor.getEmail(), list, "subject", "body");
+
 			}catch (IllegalAccessException e){
 				System.out.println("Identifiant ou mot de passe incorrecte");
 			}
