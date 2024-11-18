@@ -1,18 +1,18 @@
 package cyu;
 
 import cyu.schoolmanager.*;
+import cyu.schoolmanager.service.ClasseManager;
+import cyu.schoolmanager.service.CourseManager;
+import cyu.schoolmanager.service.GradesManager;
+import cyu.schoolmanager.service.PersonManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
-import org.hibernate.query.PathException;
-import org.hibernate.query.Query;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 @WebServlet(name = "GradesServlet", urlPatterns = {"/grades", "/gradesManagement"})
@@ -21,19 +21,22 @@ public class GradesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String action = request.getServletPath();
+        CourseManager courseManager = CourseManager.getInstance();
+        GradesManager gradesManager = GradesManager.getInstance();
+        ClasseManager classeManager = ClasseManager.getInstance();
+        PersonManager personManager = PersonManager.getInstance();
 
         if ("/grades".equals(action)) {
             // On vérifie que la personne est connecté et que c'est un étudiant
             if (session.getAttribute("user") != null && session.getAttribute("role").equals(Student.class.getName())) {
                 Student student = (Student) session.getAttribute("user");
-                List<Grade> grades = GradesManager.getInstance().getGradesForStudent(student);
+                List<Grade> grades = gradesManager.getGradesForStudent(student);
                 //Si l'étudiant a des notes, on calcule la moyenne de celle-ci
                 if (!grades.isEmpty()) {
                     double average = getAverageForStudent(grades);
                     session.setAttribute("average", average);
                 }
 
-                CourseManager courseManager = CourseManager.getInstance();
                 List<Course> courses = courseManager.getCourseOfStudent(student);
                 session.setAttribute("courses", courses);
                 session.setAttribute("grades", grades);
@@ -61,7 +64,7 @@ public class GradesServlet extends HttpServlet {
                 String coursesParam = request.getParameter("courses");
                 if (coursesParam != null && !coursesParam.isEmpty()) {
                     // Récupérer les cours selon le paramètre "courses"
-                    Course course = getSelectedCourse(coursesParam);
+                    Course course = CourseManager.getSelectedCourse(coursesParam);
                     session.setAttribute("courses", course);
                     session.setAttribute("coursesId", course.getId());
                     List<StudentGroup> classesList = course.getStudentGroups();
@@ -73,17 +76,17 @@ public class GradesServlet extends HttpServlet {
                     String classesParam = request.getParameter("classes");
                     if (classesParam != null && !classesParam.isEmpty()) {
                         // On pourrait récupérer les étudiants dans cette classe ici
-                        StudentGroup studentGroup = getSelectedClasse(classesParam);
+                        StudentGroup studentGroup = classeManager.getSelectedClasse(classesParam);
                         session.setAttribute("classes", studentGroup);
                         session.setAttribute("classesId", studentGroup.getId());
                         if (studentGroup instanceof Classe) {
-                            List<Student> students = getSelectedStudentsForClass((Classe) studentGroup);
+                            List<Student> students = personManager.getStudentsFromClasse((Classe) studentGroup);
                             session.setAttribute("studentsList", students);
                         } else if (studentGroup instanceof Promo) {
-                            List<Student> students = getSelectedStudentsForPromo((Promo) studentGroup);
+                            List<Student> students = personManager.getSelectedStudentsForPromo((Promo) studentGroup);
                             session.setAttribute("studentsList", students);
                         } else if (studentGroup instanceof Pathway) {
-                            List<Student> students = getSelectedStudentsForPathway((Pathway) studentGroup);
+                            List<Student> students = personManager.getSelectedStudentsForPathway((Pathway) studentGroup);
                             session.setAttribute("studentsList", students);
                         }
                         request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
@@ -104,6 +107,8 @@ public class GradesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        GradesManager gradesManager = GradesManager.getInstance();
+        PersonManager personManager = PersonManager.getInstance();
 
         // Récupérer l'étudiant sélectionné et la note
         String studentId = request.getParameter("students");
@@ -115,11 +120,10 @@ public class GradesServlet extends HttpServlet {
         if (studentId != null && !studentId.isEmpty() && gradeParam != null && !gradeParam.isEmpty()) {
             try {
                 double result = Double.parseDouble(gradeParam);
-                Student selectedStudent = (Student) getStudentById(studentId);
+                Student selectedStudent = personManager.getStudentById(studentId);
                 Course selectedCourse = (Course) session.getAttribute("courses");
 
                 // Enregistrer la note pour l'étudiant sélectionné dans le cours et la classe
-                GradesManager gradesManager = GradesManager.getInstance();
                 Grade grade = new Grade();
                 grade.setStudent(selectedStudent);
                 grade.setCourse(selectedCourse);
@@ -127,7 +131,7 @@ public class GradesServlet extends HttpServlet {
                 grade.setContext(contextParam);
                 grade.setComment(commentParam);
                 grade.setSession(Integer.parseInt(sessionParam));
-                gradesManager.createGrade(grade);
+                gradesManager.createGrade(grade); // TODO récupérer les erreurs potentielles
 
                 // Rediriger vers la page de confirmation ou rafraîchir les informations
                 session.setAttribute("message", "Note enregistrée avec succès.");
@@ -151,91 +155,5 @@ public class GradesServlet extends HttpServlet {
             sum += grade.getResult();
         }
         return sum / grades.size();
-    }
-
-
-    private Course getSelectedCourse(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String hql = "FROM Course c WHERE c.id = :id";
-        Query<Course> query = session.createQuery(hql, Course.class);
-        query.setParameter("id", id);
-
-        // Exécution de la requête et récupération des résultats
-        Course course = query.getSingleResult();
-
-        // Commit de la transaction et fermeture de la session
-        session.getTransaction().commit();
-        return course;
-    }
-
-    private StudentGroup getSelectedClasse(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String hql = "FROM StudentGroup s WHERE s.id = :id";
-        Query<StudentGroup> query = session.createQuery(hql, StudentGroup.class);
-        query.setParameter("id", id);
-
-        // Exécution de la requête et récupération des résultats
-        StudentGroup classe = query.getSingleResult();
-
-        // Commit de la transaction et fermeture de la session
-        session.getTransaction().commit();
-        return classe;
-    }
-
-    private List<Student> getSelectedStudentsForClass(Classe classe) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String hql = "FROM Student s WHERE s.classe.id = :classeId";
-        Query<Student> query = session.createQuery(hql, Student.class);
-        query.setParameter("classeId", classe.getId());
-        List<Student> students = query.getResultList();
-
-        session.getTransaction().commit();
-
-        return students;
-    }
-
-    private List<Student> getSelectedStudentsForPathway(Pathway pathway) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String hql = "FROM Student s WHERE s.classe.pathway.id = :pathwayId";
-        Query<Student> query = session.createQuery(hql, Student.class);
-        query.setParameter("pathwayId", pathway.getId());
-        List<Student> students = query.getResultList();
-
-        session.getTransaction().commit();
-
-        return students;
-    }
-
-    private List<Student> getSelectedStudentsForPromo(Promo promo) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String hql = "FROM Student s WHERE s.classe.promo.id = :promoId";
-        Query<Student> query = session.createQuery(hql, Student.class);
-        query.setParameter("promoId", promo.getId());
-        List<Student> students = query.getResultList();
-
-        session.getTransaction().commit();
-
-        return students;
-    }
-
-    private Student getStudentById(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-
-        String request = "FROM Student s WHERE id = :id";
-        Query<Student> query = session.createQuery(request, Student.class);
-        query.setParameter("id", id);
-
-        return (Student) query.getSingleResult();
     }
 }
