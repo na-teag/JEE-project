@@ -1,14 +1,15 @@
 <%@ include file="fragments/header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-schedule.css">
 
 <div class="scheduleAdmin">
     <form action="${pageContext.request.contextPath}/scheduleAdmin" method="post">
+        <!-- Tableau principal -->
         <table>
             <thead>
             <tr>
                 <th>Personne</th>
-                <c:forEach var="cours" items="${cours}">
-                    <th>${cours}</th>
+                <c:forEach var="professeur" items="${professeurs}">
+                    <th>${professeur}</th>
                 </c:forEach>
             </tr>
             </thead>
@@ -17,23 +18,16 @@
             <c:forEach var="eleve" items="${eleves}">
                 <tr>
                     <td>${eleve}</td>
-                    <c:forEach var="cours" items="${cours}">
+                    <c:forEach var="professeur" items="${professeurs}">
                         <td>
-                            <input type="checkbox" name="assignments"
-                                   value="eleve:${eleve},cours:${cours}">
-                        </td>
-                    </c:forEach>
-                </tr>
-            </c:forEach>
-
-            <!-- Section pour les professeurs -->
-            <c:forEach var="professeur" items="${professeurs}">
-                <tr>
-                    <td>${professeur}</td>
-                    <c:forEach var="cours" items="${cours}">
-                        <td>
-                            <input type="checkbox" name="assignments"
-                                   value="professeur:${professeur},cours:${cours}">
+                            <select name="assignments">
+                                <option value="">Sélectionnez un cours</option>
+                                <c:forEach var="cours" items="${cours}">
+                                    <option value="eleve:${eleve},professeur:${professeur},cours:${cours}">
+                                            ${cours}
+                                    </option>
+                                </c:forEach>
+                            </select>
                         </td>
                     </c:forEach>
                 </tr>
@@ -43,16 +37,47 @@
             <c:forEach var="groupe" items="${groupes}">
                 <tr>
                     <td>${groupe}</td>
-                    <c:forEach var="cours" items="${cours}">
+                    <c:forEach var="professeur" items="${professeurs}">
                         <td>
-                            <input type="checkbox" name="assignments"
-                                   value="groupe:${groupe},cours:${cours}">
+                            <select name="assignments">
+                                <option value="">Sélectionnez un cours</option>
+                                <c:forEach var="cours" items="${cours}">
+                                    <option value="groupe:${groupe},professeur:${professeur},cours:${cours}">
+                                            ${cours}
+                                    </option>
+                                </c:forEach>
+                            </select>
                         </td>
                     </c:forEach>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+
+            <label for="classroom">Salle de classe :</label>
+            <input type="text" id="classroom" name="classroom" placeholder="Numéro de salle" />
+            <br>
+
+            <label for="day">Jour :</label>
+            <input type="date" id="day" name="day" required />
+            <br>
+
+            <label for="beginning">Heure de début :</label>
+            <input type="time" id="beginning" name="beginning" required />
+            <br>
+
+            <label for="end">Heure de fin :</label>
+            <input type="time" id="end" name="end" required />
+            <br>
+
+            <label for="category">Catégorie :</label>
+            <select name="category" id="category" required>
+                <option value="">Sélectionnez une catégorie</option>
+                <c:forEach var="category" items="${categories}">
+                    <option value="${category}">${category}</option>
+                </c:forEach>
+            </select>
+        <br>
         <button type="submit">Enregistrer</button>
     </form>
 </div>
