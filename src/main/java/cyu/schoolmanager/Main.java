@@ -126,7 +126,13 @@ public class Main {
 			// ClassCategory
 			ClassCategory classCategory = new ClassCategory();
 			classCategory.setName("TD");
+			classCategory.setColor("#4a4aff");
 			session3.merge(classCategory);
+
+			ClassCategory classCategory2 = new ClassCategory();
+			classCategory2.setName("CM");
+			classCategory2.setColor("#ff0000");
+			session3.merge(classCategory2);
 
 			// Classe
 			Classe classe = new Classe();
@@ -194,7 +200,7 @@ public class Main {
 			courseOccurence.setDay(monday.plusDays(3));
 			courseOccurence.setBeginning(LocalTime.of(14, 45));
 			courseOccurence.setEnd(LocalTime.of(16, 15));
-			courseOccurence.setCategory(classCategory);
+			courseOccurence.setCategory(classCategory2);
 			session3.merge(courseOccurence);
 
 			// Grade

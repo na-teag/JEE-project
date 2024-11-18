@@ -85,6 +85,7 @@ public class CourseManager {
 		courseDetails.put("room", courseOccurence.getClassroom());
 		courseDetails.put("professor", courseOccurence.getProfessor().getFirstName() + " " + courseOccurence.getProfessor().getLastName());
 		courseDetails.put("type", courseOccurence.getCategory().getName());
+		courseDetails.put("color", courseOccurence.getCategory().getColor());
 
 		String studentGroupsNames = "";
 		for (StudentGroup studentGroup : courseOccurence.getCourse().getStudentGroups()) {
