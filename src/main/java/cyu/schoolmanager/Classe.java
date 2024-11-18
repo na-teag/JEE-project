@@ -9,10 +9,6 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "classe")
 public class Classe extends StudentGroup {
 
-	@Column(name = "name", nullable = false)
-	@NotBlank(message = "Le nom de la classe ne peut pas être vide")
-	private String name;
-
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de la filière
 	@JoinColumn(name = "pathway_id", nullable = false)
 	@NotNull(message = "La flière ne peut pas être vide")
@@ -22,14 +18,6 @@ public class Classe extends StudentGroup {
 	@JoinColumn(name = "promo_id", nullable = false)
 	@NotNull(message = "La promotion ne peut pas être vide")
 	private Promo promo;
-
-
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public Pathway getPathway() {
 		return pathway;

@@ -24,6 +24,7 @@
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.professor}">
+                <li><a href="${pageContext.request.contextPath}/gradesManagement">Saisie des notes</a></li>
                 <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
             </c:when>
 

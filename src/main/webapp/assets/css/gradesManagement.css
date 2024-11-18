@@ -1,0 +1,148 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    width: 80%;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.alert {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #333;
+    font-size: 1rem;
+}
+
+select, input[type="number"], input[type="text"], button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+select:focus, input[type="number"]:focus, input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+form label, form select, form input, form button {
+    margin-bottom: 15px;
+}
+
+form select, form input {
+    font-size: 1rem;
+    padding: 10px;
+}
+
+select {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+select option {
+    padding: 10px;
+}
+
+input[type="text"], input[type="number"] {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+input[type="number"] {
+    width: 50%;
+    display: inline-block;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+.c-message {
+    margin-top: 20px;
+    font-size: 1rem;
+    text-align: center;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    form select, form input {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+}
