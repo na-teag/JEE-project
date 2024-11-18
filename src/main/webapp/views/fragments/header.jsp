@@ -20,14 +20,15 @@
         <c:choose>
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.student}">
                 <li><a href="${pageContext.request.contextPath}/grades">Notes</a></li>
+                <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.professor}">
-                <li><a href="${pageContext.request.contextPath}/">lien pour les prof</a></li>
+                <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
-                <li><a href="${pageContext.request.contextPath}/">lien pour les admin</a></li>
+                <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
             </c:when>
         </c:choose>
 

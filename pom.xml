@@ -71,11 +71,6 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>2.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.11.0</version>
-        </dependency>
 		<!-- Dépendance pour le générateur de pdf -->
 		<dependency>
 			<groupId>com.github.librepdf</groupId>

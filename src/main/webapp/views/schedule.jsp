@@ -8,8 +8,11 @@
 			<p style="color: red;">${errorMessage}</p>
 		</c:when>
 		<c:otherwise>
-			<label for="date-picker">Select a date:</label>
-			<input type="date" id="date-picker" onchange="handleDateChange()" />
+			<label for="date-picker">Séléctionnez une date:</label>
+			<input type="date" id="date-picker" /><br>
+			<label for="id-picker">Entrez un numéro (facultatif) :</label>
+			<input type="text" id="id-picker" /><br>
+			<input type="submit" onclick="handleDateChange()">
 			<div class="calendar">
 				<div class="timeline">
 					<div class="spacer"></div>
@@ -35,6 +38,8 @@
 					<div class="time-marker">12h30</div>
 					<div class="time-marker"></div>
 					<div class="time-marker">13h00</div>
+					<div class="time-marker"></div>
+					<div class="time-marker">13h30</div>
 					<div class="time-marker"></div>
 					<div class="time-marker">14h00</div>
 					<div class="time-marker"></div>
@@ -63,64 +68,54 @@
 					<div class="time-marker">20h00</div>
 				</div>
 				<div class="days">
-					<div class="day lun">
-						<div class="date">
-							<p class="date-day">Lun.</p>
-							<p class="date-num"></p>
-						</div>
-						<div class="events">
-							<div class="event start-08h00 end-08h45 securities" onclick="openPopup(this)">
-								<p class="title">Securities Regulation</p>
-								<p class="time">08h00 - 08h45</p>
-								<div class="hidden-info" style="display: none;">
-									<span class="data-room">Room 202</span>
-									<span class="data-professor">Dr. John Doe</span>
-									<span class="data-classes">Class A, Class B</span>
-								</div>
+					<c:forEach var="days" items="${sessionScope.days}">
+						<c:set var="dayName" value="${days.key}" />
+						<c:set var="dayNumero" value="${days.value}" />
+						<div class="day">
+							<div class="date">
+								<p class="date-day">
+									<c:choose>
+										<c:when test="${dayName == 'MONDAY'}">Lun.</c:when>
+										<c:when test="${dayName == 'TUESDAY'}">Mar.</c:when>
+										<c:when test="${dayName == 'WEDNESDAY'}">Mer.</c:when>
+										<c:when test="${dayName == 'THURSDAY'}">Jeu.</c:when>
+										<c:when test="${dayName == 'FRIDAY'}">Ven.</c:when>
+									</c:choose>
+								</p>
+								<p class="date-num">${dayNumero}</p>
+							</div>
+							<div class="events">
+								<c:forEach var="dayEntry" items="${sessionScope.schedule}">
+									<c:set var="dayName2" value="${dayEntry.key}" />
+									<c:set var="events" value="${dayEntry.value}" />
+									<c:if test="${dayName == dayName2}">
+										<c:forEach var="event" items="${events}">
+											<div class="event start-${event.startTime} end-${event.endTime}" onclick="openPopup(this)">
+												<p class="title">${event.title}</p>
+												<p class="time">${event.startTime} - ${event.endTime}</p>
+												<div class="hidden-info" style="display: none;">
+													<span class="data-room">${event.room}</span>
+													<span class="data-professor">${event.professor}</span>
+													<span class="data-type">${event.type}</span>
+													<span class="data-classes">${event.classes}</span>
+												</div>
+											</div>
+										</c:forEach>
+									</c:if>
+								</c:forEach>
 							</div>
 						</div>
-					</div>
-					<div class="day mar">
-						<div class="date">
-							<p class="date-day">Mar.</p>
-							<p class="date-num"></p>
-						</div>
-						<div class="events">
-						</div>
-					</div>
-					<div class="day mer">
-						<div class="date">
-							<p class="date-day">Mer.</p>
-							<p class="date-num"></p>
-						</div>
-						<div class="events">
-						</div>
-					</div>
-					<div class="day jeu">
-						<div class="date">
-							<p class="date-day">Jeu.</p>
-							<p class="date-num"></p>
-						</div>
-						<div class="events">
-						</div>
-					</div>
-					<div class="day ven">
-						<div class="date">
-							<p class="date-day">Ven.</p>
-							<p class="date-num"></p>
-						</div>
-						<div class="events">
-						</div>
-					</div>
+					</c:forEach>
 				</div>
 			</div>
 			<div class="popup" id="popup" onclick="closePopup(event)">
 				<div class="popup-content">
-					<h3 id="popup-title">Event Details</h3>
-					<p id="popup-details">Details will appear here...</p>
+					<h3 id="popup-title"></h3>
+					<p id="popup-details"></p>
 					<p id="popup-room"></p>
 					<p id="popup-professor"></p>
 					<p id="popup-classes"></p>
+					<p id="popup-type"></p>
 				</div>
 			</div>
 			<script src="${pageContext.request.contextPath}/assets/js/schedule.js"></script>

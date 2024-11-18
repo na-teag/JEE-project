@@ -1,8 +1,6 @@
 package cyu;
 
-import cyu.schoolmanager.Grade;
-import cyu.schoolmanager.HibernateUtil;
-import cyu.schoolmanager.Student;
+import cyu.schoolmanager.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +13,7 @@ import org.hibernate.query.Query;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GradesServlet", urlPatterns = {"/grades"})
+@WebServlet(name = "GradesServlet", urlPatterns = "/grades")
 public class GradesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,8 +28,10 @@ public class GradesServlet extends HttpServlet {
                 double average = getAverageForStudent(grades);
                 session.setAttribute("average", average);
             }
-            //List<Course> courses = student.getClasse().getCourses(); dispo dans
-            //session.setAttribute("courses", courses);
+
+            CourseManager courseManager = CourseManager.getInstance();
+            List<Course> courses = courseManager.getCourseOfStudent(student);
+            session.setAttribute("courses", courses);
             session.setAttribute("grades", grades);
             request.getRequestDispatcher("views/grades.jsp").forward(request, response);
         } else {

@@ -1,7 +1,6 @@
 package cyu;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfDocument;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -17,7 +16,6 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Phaser;
 
 @WebServlet(name = "PDFGeneratorServlet", urlPatterns = "/pdf")
 public class PDFGeneratorServlet extends HttpServlet {
@@ -40,7 +38,7 @@ public class PDFGeneratorServlet extends HttpServlet {
 
             // Création d'un document PDF avec OpenPDF
             Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+            PdfWriter.getInstance(document, response.getOutputStream());
             document.setMargins(10, 10, 36, 36);
 
             document.open();
