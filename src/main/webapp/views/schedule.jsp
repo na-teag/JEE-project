@@ -90,7 +90,7 @@
 									<c:set var="events" value="${dayEntry.value}" />
 									<c:if test="${dayName == dayName2}">
 										<c:forEach var="event" items="${events}">
-											<div class="event start-${event.startTime} end-${event.endTime}" onclick="openPopup(this)">
+											<div class="event start-${event.startTime} end-${event.endTime}" style="background-color: ${event.color};" onclick="openPopup(this)">
 												<p class="title">${event.title}</p>
 												<p class="time">${event.startTime} - ${event.endTime}</p>
 												<div class="hidden-info" style="display: none;">
