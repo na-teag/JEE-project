@@ -24,8 +24,8 @@ public class MailManager {
 
     private void sendEmailToGroup(String senderEmail, StudentGroup studentGroup, String object, String body) {
         PersonManager personManager = PersonManager.getInstance();
-        ClasseManager classeManager = ClasseManager.getInstance();
-        List<Classe> classeList = classeManager.getClassesByStudentGroup(studentGroup);
+        StudentGroupManager studentGroupManager = StudentGroupManager.getInstance();
+        List<Classe> classeList = studentGroupManager.getClassesByStudentGroup(studentGroup);
         List<Student> studentList = new ArrayList<>();
         for (Classe classe : classeList) {
             studentList.addAll(personManager.getStudentsFromClasse(classe));

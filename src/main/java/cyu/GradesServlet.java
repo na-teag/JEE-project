@@ -1,7 +1,7 @@
 package cyu;
 
 import cyu.schoolmanager.*;
-import cyu.schoolmanager.service.ClasseManager;
+import cyu.schoolmanager.service.StudentGroupManager;
 import cyu.schoolmanager.service.CourseManager;
 import cyu.schoolmanager.service.GradesManager;
 import cyu.schoolmanager.service.PersonManager;
@@ -23,7 +23,7 @@ public class GradesServlet extends HttpServlet {
         String action = request.getServletPath();
         CourseManager courseManager = CourseManager.getInstance();
         GradesManager gradesManager = GradesManager.getInstance();
-        ClasseManager classeManager = ClasseManager.getInstance();
+        StudentGroupManager studentGroupManager = StudentGroupManager.getInstance();
         PersonManager personManager = PersonManager.getInstance();
 
         if ("/grades".equals(action)) {
@@ -76,7 +76,7 @@ public class GradesServlet extends HttpServlet {
                     String classesParam = request.getParameter("classes");
                     if (classesParam != null && !classesParam.isEmpty()) {
                         // On pourrait récupérer les étudiants dans cette classe ici
-                        StudentGroup studentGroup = classeManager.getSelectedClasse(classesParam);
+                        StudentGroup studentGroup = studentGroupManager.getStudentGroupFromId(classesParam);
                         session.setAttribute("classes", studentGroup);
                         session.setAttribute("classesId", studentGroup.getId());
                         if (studentGroup instanceof Classe) {

@@ -1,0 +1,30 @@
+.featured-sections a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.featured-sections a:hover {
+	text-decoration: none;
+	color: #555;
+}
+
+.featured-sections {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 40px;
+}
+
+.featured-sections section {
+	background-color: white;
+	padding: 20px;
+	width: 30%;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.featured-sections section h3 {
+	color: #0073e6;
+	font-size: 22px;
+	margin-bottom: 10px;
+}
+

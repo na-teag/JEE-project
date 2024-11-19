@@ -1,22 +1,20 @@
 package cyu.schoolmanager.service;
 
-import cyu.schoolmanager.Classe;
-import cyu.schoolmanager.HibernateUtil;
-import cyu.schoolmanager.StudentGroup;
+import cyu.schoolmanager.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClasseManager {
-	private static ClasseManager instance;
+public class StudentGroupManager {
+	private static StudentGroupManager instance;
 
-	private ClasseManager() {}
+	private StudentGroupManager() {}
 
-	public static synchronized ClasseManager getInstance() {
+	public static synchronized StudentGroupManager getInstance() {
 		if (instance == null) {
-			instance = new ClasseManager();
+			instance = new StudentGroupManager();
 		}
 		return instance;
 	}
@@ -44,7 +42,52 @@ public class ClasseManager {
 		}
 	}
 
-	public StudentGroup getSelectedClasse(String id) {
+	public List<Classe> getListOfClasses() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Classe";
+			Query<Classe> query = session.createQuery(request, Classe.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Promo> getListOfPromos() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Promo";
+			Query<Promo> query = session.createQuery(request, Promo.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Pathway> getListOfPathways() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Pathway";
+			Query<Pathway> query = session.createQuery(request, Pathway.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public StudentGroup getStudentGroupFromId(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
