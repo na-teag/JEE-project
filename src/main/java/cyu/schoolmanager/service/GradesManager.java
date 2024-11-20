@@ -1,6 +1,10 @@
 package cyu.schoolmanager.service;
 
-import cyu.schoolmanager.*;
+import cyu.schoolmanager.Course;
+import cyu.schoolmanager.Grade;
+import cyu.schoolmanager.HibernateUtil;
+import cyu.schoolmanager.Student;
+import jakarta.persistence.NoResultException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -26,6 +30,7 @@ public class GradesManager{
     public String createGrade(Grade grade){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
+
         // Valider l'objet Grade
         Set<ConstraintViolation<Grade>> violations = validator.validate(grade);
 
@@ -35,75 +40,57 @@ public class GradesManager{
             for (ConstraintViolation<Grade> violation : violations) {
                 errorMessages.append(violation.getMessage()).append(" ");
             }
-            return errorMessages.toString();
+            return errorMessages.toString(); // Retourne les erreurs de validation
         }
 
         // Si la validation est réussie, procéder à l'enregistrement dans la base de données
-        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.merge(grade);
             session.getTransaction().commit();
+            session.close();
             return "La note a été enregistrée avec succès.";
         } catch (Exception e) {
-            e.printStackTrace();
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-            }
             return "Erreur lors de l'enregistrement de la note : " + e.getMessage();
-        } finally {
-            session.close();
         }
+
     }
 
-    public String updateGrade(Grade grade, String context, String comment, int gradeSession, double result){
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public String modifyGrade(Grade grade, String context, String comment, int session, double result) {
+        Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
+        hibernateSession.beginTransaction();
+
         try {
-            if (grade == null) {
-                throw new IllegalArgumentException("grade ne peut pas être null");
-            }
-            session.beginTransaction();
+            // Modifier les propriétés de l'objet Grade
             grade.setContext(context);
             grade.setComment(comment);
-            grade.setSession(gradeSession);
+            grade.setSession(session);
             grade.setResult(result);
-            session.update(grade);
-            session.getTransaction().commit();
+
+            // Mettre à jour l'objet Grade dans la base de données
+            hibernateSession.update(grade);
+
+            // Valider la transaction
+            hibernateSession.getTransaction().commit();
+            hibernateSession.close();
+            return "La note a été modifiée avec succès.";
         } catch (Exception e) {
-            e.printStackTrace();
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-            }
-            return e.getMessage();
-        } finally {
-            session.close();
+            return "Erreur lors de l'enregistrement de la note : " + e.getMessage();
         }
-        return null;
     }
 
-    public String deleteGrade(Grade grade) {
+    public void deleteGrade(Grade grade) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            if (grade == null) {
-                throw new IllegalArgumentException("grade ne peut pas être null");
-            }
-            session.beginTransaction();
-            String hql = "DELETE FROM Grade g WHERE g = :grade";
-            Query<?> query = session.createQuery(hql);
-            query.setParameter("grade", grade);
+        session.beginTransaction();
 
-            query.executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-            }
-            return e.getMessage();
-        } finally {
-            session.close();
-        }
-        return null;
+        String hql = "DELETE FROM Grade g WHERE g = :grade";
+        Query<?> query = session.createQuery(hql);
+        query.setParameter("grade", grade);
+
+        query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
     }
 
 
@@ -120,4 +107,33 @@ public class GradesManager{
         session.getTransaction().commit();
         return grades;
     }
+
+
+    //Méthode pour récupérer la note de l'étudiant pour un cours donné
+    public Grade getGradeForStudentAndForOneCourse(Student student, Course course){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Grade grade = null;
+
+        try {
+
+            // Requête HQL pour récupérer la note d'un étudiant pour un cours spécifique
+            String hql = "FROM Grade g JOIN FETCH g.course WHERE g.student = :student AND g.course = :course";
+            Query<Grade> query = session.createQuery(hql, Grade.class);
+            query.setParameter("student", student);
+            query.setParameter("course", course);
+
+            // Récupérer la note
+            grade = query.getSingleResult();
+
+            // Valider la transaction
+            session.getTransaction().commit();
+        } catch (NoResultException e) {
+            // Gérer le cas où aucune note n'est trouvée
+            System.out.println("Aucune note trouvée pour cet étudiant et ce cours.");
+        }
+        session.close();
+        return grade;
+    }
+
 }
