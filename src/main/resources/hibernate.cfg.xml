@@ -41,7 +41,6 @@
         <mapping class="cyu.schoolmanager.Pathway"/>
         <mapping class="cyu.schoolmanager.Person"/>
         <mapping class="cyu.schoolmanager.Professor"/>
-        <mapping class="cyu.schoolmanager.ProfessorStatus"/>
         <mapping class="cyu.schoolmanager.Promo"/>
         <mapping class="cyu.schoolmanager.Student"/>
         <mapping class="cyu.schoolmanager.StudentGroup"/>

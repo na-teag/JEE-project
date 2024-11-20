@@ -57,8 +57,8 @@ public class PersonManager {
 		String request = "FROM Student s WHERE id = :id";
 		Query<Student> query = session.createQuery(request, Student.class);
 		query.setParameter("id", id);
-
-		return (Student) query.getSingleResult();
+		session.close();
+		return query.getSingleResult();
 	}
 
 	public List<Student> getStudentsFromClasse(Classe classe) {
@@ -104,4 +104,6 @@ public class PersonManager {
 
 		return students;
 	}
+
+
 }

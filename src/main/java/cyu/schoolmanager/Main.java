@@ -59,11 +59,21 @@ public class Main {
 			promo.setEmail("ing2@cy-tech.fr");
 			session.merge(promo);
 
+			Promo promo2 = new Promo();
+			promo2.setName("ING1");
+			promo2.setEmail("ing1@cy-tech.fr");
+			session.merge(promo2);
+
 			// Pathway
 			Pathway pathway = new Pathway();
 			pathway.setName("GSI");
 			pathway.setEmail("gsi@cy-tech.fr");
 			session.merge(pathway);
+
+			Pathway pathway2 = new Pathway();
+			pathway2.setName("GI");
+			pathway2.setEmail("gi@cy-tech.fr");
+			session.merge(pathway2);
 
 			transaction.commit();
 			session.close();
@@ -88,11 +98,6 @@ public class Main {
 			subject2.setName("IA");
 			session2.merge(subject2);
 
-			// ProfessorStatus
-			ProfessorStatus professorStatus = new ProfessorStatus();
-			professorStatus.setStatus("titulaire");
-			session2.merge(professorStatus);
-
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
 			subjects.add(subject2);
@@ -106,7 +111,6 @@ public class Main {
 			professor.setUsername("prof");
 			professor.setFirstName("julien");
 			professor.setLastName("julien");
-			professor.setStatus(professorStatus);
 			professor.setTeachingSubjects(subjects);
 			session2.merge(professor);
 
