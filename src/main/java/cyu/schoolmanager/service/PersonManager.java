@@ -57,7 +57,7 @@ public class PersonManager {
 		String request = "FROM Student s WHERE id = :id";
 		Query<Student> query = session.createQuery(request, Student.class);
 		query.setParameter("id", id);
-
+		session.close();
 		return query.getSingleResult();
 	}
 

@@ -5,12 +5,13 @@
 <div class="main-content">
 	<c:choose>
 		<c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
-			<c:if test="${not empty sessionScope.errorMessage}">
-				<p style="color: red;">${sessionScope.errorMessage}</p>
+			<c:if test="${not empty errorMessage}">
+				<p style="color: red;">${errorMessage}</p>
 			</c:if>
 			<c:forEach var="classe" items="${sessionScope.classes}">
-				<div class="featured-sections" onclick="openPopup(this, false, '${classe.name}', '${classe.id}', '${classe.pathway.id}', '${classe.promo.id}')">
+				<div class="featured-sections" onclick="openPopup(this, false, '${classe.name}', '${classe.id}', '${classe.pathway.id}', '${classe.promo.id}', '${classe.email}')">
 					<h4>nom : ${classe.name}</h4>
+					<p>email : ${classe.email}</p>
 					<p>filière : ${classe.pathway.name}</p>
 					<p>promo : ${classe.promo.name}</p>
 				</div>
@@ -18,8 +19,10 @@
 			<div class="popup" id="popup" onclick="closePopup(event)">
 				<div class="popup-content">
 					<form action="${pageContext.request.contextPath}/classe" method="GET">
-						<label for="popup-title">Nom : </label>
-						<input type="text" id="popup-title" name="classeName" class="classeName" required>
+						<label for="classeName">Nom :
+						<input type="text" id="classeName" name="classeName" class="classeName" required></label><br>
+						<label for="email">Email :
+						<input type="email" id="email" name="email" class="email" required></label>
 						<input type="hidden" name="classeId" class="classeId" value="">
 						<p>Promo :</p>
 						<div id="promo-options">
@@ -42,7 +45,7 @@
 					</form>
 				</div>
 			</div>
-			<button onclick="openPopup(this, true, null, null, null, null)">Créer une classe</button>
+			<button onclick="openPopup(this, true, null, null, null, null, null)">Créer une classe</button>
 			<script src="${pageContext.request.contextPath}/assets/js/classes.js"></script>
 		</c:when>
 

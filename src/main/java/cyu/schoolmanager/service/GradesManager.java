@@ -1,8 +1,6 @@
 package cyu.schoolmanager.service;
 
-import cyu.schoolmanager.Grade;
-import cyu.schoolmanager.HibernateUtil;
-import cyu.schoolmanager.Student;
+import cyu.schoolmanager.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -28,7 +26,6 @@ public class GradesManager{
     public String createGrade(Grade grade){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-
         // Valider l'objet Grade
         Set<ConstraintViolation<Grade>> violations = validator.validate(grade);
 
@@ -38,41 +35,75 @@ public class GradesManager{
             for (ConstraintViolation<Grade> violation : violations) {
                 errorMessages.append(violation.getMessage()).append(" ");
             }
-            return errorMessages.toString(); // Retourne les erreurs de validation
+            return errorMessages.toString();
         }
 
         // Si la validation est réussie, procéder à l'enregistrement dans la base de données
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.merge(grade);
             session.getTransaction().commit();
-            session.close();
             return "La note a été enregistrée avec succès.";
         } catch (Exception e) {
+            e.printStackTrace();
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
             return "Erreur lors de l'enregistrement de la note : " + e.getMessage();
+        } finally {
+            session.close();
         }
-
     }
 
-    public void modifyGrade(Grade grade, String context, String comment, int session, double result){
-        grade.setContext(context);
-        grade.setComment(comment);
-        grade.setSession(session);
-        grade.setResult(result);
-    }
-
-    public void deleteGrade(Grade grade) {
+    public String updateGrade(Grade grade, String context, String comment, int gradeSession, double result){
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+        try {
+            if (grade == null) {
+                throw new IllegalArgumentException("grade ne peut pas être null");
+            }
+            session.beginTransaction();
+            grade.setContext(context);
+            grade.setComment(comment);
+            grade.setSession(gradeSession);
+            grade.setResult(result);
+            session.update(grade);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            return e.getMessage();
+        } finally {
+            session.close();
+        }
+        return null;
+    }
 
-        String hql = "DELETE FROM Grade g WHERE g = :grade";
-        Query<?> query = session.createQuery(hql);
-        query.setParameter("grade", grade);
+    public String deleteGrade(Grade grade) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            if (grade == null) {
+                throw new IllegalArgumentException("grade ne peut pas être null");
+            }
+            session.beginTransaction();
+            String hql = "DELETE FROM Grade g WHERE g = :grade";
+            Query<?> query = session.createQuery(hql);
+            query.setParameter("grade", grade);
 
-        query.executeUpdate();
-        session.getTransaction().commit();
-        session.close();
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            return e.getMessage();
+        } finally {
+            session.close();
+        }
+        return null;
     }
 
 

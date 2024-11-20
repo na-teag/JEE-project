@@ -1,7 +1,8 @@
-function openPopup(element, isNew, classeName, classeId, pathwayId, promoId) {
+function openPopup(element, isNew, classeName, classeId, pathwayId, promoId, email) {
 	if (isNew == false) {
 		document.querySelector('.classeName').value = classeName;
 		document.querySelector('.classeId').value = classeId;
+		document.querySelector('.email').value = email;
 		document.querySelector('button[name="action"][value="delete"]').style.display = 'inline-block';
 
 		// cocher la promo de la classe séléctionnée
@@ -17,8 +18,10 @@ function openPopup(element, isNew, classeName, classeId, pathwayId, promoId) {
 		});
 		window.isNew = false;
 	} else {
+		// put the parameters to empty values if it is the creation case
 		document.querySelector('.classeName').value = "";
 		document.querySelector('.classeId').value = "";
+		document.querySelector('.email').value = "";
 		document.querySelector('button[name="action"][value="delete"]').style.display = 'none';
 		window.isNew = true;
 	}
