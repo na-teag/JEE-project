@@ -83,6 +83,10 @@ select:focus, input[type="number"]:focus, input[type="text"]:focus {
     outline: none;
 }
 
+select:hover {
+    background-color: #dbedff;
+}
+
 button {
     background-color: #007bff;
     color: #fff;
@@ -110,10 +114,16 @@ select {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 select option {
     padding: 10px;
+}
+
+select option:hover {
+    background-color: #007bff;
+    color: white;
 }
 
 input[type="text"], input[type="number"] {
@@ -125,6 +135,10 @@ input[type="text"], input[type="number"] {
 input[type="text"]:focus, input[type="number"]:focus {
     border-color: #007bff;
     outline: none;
+}
+
+input[type="text"]:hover, input[type="number"]:hover {
+    background-color: #dbedff;
 }
 
 input[type="number"] {
