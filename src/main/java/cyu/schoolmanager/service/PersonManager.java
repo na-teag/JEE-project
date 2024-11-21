@@ -51,14 +51,16 @@ public class PersonManager {
 	}
 
 	public Student getStudentById(String id) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		String request = "FROM Student s WHERE id = :id";
-		Query<Student> query = session.createQuery(request, Student.class);
-		query.setParameter("id", id);
-		session.close();
-		return query.getSingleResult();
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			session.beginTransaction();
+			String request = "FROM Student s WHERE id = :id";
+			Query<Student> query = session.createQuery(request, Student.class);
+			query.setParameter("id", id);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public List<Student> getStudentsFromClasse(Classe classe) {

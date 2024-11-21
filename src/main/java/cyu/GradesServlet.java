@@ -179,7 +179,7 @@ public class GradesServlet extends HttpServlet {
                 try {
                     double result = Double.parseDouble(gradeParam);
                     Student selectedStudent = personManager.getStudentById(studentId);
-                    String message = "";
+                    String message;
 
                     if (session.getAttribute("selectedStudentGrade") == null) {
                         // Enregistrer la note pour l'étudiant sélectionné dans le cours et la classe
