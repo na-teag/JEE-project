@@ -12,8 +12,6 @@ function openPopup(element, isNew, name, id, pathwayId, promoId, email) {
 		// mettre le pathway de la classe sélectionnée
 		const pathwayDropdown = document.querySelector('select[name="pathwayId"]');
 		pathwayDropdown.value = pathwayId;
-
-		window.isNew = false;
 	} else {
 		document.querySelector('.name').value = "";
 		document.querySelector('.id').value = "";
@@ -21,7 +19,6 @@ function openPopup(element, isNew, name, id, pathwayId, promoId, email) {
 		document.querySelector('select[name="promoId"]').value = "";
 		document.querySelector('select[name="pathwayId"]').value = "";
 		document.querySelector('button[name="action"][value="delete"]').style.display = 'none';
-		window.isNew = true;
 	}
 	document.getElementById('popup').style.display = 'flex';
 }

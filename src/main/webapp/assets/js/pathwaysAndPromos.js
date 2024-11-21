@@ -1,14 +1,14 @@
-function openPopup(element, isNew, name, id) {
+function openPopup(element, isNew, name, id, email) {
 	if (!isNew) {
 		document.querySelector('.name').value = name;
 		document.querySelector('.id').value = id;
+		document.querySelector('.email').value = email;
 		document.querySelector('button[name="action"][value="delete"]').style.display = 'inline-block';
-		window.isNew = false;
 	} else {
 		document.querySelector('.name').value = "";
 		document.querySelector('.id').value = "";
+		document.querySelector('.email').value = "";
 		document.querySelector('button[name="action"][value="delete"]').style.display = 'none';
-		window.isNew = true;
 	}
 	document.getElementById('popup').style.display = 'flex';
 }

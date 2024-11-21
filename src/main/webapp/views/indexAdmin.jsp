@@ -17,6 +17,10 @@
 				<h3>Gérer les filières</h3>
 				<p>Éditez les filières</p>
 			</section></a>
+			<a href="${pageContext.request.contextPath}/promos"><section>
+				<h3>Gérer les promos</h3>
+				<p>Éditez les promos</p>
+			</section></a>
 		</div>
 	</c:when>
 	<c:otherwise>
