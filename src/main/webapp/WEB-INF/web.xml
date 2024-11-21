@@ -7,24 +7,28 @@
         <welcome-file>views/index.jsp</welcome-file>
     </welcome-file-list>
 
-	<!-- the mapping is done here in complement of the mapping annotation, as some of the servlets are not found with just the annotations -->
-	<servlet>
-		<servlet-name>GradesServlet</servlet-name>
-		<servlet-class>cyu.GradesServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>GradesServlet</servlet-name>
-		<url-pattern>/gradesManagement</url-pattern>
-		<url-pattern>/grades</url-pattern>
-	</servlet-mapping>
+	<!-- the mapping is done here in complement of the mapping annotation, as for unknown reason, some of the servlets are not found with just the annotations -->
+    <servlet>
+        <servlet-name>GradesServlet</servlet-name>
+        <servlet-class>cyu.GradesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GradesServlet</servlet-name>
+        <url-pattern>/gradesManagement</url-pattern>
+        <url-pattern>/grades</url-pattern>
+    </servlet-mapping>
 
-	<servlet>
-		<servlet-name>ClassesServlet</servlet-name>
-		<servlet-class>cyu.ClassesServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ClassesServlet</servlet-name>
-		<url-pattern>/classes</url-pattern>
-		<url-pattern>/classe</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>ClassesServlet</servlet-name>
+        <servlet-class>cyu.ClassesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClassesServlet</servlet-name>
+        <url-pattern>/classes</url-pattern>
+        <url-pattern>/classe</url-pattern>
+    </servlet-mapping>
+
+	<listener>
+		<listener-class>cyu.HibernateListener</listener-class>
+	</listener>
 </web-app>
