@@ -79,7 +79,6 @@ public class ClasseManager {
 			if (errors.isEmpty()) {
 				session.save(classe);
 				transaction.commit();
-				System.out.println("create confirmed : " + classe.getId());
 				return null;
 			}
 			String errorString = "";
@@ -107,7 +106,6 @@ public class ClasseManager {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("delete confirmed");
 		} catch (Exception e){
 			e.printStackTrace();
 			if (session.getTransaction() != null) {
@@ -136,7 +134,6 @@ public class ClasseManager {
 			if (errors.isEmpty()) {
 				session.update(classe);
 				transaction.commit();
-				System.out.println("update confirmed : " + classe.getId());
 				return null;
 			}
 			String errorString = "";

@@ -19,26 +19,28 @@
 			<div class="popup" id="popup" onclick="closePopup(event)">
 				<div class="popup-content">
 					<form action="${pageContext.request.contextPath}/classe" method="GET">
-						<label for="classeName">Nom :
-						<input type="text" id="classeName" name="classeName" class="classeName" required></label><br>
+						<label for="name">Nom :
+						<input type="text" id="name" name="name" class="name" required></label><br>
 						<label for="email">Email :
 						<input type="email" id="email" name="email" class="email" required></label>
-						<input type="hidden" name="classeId" class="classeId" value="">
+						<input type="hidden" name="id" class="id" value="">
 						<p>Promo :</p>
 						<div id="promo-options">
-							<c:forEach var="promo" items="${sessionScope.promos}">
-								<label>
-									<input type="radio" name="promoId" value="${promo.id}" required> ${promo.name}
-								</label><br>
-							</c:forEach>
+							<select name="promoId" required>
+								<option value="" disabled selected>Choisir une promo</option>
+								<c:forEach var="promo" items="${sessionScope.promos}">
+									<option value="${promo.id}">${promo.name}</option>
+								</c:forEach>
+							</select>
 						</div>
 						<p>Filière :</p>
 						<div id="pathway-options">
-							<c:forEach var="pathway" items="${sessionScope.pathways}">
-								<label>
-									<input type="radio" name="pathwayId" value="${pathway.id}" required> ${pathway.name}
-								</label><br>
-							</c:forEach>
+							<select name="pathwayId" required>
+								<option value="" disabled selected>Choisir une filière</option>
+								<c:forEach var="pathway" items="${sessionScope.pathways}">
+									<option value="${pathway.id}">${pathway.name}</option>
+								</c:forEach>
+							</select>
 						</div>
 						<button type="submit" name="action" value="save">Valider</button>
 						<button type="submit" name="action" value="delete" style="color: red;">Supprimer la classe</button>

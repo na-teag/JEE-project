@@ -13,12 +13,16 @@
 				<h3>Gérer les classes</h3>
 				<p>Éditez les classes, leurs promo et leurs filières</p>
 			</section></a>
+			<a href="${pageContext.request.contextPath}/pathways"><section>
+				<h3>Gérer les filières</h3>
+				<p>Éditez les filières</p>
+			</section></a>
 		</div>
 	</c:when>
 	<c:otherwise>
 		<h2>
 		<c:choose>
-			<c:when test="${not empty sessionScope.role}">
+			<c:when test="${empty sessionScope.role}">
 				Vous n'êtes pas autorisé à accéder à cette page.
 			</c:when>
 			<c:otherwise>
