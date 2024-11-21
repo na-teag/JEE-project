@@ -1,30 +1,43 @@
 .featured-sections a {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 40px;
+	flex-wrap: wrap;
+}
+
+.featured-sections a {
 	text-decoration: none;
 	color: inherit;
 }
 
 .featured-sections a:hover {
-	text-decoration: none;
-	color: #555;
-}
-
-.featured-sections {
-	display: flex;
-	justify-content: space-around;
-	margin-top: 40px;
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .featured-sections section {
 	background-color: white;
 	padding: 20px;
-	width: 30%;
+	width: 300px;
+	text-align: center;
 	border-radius: 5px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .featured-sections section h3 {
 	color: #0073e6;
 	font-size: 22px;
 	margin-bottom: 10px;
+	white-space: nowrap;
 }
 
+.featured-sections section p {
+	font-size: 16px;
+	line-height: 1.5;
+	white-space: normal;
+}

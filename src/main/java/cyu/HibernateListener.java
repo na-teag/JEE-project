@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebListener;
 
 @WebListener
 public class HibernateListener implements ServletContextListener {
+	// initiate session with hibernate immediately, to avoid delay during first request, as the login request
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) { // open hibernate session as soon as the user get on a page, to prevent delay during his first request
