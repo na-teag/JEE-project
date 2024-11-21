@@ -52,12 +52,13 @@ public class PathwayManager {
 		}
 	}
 
-	public String createPathway(String name){
+	public String createPathway(String name, String email){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			Transaction transaction = session.beginTransaction();
 			Pathway pathway = new Pathway();
 			pathway.setName(name);
+			pathway.setEmail(email);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Pathway>> errors = validator.validate(pathway);
 			if (errors.isEmpty()) {
@@ -81,12 +82,13 @@ public class PathwayManager {
 		}
 	}
 
-	public String updatePathwayById(String id, String name){
+	public String updatePathwayById(String id, String name, String email){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
 			Pathway pathway = getPathwayById(id);
 			pathway.setName(name);
+			pathway.setEmail(email);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Pathway>> errors = validator.validate(pathway);
 			if (errors.isEmpty()) {

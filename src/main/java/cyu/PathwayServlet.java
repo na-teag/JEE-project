@@ -25,29 +25,30 @@ public class PathwayServlet extends HttpServlet {
 				request.getRequestDispatcher("views/pathways.jsp").forward(request, response);
 			} else if ("/pathway".equals(path)) {
 				String action = request.getParameter("action");
-				String pathwayName = request.getParameter("name");
-				String pathwayId = request.getParameter("id");
+				String name = request.getParameter("name");
+				String email = request.getParameter("email");
+				String id = request.getParameter("id");
 
-				if (pathwayName != null) {
+				if (name != null && email != null) {
 					if ("save".equals(action)) {
-						if (pathwayId == null || pathwayId.isEmpty()) {
+						if (id == null || id.isEmpty()) {
 							// if there is no id, then it is a new object
-							String error = pathwayManager.createPathway(pathwayName);
+							String error = pathwayManager.createPathway(name, email);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
 							}
 						} else {
 							// if there is an id the object already exists
-							String error = pathwayManager.updatePathwayById(pathwayId, pathwayName);
+							String error = pathwayManager.updatePathwayById(id, name, email);
 							if (error != null && !error.isEmpty()) {
 								request.setAttribute("errorMessage", error);
 								System.out.println(error);
 							}
 						}
 						request.getRequestDispatcher("/pathways").forward(request, response);
-					} else if ("delete".equals(action) && pathwayId != null && !pathwayId.isEmpty()) {
-						String error = pathwayManager.deletePathwayById(pathwayId);
+					} else if ("delete".equals(action) && id != null && !id.isEmpty()) {
+						String error = pathwayManager.deletePathwayById(id);
 						if (error != null) {
 							request.setAttribute("errorMessage", error);
 						}
