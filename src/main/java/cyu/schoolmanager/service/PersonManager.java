@@ -50,6 +50,18 @@ public class PersonManager {
 		}
 	}
 
+	public List<Student> getAllStudents() {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			session.beginTransaction();
+			String request = "FROM Student";
+			Query<Student> query = session.createQuery(request, Student.class);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public Student getStudentById(String id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			session.beginTransaction();
@@ -107,6 +119,20 @@ public class PersonManager {
 		return students;
 	}
 
+	public List<Professor> getListOfProfessors() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Professor";
+			Query<Professor> query = session.createQuery(request, Professor.class);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
 	public Professor getProfessorById(String id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			session.beginTransaction();
@@ -120,18 +146,5 @@ public class PersonManager {
 		return null;
 	}
 
-	public List<Professor> getListOfProfessors() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			String request = "FROM Professor";
-			Query<Professor> query = session.createQuery(request, Professor.class);
 
-			return query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
-	}
 }
