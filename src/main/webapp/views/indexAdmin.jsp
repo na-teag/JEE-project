@@ -21,6 +21,10 @@
 				<h3>Gérer les promos</h3>
 				<p>Éditez les promos</p>
 			</section></a>
+			<a href="${pageContext.request.contextPath}/courses"><section>
+				<h3>Gérer les cours</h3>
+				<p>Éditez les cours, l'enseignant, les groupes et plus encore</p>
+			</section></a>
 		</div>
 	</c:when>
 	<c:otherwise>

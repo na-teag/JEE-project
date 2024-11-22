@@ -107,5 +107,31 @@ public class PersonManager {
 		return students;
 	}
 
+	public Professor getProfessorById(String id) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			session.beginTransaction();
+			String request = "FROM Professor s WHERE id = :id";
+			Query<Professor> query = session.createQuery(request, Professor.class);
+			query.setParameter("id", id);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	public List<Professor> getListOfProfessors() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Professor";
+			Query<Professor> query = session.createQuery(request, Professor.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }

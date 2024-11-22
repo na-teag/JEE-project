@@ -29,7 +29,7 @@ public class PromoServlet extends HttpServlet {
 				String email = request.getParameter("email");
 				String id = request.getParameter("id");
 
-				if (name != null) {
+				if (name != null && email != null) {
 					if ("save".equals(action)) {
 						if (id == null || id.isEmpty()) {
 							// if there is no id, then it is a new object

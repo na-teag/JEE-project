@@ -1,7 +1,11 @@
 package cyu.schoolmanager.service;
 
 import cyu.schoolmanager.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.time.LocalDate;
@@ -17,6 +21,159 @@ public class CourseManager {
 			instance = new CourseManager();
 		}
 		return instance;
+	}
+
+	public List<Course> getListOfCourses() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Course";
+			Query<Course> query = session.createQuery(request, Course.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public Course getCourseById(String id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM Course WHERE id = :id";
+			Query<Course> query = session.createQuery(request, Course.class);
+			query.setParameter("id", id);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public String createCourse(String professorId, String subjectId, String classroom, List<String> studentGroupsId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		PersonManager personManager = PersonManager.getInstance();
+		Professor professor = personManager.getProfessorById(professorId);
+		StudentGroupManager studentGroupManager = StudentGroupManager.getInstance();
+		SubjectManager subjectManager = SubjectManager.getInstance();
+		Subject subject = subjectManager.getSubjectById(subjectId);
+
+		// check that the StudentGroups exists
+		List<StudentGroup> studentGroups = new ArrayList<>();
+		StudentGroup studentGroup;
+		for (String studentGroupId : studentGroupsId) {
+			if (studentGroupId == null || studentGroupId.isEmpty()) {
+				return "student group does not exist";
+			}
+			studentGroup = studentGroupManager.getStudentGroupFromId(studentGroupId);
+			if (studentGroup == null) {
+				return "student group does not exist";
+			}
+			studentGroups.add(studentGroup);
+		}
+
+		try{
+			Transaction transaction = session.beginTransaction();
+
+			Course course = new Course();
+			course.setSubject(subject);
+			course.setClassroom(classroom);
+			course.setProfessor(professor);
+			course.setStudentGroups(studentGroups);
+			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+			Set<ConstraintViolation<Course>> errors = validator.validate(course);
+			if (errors.isEmpty()) {
+				session.save(course);
+				transaction.commit();
+				return null;
+			}
+			String errorString = "";
+			for (ConstraintViolation<Course> error : errors) {
+				errorString += error.getMessage() + "\n";
+			}
+			return errorString;
+		} catch (Exception e){
+			e.printStackTrace();
+			if (session.getTransaction() != null) {
+				session.getTransaction().rollback();
+			}
+			return e.getMessage();
+		} finally {
+			session.close();
+		}
+	}
+
+	public String updateCourseById(String id, String professorId, String subjectId, String classroom, List<String> studentGroupsId){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		PersonManager personManager = PersonManager.getInstance();
+		Professor professor = personManager.getProfessorById(professorId);
+		StudentGroupManager studentGroupManager = StudentGroupManager.getInstance();
+		SubjectManager subjectManager = SubjectManager.getInstance();
+		Subject subject = subjectManager.getSubjectById(subjectId);
+
+		// check that the StudentGroups exists
+		List<StudentGroup> studentGroups = new ArrayList<>();
+		StudentGroup studentGroup;
+		for (String studentGroupId : studentGroupsId) {
+			studentGroup = studentGroupManager.getStudentGroupFromId(studentGroupId);
+			if (studentGroup == null) {
+				return "student group does not exist";
+			}
+			studentGroups.add(studentGroup);
+		}
+
+		try {
+			Transaction transaction = session.beginTransaction();
+			Course course = getCourseById(id);
+			course.setProfessor(professor);
+			course.setClassroom(classroom);
+			course.setSubject(subject);
+			course.setStudentGroups(studentGroups);
+			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+			Set<ConstraintViolation<Course>> errors = validator.validate(course);
+			if (errors.isEmpty()) {
+				session.update(course);
+				transaction.commit();
+				return null;
+			}
+			String errorString = "";
+			for (ConstraintViolation<Course> error : errors) {
+				errorString += error.getMessage() + "\n";
+			}
+			return errorString;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session.getTransaction() != null) {
+				session.getTransaction().rollback();
+			}
+			return e.getMessage();
+		} finally {
+			session.close();
+		}
+	}
+
+	public String deleteCourseById(String id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try{
+			session.beginTransaction();
+			String hql = "DELETE FROM Course g WHERE id = :id";
+			Query<?> query = session.createQuery(hql);
+			query.setParameter("id", id);
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception e){
+			e.printStackTrace();
+			if (session.getTransaction() != null) {
+				session.getTransaction().rollback();
+			}
+			return e.getMessage();
+		} finally {
+			session.close();
+		}
+		return null;
 	}
 
 	public List<Course> getCoursesOfStudentGroup(StudentGroup studentGroup) {
