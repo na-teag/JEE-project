@@ -110,15 +110,6 @@ public class Main {
 			subject3.setName("Math");
 			session2.merge(subject3);
 
-			// ProfessorStatus
-			ProfessorStatus professorStatus = new ProfessorStatus();
-			professorStatus.setStatus("titulaire");
-			session2.merge(professorStatus);
-
-			ProfessorStatus professorStatus2 = new ProfessorStatus();
-			professorStatus2.setStatus("titulaire2");
-			session2.merge(professorStatus2);
-
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
 			subjects.add(subject2);
@@ -135,8 +126,6 @@ public class Main {
 			professor.setUsername("prof");
 			professor.setFirstName("julien");
 			professor.setLastName("julien");
-
-			professor.setStatus(professorStatus2);
 			professor.setTeachingSubjects(subjects);
 			session2.merge(professor);
 
@@ -195,10 +184,10 @@ public class Main {
 			course2.setClassroom("A664");
 			session3.merge(course2);
 
-			Classe classe = new Classe();
-			classe.setPathway(pathway);
-			classe.setPromo(promo);
-			classe.setEmail("ing2-gsi2@cy-tech.fr");
+			Classe classe2 = new Classe();
+			classe2.setPathway(pathway);
+			classe2.setPromo(promo);
+			classe2.setEmail("ing2-gsi2@cy-tech.fr");
 			session3.merge(classe);
 
 			//Student
@@ -284,9 +273,7 @@ public class Main {
 			}catch (IllegalAccessException e){
 				System.out.println("Identifiant ou mot de passe incorrecte");
 			}
-
-
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (transaction != null) transaction.rollback();
