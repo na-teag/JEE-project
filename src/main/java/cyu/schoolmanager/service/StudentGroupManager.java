@@ -4,6 +4,8 @@ import cyu.schoolmanager.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import java.util.List;
+
 public class StudentGroupManager {
 	private static StudentGroupManager instance;
 
@@ -32,5 +34,20 @@ public class StudentGroupManager {
 		// Commit de la transaction et fermeture de la session
 		session.getTransaction().commit();
 		return classe;
+	}
+
+	public List<StudentGroup> getListOfStudentGroups() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			String request = "FROM StudentGroup";
+			Query<StudentGroup> query = session.createQuery(request, StudentGroup.class);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
 	}
 }

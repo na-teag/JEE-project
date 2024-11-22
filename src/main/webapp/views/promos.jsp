@@ -8,10 +8,10 @@
 			<c:if test="${not empty errorMessage}">
 				<p style="color: red;">${errorMessage}</p>
 			</c:if>
-			<c:forEach var="pathway" items="${sessionScope.promos}">
-				<div class="featured-sections" onclick="openPopup(this, false, '${pathway.name}', '${pathway.id}', '${pathway.email}')">
-					<h4>nom : ${pathway.name}</h4>
-					<p>email : ${pathway.email}</p>
+			<c:forEach var="promo" items="${sessionScope.promos}">
+				<div class="featured-sections" onclick="openPopup(this, false, '${promo.name}', '${promo.id}', '${promo.email}')">
+					<h4>nom : ${promo.name}</h4>
+					<p>email : ${promo.email}</p>
 				</div>
 			</c:forEach>
 			<div class="popup" id="popup" onclick="closePopup(event)">
