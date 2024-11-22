@@ -1,6 +1,13 @@
 package cyu;
 
-import cyu.schoolmanager.*;
+import cyu.schoolmanager.Course;
+import cyu.schoolmanager.CourseOccurence;
+import cyu.schoolmanager.ClassCategory;
+import cyu.schoolmanager.Student;
+import cyu.schoolmanager.StudentGroup;
+import cyu.schoolmanager.Subject;
+import cyu.schoolmanager.Professor;
+import cyu.schoolmanager.HibernateUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,8 +20,9 @@ import org.hibernate.query.Query;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "scheduleAdmin", urlPatterns = {"/scheduleAdmin"})
 public class ScheduleAdminServlet extends HttpServlet {
@@ -24,118 +32,126 @@ public class ScheduleAdminServlet extends HttpServlet {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
-            // Récupérer les données nécessaires
-            List<String> eleves = session.createQuery("SELECT CONCAT(firstName, ' ', lastName) FROM Student", String.class).getResultList();
-            List<String> professeurs = session.createQuery("SELECT CONCAT(firstName, ' ', lastName) FROM Professor", String.class).getResultList();
-            List<String> groupes = session.createQuery("SELECT name FROM StudentGroup", String.class).getResultList();
-            List<String> cours = session.createQuery("SELECT name FROM Subject", String.class).getResultList();
-            List<String> categories = session.createQuery("SELECT name FROM ClassCategory", String.class).getResultList();
+            List<Student> eleves = session.createQuery("FROM Student", Student.class).getResultList();
+            List<Professor> professeurs = session.createQuery("FROM Professor", Professor.class).getResultList();
+            List<StudentGroup> groupes = session.createQuery("FROM StudentGroup", StudentGroup.class).getResultList();
+            //List<Subject> cours = session.createQuery("FROM Subject", Subject.class).getResultList();
+            List<ClassCategory> categories = session.createQuery("FROM ClassCategory", ClassCategory.class).getResultList();
 
-            // Ajouter les données comme attributs
+            Map<Long, List<Subject>> professeurSubjectsMap = new HashMap<>();
+            for (Professor professeur : professeurs) {
+                professeurSubjectsMap.put(professeur.getId(), professeur.getTeachingSubjects());
+            }
+
             request.setAttribute("eleves", eleves);
             request.setAttribute("professeurs", professeurs);
             request.setAttribute("groupes", groupes);
-            request.setAttribute("cours", cours);
+            //request.setAttribute("cours", cours);
             request.setAttribute("categories", categories);
+            request.setAttribute("professeurSubjectsMap", professeurSubjectsMap);
 
             tx.commit();
         }
-
-        // Afficher la vue JSP
         request.getRequestDispatcher("views/admin-schedule.jsp").forward(request, response);
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String classroom = request.getParameter("classroom");
-        String dayStr = request.getParameter("day");
-        String beginningStr = request.getParameter("beginning");
-        String endStr = request.getParameter("end");
-        String categoryName = request.getParameter("category");
-        String[] assignments = request.getParameterValues("assignments");
+            String dayStr = request.getParameter("day");
+            String beginningStr = request.getParameter("beginning");
+            String endStr = request.getParameter("end");
+            String categoryIdStr = request.getParameter("category");
+            String[] assignments = request.getParameterValues("assignments");
 
-        if (classroom == null || dayStr == null || beginningStr == null || endStr == null || categoryName == null || assignments == null) {
-            throw new IllegalArgumentException("Tous les champs obligatoires doivent être remplis.");
-        }
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+                Transaction transaction = session.beginTransaction();
 
-            try {
-                LocalDate day = LocalDate.parse(dayStr);
-                LocalTime beginning = LocalTime.parse(beginningStr);
-                LocalTime end = LocalTime.parse(endStr);
+                try {
+                    if (classroom == null || dayStr == null || beginningStr == null || endStr == null || categoryIdStr == null || assignments == null) {
+                        throw new IllegalArgumentException("Tous les champs obligatoires doivent être remplis.");
+                    }
 
-                // Récupérer la catégorie
-                ClassCategory category = session.createQuery("FROM ClassCategory WHERE name = :name", ClassCategory.class)
-                        .setParameter("name", categoryName)
-                        .uniqueResult();
-                if (category == null) {
-                    throw new IllegalArgumentException("Catégorie invalide.");
-                }
+                    LocalDate day = LocalDate.parse(dayStr);
+                    LocalTime beginning = LocalTime.parse(beginningStr);
+                    LocalTime end = LocalTime.parse(endStr);
 
-                // Traiter les assignations
-                for (String assignment : assignments) {
-                    // Parser la chaîne d'assignation (eleve, professeur, cours)
-                    String[] parts = assignment.split(",");
-                    String eleve = null;
-                    String groupe = null;
-                    String professeur = null;
-                    String cours = null;
+                    ClassCategory category = session.get(ClassCategory.class, Long.parseLong(categoryIdStr));
+                    if (category == null) {
+                        throw new IllegalArgumentException("Catégorie invalide.");
+                    }
 
-                    for (String part : parts) {
-                        if (part.startsWith("eleve:")) {
-                            eleve = part.split(":")[1];
-                        } else if (part.startsWith("groupe:")) {
-                            groupe = part.split(":")[1];
-                        } else if (part.startsWith("professeur:")) {
-                            professeur = part.split(":")[1];
-                        } else if (part.startsWith("cours:")) {
-                            cours = part.split(":")[1];
+                    for (String assignment : assignments) {
+                        if (!assignment.isEmpty()) {
+                            String[] parts = assignment.split(",");
+                            Long eleveId = null, groupeId = null, professeurId = null, coursId = null;
+
+                            for (String part : parts) {
+                                String[] keyValue = part.split(":");
+                                switch (keyValue[0]) {
+                                    case "eleve":
+                                        eleveId = Long.parseLong(keyValue[1]);
+                                        break;
+                                    case "groupe":
+                                        groupeId = Long.parseLong(keyValue[1]);
+                                        break;
+                                    case "professeur":
+                                        professeurId = Long.parseLong(keyValue[1]);
+                                        break;
+                                    case "cours":
+                                        coursId = Long.parseLong(keyValue[1]);
+                                        break;
+                                }
+                            }
+
+                            Professor professeur = session.get(Professor.class, professeurId);
+                            Subject cours = session.get(Subject.class, coursId);
+
+                            if (professeur == null || cours == null) {
+                                throw new IllegalArgumentException("Professeur ou cours invalide.");
+                            }
+
+                            String hql = "FROM Course WHERE professor.id = :professorId AND subject.id = :subjectId AND classroom = :classroom";
+                            Query<Course> query = session.createQuery(hql, Course.class);
+                            query.setParameter("professorId", professeurId);
+                            query.setParameter("subjectId", coursId);
+                            query.setParameter("classroom", classroom);
+
+                            Course existingCourse = query.uniqueResult();
+                            if (existingCourse == null) {
+                                Course course;
+                                course = new Course();
+                                course.setProfessor(professeur);
+                                course.setSubject(cours);
+                                course.setClassroom(classroom);
+                                existingCourse = course;
+
+                                session.persist(course);
+                            } else {
+                                Course course = existingCourse;
+                            }
+
+                            CourseOccurence occurence = new CourseOccurence();
+                            occurence.setCourse(existingCourse);
+                            occurence.setClassroom(classroom);
+                            occurence.setDay(day);
+                            occurence.setBeginning(beginning);
+                            occurence.setEnd(end);
+                            occurence.setProfessor(professeur);
+                            occurence.setCategory(category);
+
+                            session.persist(occurence);
                         }
                     }
+                    transaction.commit();
+                    request.getSession().setAttribute("confirmationMessage", "Le cours a été ajouté avec succès !");
+                    response.sendRedirect("scheduleAdmin.jsp");
 
-                    if (cours == null || professeur == null) {
-                        throw new IllegalArgumentException("Données d'assignation invalides.");
-                    }
 
-                    Subject subject = new Subject();
-                    subject.setName(cours);
-                    // Créer le cours
-                    Course course = new Course();
-                    course.setSubject(subject);
-                    course.setClassroom(classroom);
-                    if (groupe != null) {
-                        List<StudentGroup> studentGroups = new ArrayList<>();
-                        course.setStudentGroups(studentGroups);
-                    }
-
-                    Professor prof = new Professor();
-                    course.setProfessor(professeur);
-                    session.merge(course);
-
-                    // Créer l'occurrence du cours
-                    CourseOccurence occurence = new CourseOccurence();
-                    occurence.setCourse(course);
-                    occurence.setClassroom(classroom);
-                    occurence.setProfessor(professeur);
-                    occurence.setDay(day);
-                    occurence.setBeginning(beginning);
-                    occurence.setEnd(end);
-                    occurence.setCategory(category);
-
-                    // Sauvegarder l'occurrence
-                    session.merge(occurence);
+                } catch (Exception e) {
+                    transaction.rollback();
+                    e.printStackTrace();
+                    throw e;
                 }
-
-                transaction.commit();
-            } catch (Exception e) {
-                transaction.rollback();
-                throw e;
             }
-        }
-
-        // Rediriger vers la page d'administration
-        response.sendRedirect("scheduleAdmin");
     }
+
 }
