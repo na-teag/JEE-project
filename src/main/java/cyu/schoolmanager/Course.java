@@ -20,7 +20,7 @@ public class Course extends Model {
 	)
 	private List<StudentGroup> studentGroups;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du sujet
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression du sujet
 	@JoinColumn(name = "subject_id", nullable = false)
 	@NotNull(message = "Le sujet ne peut pas être vide")
 	private Subject subject;
