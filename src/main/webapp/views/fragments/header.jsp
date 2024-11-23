@@ -18,12 +18,6 @@
         <li><a href="${pageContext.request.contextPath}/views/Contact.jsp">Contacts</a></li>
 
         <c:choose>
-            <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
-                <li><a href="${pageContext.request.contextPath}/views/user_management.jsp">Gestion des utilisateurs</a></li>
-            </c:when>
-        </c:choose>
-
-        <c:choose>
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.student}">
                 <li><a href="${pageContext.request.contextPath}/grades">Notes</a></li>
                 <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>

@@ -22,7 +22,7 @@ public class ClassCategoryManager {
         return instance;
     }
 
-    public List<ClassCategory> getListOfPathways() {
+    public List<ClassCategory> getListOfClassCategories() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             String request = "FROM ClassCategory ";
