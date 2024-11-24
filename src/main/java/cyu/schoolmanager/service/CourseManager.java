@@ -159,6 +159,14 @@ public class CourseManager {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
+			Course course = getCourseById(id);
+			if (course != null) {
+				String hql = "DELETE FROM Grade g WHERE course = :course";
+				Query<?> query = session.createQuery(hql);
+				query.setParameter("course", course);
+				query.executeUpdate();
+			}
+
 			String hql = "DELETE FROM Course g WHERE id = :id";
 			Query<?> query = session.createQuery(hql);
 			query.setParameter("id", id);

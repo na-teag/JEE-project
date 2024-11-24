@@ -228,7 +228,11 @@ public class PersonManager {
 
 			Professor professor = getProfessorById(id);
 			if (professor != null){
-				// supprimer les occurences de cours associées s'il y en a
+				CourseManager courseManager = CourseManager.getInstance();
+				if (!courseManager.getCoursesOfProfessor(professor).isEmpty()){
+					return "il y a des cours donnés par le professeur " + professor.getFirstName() + " " + professor.getLastName() + " d'enregistrés, veuillez les associer à un autre professeur ou les supprimer auparavant";
+				}
+				// supprimer les occurences isolées de cours associées s'il y en a
 				String hql = "DELETE FROM CourseOccurence c WHERE professor = :professor";
 				Query<?> query = session.createQuery(hql);
 				query.setParameter("professor", professor);
