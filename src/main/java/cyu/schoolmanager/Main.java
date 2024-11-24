@@ -172,13 +172,13 @@ public class Main {
 			//Student
 			Student student = new Student();
 			student.setPersonNumber();
-			student.setClasse(classe);
 			student.setAddress(address3);
 			student.setLastName("guillaume");
 			student.setFirstName("guillaume");
 			student.setEmail("guillaume@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
+			student.setClasse(classe);
 			session3.merge(student);
 
 			LocalDate date = LocalDate.now();

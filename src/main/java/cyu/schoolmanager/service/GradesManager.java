@@ -50,6 +50,8 @@ public class GradesManager{
             session.merge(grade);
             session.getTransaction().commit();
             session.close();
+            MailManager mailManager = MailManager.getInstance();
+            mailManager.sendEmail("do.not.reply@cytech.fr", grade.getStudent(), "Nouvelle note diponible", "Bonjour, Vous recevez cet email car une nouvelle note concernant la matière " + grade.getCourse().getSubject().getName() + ".\nConsultez votre note sur l'ENT.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
             return "La note a été enregistrée avec succès.";
         } catch (Exception e) {
             return "Erreur lors de l'enregistrement de la note : " + e.getMessage();
