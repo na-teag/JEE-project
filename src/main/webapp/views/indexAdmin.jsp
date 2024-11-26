@@ -21,6 +21,13 @@
 				<h3>Gérer les promos</h3>
 				<p>Éditez les promos</p>
 			</section></a>
+			<a href="${pageContext.request.contextPath}/scheduleAdmin"><section>
+				<h3>Ajouter un cours</h3>
+				<p>Ajouter un cours</p>
+			</section></a>
+			<a href="${pageContext.request.contextPath}/admindeletecours"><section>
+				<h3>Supprimer un cours</h3>
+				<p>Supprimer un cours</p>
 			<a href="${pageContext.request.contextPath}/classCategories"><section>
 				<h3>Gérer les types de cours</h3>
 				<p>Éditez les types de cours</p>

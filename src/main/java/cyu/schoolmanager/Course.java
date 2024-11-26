@@ -68,7 +68,6 @@ public class Course extends Model {
 	public String getClassroom(){return this.classroom;}
 	public void setClassroom(String classroom){this.classroom=classroom;}
 
-
 	public List<StudentGroup> getStudentGroups() {
 		return studentGroups;
 	}

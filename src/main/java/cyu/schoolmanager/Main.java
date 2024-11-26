@@ -90,6 +90,14 @@ public class Main {
 			address2.setCountry("France");
 			session2.merge(address2);
 
+			Address address4 = new Address();
+			address4.setNumber("2");
+			address4.setStreet("rue Lemauvais");
+			address4.setCity("Le Vésinet");
+			address4.setPostalCode(78110);
+			address4.setCountry("France");
+			session2.merge(address4);
+
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
@@ -99,9 +107,16 @@ public class Main {
 			subject2.setName("IA");
 			session2.merge(subject2);
 
+			Subject subject3 = new Subject();
+			subject3.setName("Math");
+			session2.merge(subject3);
+
 			List<Subject> subjects = new ArrayList<>();
 			subjects.add(subject);
 			subjects.add(subject2);
+
+			List<Subject> subjects1 = new ArrayList<>();
+			subjects1.add(subject3);
 
 			// Professor
 			Professor professor = new Professor();
@@ -115,6 +130,7 @@ public class Main {
 			professor.setBirthday(LocalDate.of(2000,1,1));
 			professor.setTeachingSubjects(subjects);
 			session2.merge(professor);
+
 
 			transaction2.commit();
 			session2.close();
@@ -170,6 +186,11 @@ public class Main {
 			course2.setClassroom("A664");
 			session3.merge(course2);
 
+			Classe classe2 = new Classe();
+			classe2.setPathway(pathway);
+			classe2.setPromo(promo);
+			classe2.setEmail("ing2-gsi2@cy-tech.fr");
+			session3.merge(classe);
 
 			//Student
 			Student student = new Student();
@@ -255,8 +276,6 @@ public class Main {
 			}catch (IllegalAccessException e){
 				System.out.println("Identifiant ou mot de passe incorrecte");
 			}
-
-
 
 		} catch (Exception e) {
 			e.printStackTrace();
