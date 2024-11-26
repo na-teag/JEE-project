@@ -62,96 +62,116 @@ public class ScheduleAdminServlet extends HttpServlet {
             String[] assignments = request.getParameterValues("assignments");
 
 
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction transaction = session.beginTransaction();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
 
-                try {
-                    if (classroom == null || dayStr == null || beginningStr == null || endStr == null || categoryIdStr == null || assignments == null) {
-                        throw new IllegalArgumentException("Tous les champs obligatoires doivent être remplis.");
-                    }
-
-                    LocalDate day = LocalDate.parse(dayStr);
-                    LocalTime beginning = LocalTime.parse(beginningStr);
-                    LocalTime end = LocalTime.parse(endStr);
-
-                    ClassCategory category = session.get(ClassCategory.class, Long.parseLong(categoryIdStr));
-                    if (category == null) {
-                        throw new IllegalArgumentException("Catégorie invalide.");
-                    }
-
-                    for (String assignment : assignments) {
-                        if (!assignment.isEmpty()) {
-                            String[] parts = assignment.split(",");
-                            Long eleveId = null, groupeId = null, professeurId = null, coursId = null;
-
-                            for (String part : parts) {
-                                String[] keyValue = part.split(":");
-                                switch (keyValue[0]) {
-                                    case "eleve":
-                                        eleveId = Long.parseLong(keyValue[1]);
-                                        break;
-                                    case "groupe":
-                                        groupeId = Long.parseLong(keyValue[1]);
-                                        break;
-                                    case "professeur":
-                                        professeurId = Long.parseLong(keyValue[1]);
-                                        break;
-                                    case "cours":
-                                        coursId = Long.parseLong(keyValue[1]);
-                                        break;
-                                }
-                            }
-
-                            Professor professeur = session.get(Professor.class, professeurId);
-                            Subject cours = session.get(Subject.class, coursId);
-
-                            if (professeur == null || cours == null) {
-                                throw new IllegalArgumentException("Professeur ou cours invalide.");
-                            }
-
-                            String hql = "FROM Course WHERE professor.id = :professorId AND subject.id = :subjectId AND classroom = :classroom";
-                            Query<Course> query = session.createQuery(hql, Course.class);
-                            query.setParameter("professorId", professeurId);
-                            query.setParameter("subjectId", coursId);
-                            query.setParameter("classroom", classroom);
-
-                            Course existingCourse = query.uniqueResult();
-                            if (existingCourse == null) {
-                                Course course;
-                                course = new Course();
-                                course.setProfessor(professeur);
-                                course.setSubject(cours);
-                                course.setClassroom(classroom);
-                                existingCourse = course;
-
-                                session.persist(course);
-                            } else {
-                                Course course = existingCourse;
-                            }
-
-                            CourseOccurence occurence = new CourseOccurence();
-                            occurence.setCourse(existingCourse);
-                            occurence.setClassroom(classroom);
-                            occurence.setDay(day);
-                            occurence.setBeginning(beginning);
-                            occurence.setEnd(end);
-                            occurence.setProfessor(professeur);
-                            occurence.setCategory(category);
-
-                            session.persist(occurence);
-                        }
-                    }
-                    transaction.commit();
-                    request.getSession().setAttribute("confirmationMessage", "Le cours a été ajouté avec succès !");
-                    response.sendRedirect("scheduleAdmin.jsp");
-
-
-                } catch (Exception e) {
-                    transaction.rollback();
-                    e.printStackTrace();
-                    throw e;
+            try {
+                // Validation des champs requis
+                if (classroom == null || dayStr == null || beginningStr == null || endStr == null || categoryIdStr == null || assignments == null) {
+                    throw new IllegalArgumentException("Tous les champs obligatoires doivent être remplis.");
                 }
+
+                LocalDate day = LocalDate.parse(dayStr);
+                LocalTime beginning = LocalTime.parse(beginningStr);
+                LocalTime end = LocalTime.parse(endStr);
+
+                // 1. Vérification que le jour n'est pas un samedi ou un dimanche
+                if (day.getDayOfWeek().getValue() == 6 || day.getDayOfWeek().getValue() == 7) {
+                    throw new IllegalArgumentException("Les cours ne peuvent pas être planifiés un samedi ou un dimanche.");
+                }
+
+                // 2. Vérification des horaires
+                if (beginning.isBefore(LocalTime.of(8, 0)) || end.isAfter(LocalTime.of(20, 0))) {
+                    throw new IllegalArgumentException("Les cours doivent se dérouler entre 08h00 et 20h00.");
+                }
+
+                // Vérification que les horaires sont divisibles par 15 minutes
+                if (beginning.getMinute() % 15 != 0 || end.getMinute() % 15 != 0) {
+                    throw new IllegalArgumentException("Les horaires doivent être arrondis à des intervalles de 15 minutes.");
+                }
+
+                // Vérification que l'heure de début est avant l'heure de fin
+                if (!beginning.isBefore(end)) {
+                    throw new IllegalArgumentException("L'heure de début doit être avant l'heure de fin.");
+                }
+
+                // 3. Récupération des autres entités nécessaires
+                ClassCategory category = session.get(ClassCategory.class, Long.parseLong(categoryIdStr));
+                if (category == null) {
+                    throw new IllegalArgumentException("Catégorie invalide.");
+                }
+
+                for (String assignment : assignments) {
+                    if (!assignment.isEmpty()) {
+                        String[] parts = assignment.split(",");
+                        Long eleveId = null, groupeId = null, professeurId = null, coursId = null;
+
+                        for (String part : parts) {
+                            String[] keyValue = part.split(":");
+                            switch (keyValue[0]) {
+                                case "eleve":
+                                    eleveId = Long.parseLong(keyValue[1]);
+                                    break;
+                                case "groupe":
+                                    groupeId = Long.parseLong(keyValue[1]);
+                                    break;
+                                case "professeur":
+                                    professeurId = Long.parseLong(keyValue[1]);
+                                    break;
+                                case "cours":
+                                    coursId = Long.parseLong(keyValue[1]);
+                                    break;
+                            }
+                        }
+
+                        // Vérification que le professeur et le cours sont valides
+                        Professor professeur = session.get(Professor.class, professeurId);
+                        Subject cours = session.get(Subject.class, coursId);
+
+                        if (professeur == null || cours == null) {
+                            throw new IllegalArgumentException("Professeur ou cours invalide.");
+                        }
+
+                        // 4. Création ou récupération du cours
+                        String hql = "FROM Course WHERE professor.id = :professorId AND subject.id = :subjectId AND classroom = :classroom";
+                        Query<Course> query = session.createQuery(hql, Course.class);
+                        query.setParameter("professorId", professeurId);
+                        query.setParameter("subjectId", coursId);
+                        query.setParameter("classroom", classroom);
+
+                        Course existingCourse = query.uniqueResult();
+                        if (existingCourse == null) {
+                            Course course = new Course();
+                            course.setProfessor(professeur);
+                            course.setSubject(cours);
+                            course.setClassroom(classroom);
+                            session.persist(course);
+                            existingCourse = course;
+                        }
+
+                        // 5. Ajout d'une occurrence du cours
+                        CourseOccurence occurence = new CourseOccurence();
+                        occurence.setCourse(existingCourse);
+                        occurence.setClassroom(classroom);
+                        occurence.setDay(day);
+                        occurence.setBeginning(beginning);
+                        occurence.setEnd(end);
+                        occurence.setProfessor(professeur);
+                        occurence.setCategory(category);
+
+                        session.persist(occurence);
+                    }
+                }
+                transaction.commit();
+                response.sendRedirect("scheduleAdmin.jsp");
+
+            } catch (Exception e) {
+                transaction.rollback();
+                e.printStackTrace();
+                response.sendRedirect("scheduleAdmin.jsp");
             }
+        }
+
     }
 
 }

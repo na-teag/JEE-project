@@ -1,19 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ include file="fragments/header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-schedule.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/coursAdd.css">
 
 <div class="scheduleAdmin">
-    <%
-        String confirmationMessage = (String) session.getAttribute("confirmationMessage");
-        if (confirmationMessage != null) {
-    %>
-    <div class="alert alert-success">
-        <%= confirmationMessage %>
-    </div>
-    <%
-        }
-    %>
 
+    <!-- Formulaire principal -->
     <form action="${pageContext.request.contextPath}/scheduleAdmin" method="get">
         <!-- Tableau principal -->
         <table>
@@ -43,7 +35,6 @@
                     </c:forEach>
                 </tr>
             </c:forEach>
-
 
             <c:forEach var="groupe" items="${groupes}">
                 <tr>
