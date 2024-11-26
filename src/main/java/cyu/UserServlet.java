@@ -156,6 +156,9 @@ public class UserServlet extends HttpServlet {
 						String error = personManager.deletePersonById(id);
 						if (error != null) {
 							request.setAttribute("errorMessage", error);
+						} else if (String.valueOf(((Admin)session.getAttribute("user")).getId()).equals(id)) {
+							request.getRequestDispatcher("/logout").forward(request, response);
+							return;
 						}
 						request.getRequestDispatcher("/users").forward(request, response);
 						return;
