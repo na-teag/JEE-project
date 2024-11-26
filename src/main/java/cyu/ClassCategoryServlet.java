@@ -19,10 +19,11 @@ public class ClassCategoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String path = request.getServletPath();
         ClassCategoryManager classCategoryManager = ClassCategoryManager.getInstance();
+        PathwayManager pathwayManager = PathwayManager.getInstance();
 
         if (session.getAttribute("user") != null && Admin.class.getName().equals(session.getAttribute("role"))){
             if ("/classCategories".equals(path)) {
-                session.setAttribute("classCategories", classCategoryManager.getListOfPathways());
+                session.setAttribute("classCategories", pathwayManager.getListOfPathways());
                 request.getRequestDispatcher("views/classCategories.jsp").forward(request, response);
             } else if ("/classCategory".equals(path)) {
                 String action = request.getParameter("action");

@@ -25,9 +25,15 @@
 				<h3>Gérer les types de cours</h3>
 				<p>Éditez les types de cours</p>
 			</section></a>
+		</div>
+		<div class="featured-sections">
 			<a href="${pageContext.request.contextPath}/courses"><section>
 				<h3>Gérer les cours</h3>
 				<p>Éditez les cours, l'enseignant, les groupes et plus encore</p>
+			</section></a>
+			<a href="${pageContext.request.contextPath}/users"><section>
+				<h3>Gérer les utilisateurs</h3>
+				<p>Éditez les données des utilisateurs</p>
 			</section></a>
 		</div>
 	</c:when>

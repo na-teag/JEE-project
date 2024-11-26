@@ -44,7 +44,7 @@ public class CourseManager {
 			String request = "FROM Course WHERE id = :id";
 			Query<Course> query = session.createQuery(request, Course.class);
 			query.setParameter("id", id);
-			return query.getSingleResult();
+			return query.uniqueResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -159,6 +159,15 @@ public class CourseManager {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
+			Course course = getCourseById(id);
+			if (course != null) {
+				// delete grade of the former course
+				String hql = "DELETE FROM Grade g WHERE course = :course";
+				Query<?> query = session.createQuery(hql);
+				query.setParameter("course", course);
+				query.executeUpdate();
+			}
+
 			String hql = "DELETE FROM Course g WHERE id = :id";
 			Query<?> query = session.createQuery(hql);
 			query.setParameter("id", id);
@@ -315,7 +324,7 @@ public class CourseManager {
 		query.setParameter("id", id);
 
 		// Exécution de la requête et récupération des résultats
-		Course course = query.getSingleResult();
+		Course course = query.uniqueResult();
 
 		// Commit de la transaction et fermeture de la session
 		session.getTransaction().commit();

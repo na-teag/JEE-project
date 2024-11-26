@@ -24,7 +24,7 @@ public class MailManager {
      *  password : MyP@ssw0rd123
      */
 
-    public static void sendEmail(String senderEmail, Person person, String object, String body) {
+    private static void sendEmailToDebugMail(String senderEmail, Person person, String object, String body) {
         String host = "app.debugmail.io";
         final String username = "f968c50b-007a-4f46-b20e-554bdd817458";
         final String password = "f914de2c-05b6-4797-88cd-6dd108f6e1ba";
@@ -63,7 +63,7 @@ public class MailManager {
 
 
     private void sendEmailToPerson(String senderEmail, Person person, String object, String body){
-        sendEmail(senderEmail, person, object, body);
+        sendEmailToDebugMail(senderEmail, person, object, body);
         System.out.println(senderEmail + " to " + person.getEmail() + " : " + object + "\n " + body);
     }
 
