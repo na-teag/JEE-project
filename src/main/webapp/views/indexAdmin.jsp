@@ -31,6 +31,10 @@
 				<h3>Gérer les cours</h3>
 				<p>Éditez les cours, l'enseignant, les groupes et plus encore</p>
 			</section></a>
+			<a href="${pageContext.request.contextPath}/subjects"><section>
+				<h3>Gérer les sujets</h3>
+				<p>Éditez les sujets possibles des cours</p>
+			</section></a>
 			<a href="${pageContext.request.contextPath}/users"><section>
 				<h3>Gérer les utilisateurs</h3>
 				<p>Éditez les données des utilisateurs</p>

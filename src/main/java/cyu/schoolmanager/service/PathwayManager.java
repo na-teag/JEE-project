@@ -116,7 +116,7 @@ public class PathwayManager {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
-			String hql = "DELETE FROM Pathway g WHERE id = :id";
+			String hql = "DELETE FROM Pathway WHERE id = :id";
 			Query<?> query = session.createQuery(hql);
 			query.setParameter("id", id);
 			query.executeUpdate();
