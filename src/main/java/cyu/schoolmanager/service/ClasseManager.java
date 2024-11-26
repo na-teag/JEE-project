@@ -159,7 +159,7 @@ public class ClasseManager {
 			String request = "FROM Classe c WHERE id = :id";
 			Query<Classe> query = session.createQuery(request, Classe.class);
 			query.setParameter("id", id);
-			return query.getSingleResult();
+			return query.uniqueResult();
 		} catch (Exception e){
 			e.printStackTrace();
 			return null;

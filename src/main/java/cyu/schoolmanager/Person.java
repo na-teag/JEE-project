@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDate;
+
 @Entity
 public abstract class Person extends Emailable {
 
@@ -29,13 +31,18 @@ public abstract class Person extends Emailable {
 	@Size(min = 6, message = "Le mot de passe doit comporter au moins 6 caractères")
 	private String password;
 
-	@OneToOne(cascade = CascadeType.ALL) // supprime l'adresse si la personne est supprimée
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // supprime l'adresse si la personne est supprimée ou modifiée
 	@JoinColumn(name = "address_id")
 	@NotNull(message = "L'adresse' ne peut pas être vide")
 	private Address address;
 
 	@Column(name = "person_number", unique = true, nullable = false)
 	private String personNumber;
+
+	@Column(name = "birthday", nullable = false)
+	@NotNull(message = "L'anniversaire ne peut pas être null")
+	@Past
+	private LocalDate birthday;
 
 
 
@@ -74,4 +81,7 @@ public abstract class Person extends Emailable {
 	public String getPersonNumber(){
 		return this.personNumber;
 	}
+
+	public LocalDate getBirthday(){return this.birthday;}
+	public void setBirthday(LocalDate birthday){this.birthday=birthday;}
 }

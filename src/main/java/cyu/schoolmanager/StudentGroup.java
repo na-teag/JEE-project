@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public abstract class StudentGroup extends Emailable {
 
-	@Column(name = "name")
+	@Column(name = "name", unique = true)
 	@NotBlank(message = "Le nom ne peut pas être vide")
 	private String name;
 

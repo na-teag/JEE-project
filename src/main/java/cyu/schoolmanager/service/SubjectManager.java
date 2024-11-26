@@ -1,5 +1,6 @@
-package cyu.schoolmanager;
+package cyu.schoolmanager.service;
 
+import cyu.schoolmanager.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -10,23 +11,24 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Set;
 
-public class PromoManager {
-	private static PromoManager instance;
+public class SubjectManager {
+	private static SubjectManager instance;
 
-	private PromoManager() {}
+	private SubjectManager() {}
 
-	public static synchronized PromoManager getInstance() {
+	public static synchronized SubjectManager getInstance() {
 		if (instance == null) {
-			instance = new PromoManager();
+			instance = new SubjectManager();
 		}
 		return instance;
 	}
 
-	public List<Promo> getListOfPromos() {
+
+	public List<Subject> getListOfSubject() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			String request = "FROM Promo";
-			Query<Promo> query = session.createQuery(request, Promo.class);
+			String request = "FROM Subject";
+			Query<Subject> query = session.createQuery(request, Subject.class);
 
 			return query.getResultList();
 		} catch (Exception e) {
@@ -37,14 +39,15 @@ public class PromoManager {
 		}
 	}
 
-	public Promo getPromoById(String id) {
+	public Subject getSubjectById(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			String request = "FROM Promo WHERE id = :id";
-			Query<Promo> query = session.createQuery(request, Promo.class);
+		try{
+			session.beginTransaction();
+			String request = "FROM Subject c WHERE id = :id";
+			Query<Subject> query = session.createQuery(request, Subject.class);
 			query.setParameter("id", id);
 			return query.uniqueResult();
-		} catch (Exception e) {
+		} catch (Exception e){
 			e.printStackTrace();
 			return null;
 		} finally {
@@ -52,22 +55,21 @@ public class PromoManager {
 		}
 	}
 
-	public String createPromo(String name, String email){
+	public String createSubject(String name){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			Transaction transaction = session.beginTransaction();
-			Promo promo = new Promo();
-			promo.setName(name);
-			promo.setEmail(email);
+			Subject subject = new Subject();
+			subject.setName(name);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-			Set<ConstraintViolation<Promo>> errors = validator.validate(promo);
+			Set<ConstraintViolation<Subject>> errors = validator.validate(subject);
 			if (errors.isEmpty()) {
-				session.save(promo);
+				session.save(subject);
 				transaction.commit();
 				return null;
 			}
 			String errorString = "";
-			for (ConstraintViolation<Promo> error : errors) {
+			for (ConstraintViolation<Subject> error : errors) {
 				errorString += error.getMessage() + "\n";
 			}
 			return errorString;
@@ -82,22 +84,21 @@ public class PromoManager {
 		}
 	}
 
-	public String updatePromoById(String id, String name, String email){
+	public String updateSubjectById(String id, String name){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
-			Promo promo = getPromoById(id);
-			promo.setName(name);
-			promo.setEmail(email);
+			Subject subject = getSubjectById(id);
+			subject.setName(name);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-			Set<ConstraintViolation<Promo>> errors = validator.validate(promo);
+			Set<ConstraintViolation<Subject>> errors = validator.validate(subject);
 			if (errors.isEmpty()) {
-				session.update(promo);
+				session.update(subject);
 				transaction.commit();
 				return null;
 			}
 			String errorString = "";
-			for (ConstraintViolation<Promo> error : errors) {
+			for (ConstraintViolation<Subject> error : errors) {
 				errorString += error.getMessage() + "\n";
 			}
 			return errorString;
@@ -112,11 +113,11 @@ public class PromoManager {
 		}
 	}
 
-	public String deletePromoById(String id) {
+	public String deleteSubjectById(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
-			String hql = "DELETE FROM Promo g WHERE id = :id";
+			String hql = "DELETE FROM Subject WHERE id = :id";
 			Query<?> query = session.createQuery(hql);
 			query.setParameter("id", id);
 			query.executeUpdate();

@@ -1,5 +1,7 @@
 package cyu.schoolmanager.service;
-import cyu.schoolmanager.*;
+
+import cyu.schoolmanager.HibernateUtil;
+import cyu.schoolmanager.Promo;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -10,23 +12,23 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Set;
 
-public class PathwayManager {
-	private static PathwayManager instance;
+public class PromoManager {
+	private static PromoManager instance;
 
-	private PathwayManager() {}
+	private PromoManager() {}
 
-	public static synchronized PathwayManager getInstance() {
+	public static synchronized PromoManager getInstance() {
 		if (instance == null) {
-			instance = new PathwayManager();
+			instance = new PromoManager();
 		}
 		return instance;
 	}
 
-	public List<Pathway> getListOfPathways() {
+	public List<Promo> getListOfPromos() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			String request = "FROM Pathway";
-			Query<Pathway> query = session.createQuery(request, Pathway.class);
+			String request = "FROM Promo";
+			Query<Promo> query = session.createQuery(request, Promo.class);
 
 			return query.getResultList();
 		} catch (Exception e) {
@@ -37,11 +39,11 @@ public class PathwayManager {
 		}
 	}
 
-	Pathway getPathwayById(String id) {
+	public Promo getPromoById(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			String request = "FROM Pathway WHERE id = :id";
-			Query<Pathway> query = session.createQuery(request, Pathway.class);
+			String request = "FROM Promo WHERE id = :id";
+			Query<Promo> query = session.createQuery(request, Promo.class);
 			query.setParameter("id", id);
 			return query.uniqueResult();
 		} catch (Exception e) {
@@ -52,22 +54,22 @@ public class PathwayManager {
 		}
 	}
 
-	public String createPathway(String name, String email){
+	public String createPromo(String name, String email){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			Transaction transaction = session.beginTransaction();
-			Pathway pathway = new Pathway();
-			pathway.setName(name);
-			pathway.setEmail(email);
+			Promo promo = new Promo();
+			promo.setName(name);
+			promo.setEmail(email);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-			Set<ConstraintViolation<Pathway>> errors = validator.validate(pathway);
+			Set<ConstraintViolation<Promo>> errors = validator.validate(promo);
 			if (errors.isEmpty()) {
-				session.save(pathway);
+				session.save(promo);
 				transaction.commit();
 				return null;
 			}
 			String errorString = "";
-			for (ConstraintViolation<Pathway> error : errors) {
+			for (ConstraintViolation<Promo> error : errors) {
 				errorString += error.getMessage() + "\n";
 			}
 			return errorString;
@@ -82,22 +84,22 @@ public class PathwayManager {
 		}
 	}
 
-	public String updatePathwayById(String id, String name, String email){
+	public String updatePromoById(String id, String name, String email){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
-			Pathway pathway = getPathwayById(id);
-			pathway.setName(name);
-			pathway.setEmail(email);
+			Promo promo = getPromoById(id);
+			promo.setName(name);
+			promo.setEmail(email);
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-			Set<ConstraintViolation<Pathway>> errors = validator.validate(pathway);
+			Set<ConstraintViolation<Promo>> errors = validator.validate(promo);
 			if (errors.isEmpty()) {
-				session.update(pathway);
+				session.update(promo);
 				transaction.commit();
 				return null;
 			}
 			String errorString = "";
-			for (ConstraintViolation<Pathway> error : errors) {
+			for (ConstraintViolation<Promo> error : errors) {
 				errorString += error.getMessage() + "\n";
 			}
 			return errorString;
@@ -112,11 +114,11 @@ public class PathwayManager {
 		}
 	}
 
-	public String deletePathwayById(String id) {
+	public String deletePromoById(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
-			String hql = "DELETE FROM Pathway WHERE id = :id";
+			String hql = "DELETE FROM Promo g WHERE id = :id";
 			Query<?> query = session.createQuery(hql);
 			query.setParameter("id", id);
 			query.executeUpdate();

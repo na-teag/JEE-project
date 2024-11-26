@@ -3,6 +3,7 @@ package cyu;
 import cyu.schoolmanager.*;
 import cyu.schoolmanager.service.ClasseManager;
 import cyu.schoolmanager.service.PathwayManager;
+import cyu.schoolmanager.service.PromoManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
