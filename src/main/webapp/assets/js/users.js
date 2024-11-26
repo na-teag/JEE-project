@@ -5,6 +5,8 @@ function openPopupStudent(element, isNew, id, email, lastName, firstName, number
 		writeFormCommonFields(id, email, lastName, firstName, number, street, city, postalCode, country);
 		// séléctionner la classe
 		document.querySelector('select[name="classeId"]').value = classeId;
+		document.getElementById('birthday').removeAttribute('required');
+		document.querySelector('.birthday').hidden = true;
 	}
 	// changer la valeur du bouton pour pouvoir identifier le requete dans le back
 	document.querySelector('button[name="action"][id="save"]').value = "saveStudent";
@@ -28,6 +30,8 @@ function openPopupProf(element, isNew, id, email, lastName, firstName, number, s
 		Array.from(subjectDropdown.options).forEach(option => {
 			option.selected = subjectIds.includes(option.value);
 		});
+		document.getElementById('birthday').removeAttribute('required');
+		document.querySelector('.birthday').hidden = true;
 	}
 	// changer la valeur du bouton pour pouvoir identifier le requete dans le back
 	document.querySelector('button[name="action"][id="save"]').value = "saveProf";
@@ -46,6 +50,8 @@ function openPopupAdmin(element, isNew, id, email, lastName, firstName, number, 
 		resetFormFields();
 	} else {
 		writeFormCommonFields(id, email, lastName, firstName, number, street, city, postalCode, country);
+		document.getElementById('birthday').removeAttribute('required');
+		document.querySelector('.birthday').hidden = true;
 	}
 	// changer la valeur du bouton pour pouvoir identifier le requete dans le back
 	document.querySelector('button[name="action"][id="save"]').value = "saveAdmin";
@@ -64,6 +70,7 @@ function resetFormFields() {
 	// Réinitialiser les champs
 	document.querySelector('.firstName').value = "";
 	document.querySelector('.lastName').value = "";
+	document.querySelector('.birthday').value = "";
 	document.querySelector('.email').value = "";
 	document.querySelector('.number').value = "";
 	document.querySelector('.street').value = "";
@@ -77,6 +84,8 @@ function resetFormFields() {
 	Array.from(subjectDropdown.options).forEach(option => {
 		option.selected = false;
 	});
+	document.getElementById('birthday').setAttribute('required', 'required');
+	document.querySelector('.birthday').hidden = false;
 	document.querySelector('button[name="action"][value="delete"]').style.display = 'none';
 }
 
@@ -84,6 +93,7 @@ function resetFormFields() {
 
 function writeFormCommonFields(id, email, lastName, firstName, number, street, city, postalCode, country){
 	document.querySelector('.id').value = id;
+	document.querySelector('.birthday').value = birthday;
 	document.querySelector('.firstName').value = firstName;
 	document.querySelector('.lastName').value = lastName;
 	document.querySelector('.email').value = email;

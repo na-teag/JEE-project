@@ -126,7 +126,7 @@ public class GradesManager{
             query.setParameter("course", course);
 
             // Récupérer la note
-            grade = query.getSingleResult();
+            grade = query.uniqueResult();
 
             // Valider la transaction
             session.getTransaction().commit();

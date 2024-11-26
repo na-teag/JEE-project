@@ -12,7 +12,7 @@
       <h3>Élèves</h3>
       <c:forEach var="student" items="${sessionScope.studentUsers}">
         <div class="featured-sections" onclick="openPopupStudent(this, false, '${student.id}', '${student.email}', '${student.lastName}', '${student.firstName}', '${student.address.number}', '${student.address.street}', '${student.address.city}', '${student.address.postalCode}', '${student.address.country}', ${student.classe.id})">
-          <h4>nom : ${student.lastName} ${student.firstName}</h4>
+          <h4>nom : ${student.firstName} ${student.lastName}</h4>
           <p>numéro étudiant : ${student.personNumber}</p>
           <p>email : ${student.email}</p>
           <p>adresse : ${student.address.number} ${student.address.street}, ${student.address.postalCode} ${student.address.city}, ${student.address.country}</p>
@@ -23,7 +23,7 @@
       <h3>Enseignants</h3>
       <c:forEach var="professor" items="${sessionScope.profUsers}">
         <div class="featured-sections" onclick="openPopupProf(this, false, '${professor.id}', '${professor.email}', '${professor.lastName}', '${professor.firstName}', '${professor.address.number}', '${professor.address.street}', '${professor.address.city}', '${professor.address.postalCode}', '${professor.address.country}', [<c:forEach var="subject" varStatus="status" items="${professor.teachingSubjects}">'${subject.id}'<c:if test="${!status.last}">,</c:if></c:forEach>])">
-          <h4>nom : ${professor.lastName} ${professor.firstName}</h4>
+          <h4>nom : ${professor.firstName} ${professor.lastName}</h4>
           <p>numéro étudiant : ${professor.personNumber}</p>
           <p>email : ${professor.email}</p>
           <p>adresse : ${professor.address.number} ${professor.address.street}, ${professor.address.postalCode} ${professor.address.city}, ${professor.address.country}</p>
@@ -38,7 +38,7 @@
       <h3>Administrateurs</h3>
       <c:forEach var="admin" items="${sessionScope.adminUsers}">
         <div class="featured-sections" onclick="openPopupAdmin(this, false, '${admin.id}', '${admin.email}', '${admin.lastName}', '${admin.firstName}', '${admin.address.number}', '${admin.address.street}', '${admin.address.city}', '${admin.address.postalCode}', '${admin.address.country}')">
-          <h4>nom : ${admin.lastName} ${admin.firstName}</h4>
+          <h4>nom : ${admin.firstName} ${admin.lastName}</h4>
           <p>numéro étudiant : ${admin.personNumber}</p>
           <p>email : ${admin.email}</p>
           <p>adresse : ${admin.address.number} ${admin.address.street}, ${admin.address.postalCode} ${admin.address.city}, ${admin.address.country}</p>
@@ -52,6 +52,8 @@
               <input type="text" id="firstName" name="firstName" class="firstName" required></label><br>
             <label for="lastName">Nom :
               <input type="text" id="lastName" name="lastName" class="lastName" required></label><br>
+            <div class="birthday"><label for="birthday">Date de naissance :
+              <input type="date" id="birthday" name="birthday" required></label><br></div>
             <label for="email">Email :
               <input type="email" id="email" name="email" class="email" required></label><br>
             <label for="number">Numéro de rue :
@@ -89,7 +91,7 @@
               </div><br>
             </div>
             <button type="submit" name="action" id="save" value="save">Valider</button>
-            <button type="submit" name="action" value="delete" style="color: red;">Supprimer la classe</button>
+            <button type="submit" name="action" value="delete" style="color: red;">Supprimer l'utilisateur</button>
           </form>
         </div>
       </div>

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,10 +53,17 @@ public class UserServlet extends HttpServlet {
 						if (classeId == null || classeId.isEmpty()) {
 							request.setAttribute("errorMessage", "Paramètres manquants, impossible de traiter la requête");
 							request.getRequestDispatcher("/users").forward(request, response);
+							return;
 						}
 						if (id == null || id.isEmpty()) {
 							// if there is no id, then it is a new object
-							String error = personManager.createStudent(id, email, lastName, firstName, number, street, city, postalCode, country, classeId);
+							LocalDate birthday = personManager.getBirthday(request);
+							if (birthday == null) {
+								request.setAttribute("errorMessage", "Date manquante ou impossible à convertir, impossible de traiter la requête");
+								request.getRequestDispatcher("/users").forward(request, response);
+								return;
+							}
+							String error = personManager.createStudent(id, email, lastName, firstName, birthday, number, street, city, postalCode, country, classeId);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
@@ -69,6 +77,7 @@ public class UserServlet extends HttpServlet {
 							}
 						}
 						request.getRequestDispatcher("/users").forward(request, response);
+						return;
 					} else if ("saveProf".equals(action)) {
 						// if the request is about the creation/modification of a professor
 						String[] subjectIds = request.getParameterValues("subjectId");
@@ -95,7 +104,13 @@ public class UserServlet extends HttpServlet {
 						}
 						if (id == null || id.isEmpty()) {
 							// if there is no id, then it is a new object
-							String error = personManager.createProf(id, email, lastName, firstName, number, street, city, postalCode, country, subjects);
+							LocalDate birthday = personManager.getBirthday(request);
+							if (birthday == null) {
+								request.setAttribute("errorMessage", "Date manquante ou impossible à convertir, impossible de traiter la requête");
+								request.getRequestDispatcher("/users").forward(request, response);
+								return;
+							}
+							String error = personManager.createProf(id, email, lastName, firstName, birthday, number, street, city, postalCode, country, subjects);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
@@ -109,12 +124,19 @@ public class UserServlet extends HttpServlet {
 							}
 						}
 						request.getRequestDispatcher("/users").forward(request, response);
+						return;
 					} else if ("saveAdmin".equals(action)) {
 						// if the request is about the creation/modification of an administrator
 
 						if (id == null || id.isEmpty()) {
 							// if there is no id, then it is a new object
-							String error = personManager.createAdmin(id, email, lastName, firstName, number, street, city, postalCode, country);
+							LocalDate birthday = personManager.getBirthday(request);
+							if (birthday == null) {
+								request.setAttribute("errorMessage", "Date manquante ou impossible à convertir, impossible de traiter la requête");
+								request.getRequestDispatcher("/users").forward(request, response);
+								return;
+							}
+							String error = personManager.createAdmin(id, email, lastName, firstName, birthday, number, street, city, postalCode, country);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
@@ -128,6 +150,7 @@ public class UserServlet extends HttpServlet {
 							}
 						}
 						request.getRequestDispatcher("/users").forward(request, response);
+						return;
 					} else if ("delete".equals(action) && id != null && !id.isEmpty()) {
 						// if the request is about the deletion of a user, no matter the type
 						String error = personManager.deletePersonById(id);
@@ -135,9 +158,11 @@ public class UserServlet extends HttpServlet {
 							request.setAttribute("errorMessage", error);
 						}
 						request.getRequestDispatcher("/users").forward(request, response);
+						return;
 					} else {
 						request.setAttribute("errorMessage", "Requête non reconnue");
 						request.getRequestDispatcher("/users").forward(request, response);
+						return;
 					}
 				}
 				request.setAttribute("errorMessage", "Paramètres manquants, impossible de traiter la requête");
@@ -146,6 +171,5 @@ public class UserServlet extends HttpServlet {
 		} else {
 			request.getRequestDispatcher("views/error.jsp").forward(request, response);
 		}
-
 	}
 }

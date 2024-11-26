@@ -51,6 +51,7 @@ public class Main {
 			admin.setUsername("admin");
 			admin.setEmail("gaetan@cy-tech.fr");
 			admin.setAddress(address);
+			admin.setBirthday(LocalDate.of(2000,1,1));
 			session.merge(admin);
 
 			// Promo
@@ -111,6 +112,7 @@ public class Main {
 			professor.setUsername("prof");
 			professor.setFirstName("julien");
 			professor.setLastName("julien");
+			professor.setBirthday(LocalDate.of(2000,1,1));
 			professor.setTeachingSubjects(subjects);
 			session2.merge(professor);
 
@@ -178,6 +180,7 @@ public class Main {
 			student.setEmail("guillaume@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
+			student.setBirthday(LocalDate.of(2000,1,1));
 			student.setClasse(classe);
 			session3.merge(student);
 

@@ -29,7 +29,7 @@ public class StudentGroupManager {
 		query.setParameter("id", id);
 
 		// Exécution de la requête et récupération des résultats
-		StudentGroup classe = query.getSingleResult();
+		StudentGroup classe = query.uniqueResult();
 
 		// Commit de la transaction et fermeture de la session
 		session.getTransaction().commit();

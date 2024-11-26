@@ -41,7 +41,7 @@ public class SubjectManager {
 			String request = "FROM Subject c WHERE id = :id";
 			Query<Subject> query = session.createQuery(request, Subject.class);
 			query.setParameter("id", id);
-			return query.getSingleResult();
+			return query.uniqueResult();
 		} catch (Exception e){
 			e.printStackTrace();
 			return null;
