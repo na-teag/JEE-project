@@ -37,7 +37,7 @@ public class ClassCategoryManager {
         }
     }
 
-    ClassCategory getClassCategoryById(String id) {
+    public ClassCategory getClassCategoryById(String id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             String request = "FROM ClassCategory WHERE id = :id";

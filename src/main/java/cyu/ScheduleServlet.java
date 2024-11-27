@@ -1,7 +1,7 @@
 package cyu;
 
 import cyu.schoolmanager.*;
-import cyu.schoolmanager.service.CourseManager;
+import cyu.schoolmanager.service.ScheduleManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -84,12 +84,12 @@ public class ScheduleServlet extends HttpServlet {
 		}
 
 
-		CourseManager courseManager = CourseManager.getInstance();
+		ScheduleManager scheduleManager = ScheduleManager.getInstance();
 		List<LocalDate> dates = new ArrayList<>();
 		for (int i=0; i<5; i++) {
 			dates.add(monday.plusDays(i));
 		}
-		Map<String, List<Map<String, String>>> schedule = courseManager.getCoursesByPersonNumberAndDays(id, dates);
+		Map<String, List<Map<String, String>>> schedule = scheduleManager.getCoursesByPersonNumberAndDays(id, dates);
 		Map<String, Integer> days = new LinkedHashMap<>();
 		days.put(DayOfWeek.MONDAY.toString(), monday.getDayOfMonth());
 		days.put(DayOfWeek.TUESDAY.toString(), monday.plusDays(1).getDayOfMonth());
