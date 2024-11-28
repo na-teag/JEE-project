@@ -20,14 +20,14 @@ public class CoursAdminDeleteServlet extends HttpServlet {
 		String deleteId = request.getParameter("deleteId");
 
 		if (deleteId != null) {
-			String error = scheduleManager.deleteCourseOccurenceById(deleteId);
+			String error = scheduleManager.deleteCourseOccurrenceById(deleteId);
 			if (error != null) {
 				request.setAttribute("errorMessage", error);
 			}
 		}
 
 
-		List<CourseOccurence> occurences = scheduleManager.getListOfCourseOccurence();
+		List<CourseOccurence> occurences = scheduleManager.getListOfCourseOccurrence();
 		request.setAttribute("occurences", occurences);
 
 		request.getRequestDispatcher("views/adminCoursDelete.jsp").forward(request, response);

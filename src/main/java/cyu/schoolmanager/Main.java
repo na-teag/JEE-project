@@ -44,12 +44,12 @@ public class Main {
 
 			// Admin
 			Admin admin = new Admin();
-			admin.setFirstName("gaetan");
+			admin.setFirstName("John");
 			admin.setPersonNumber();
-			admin.setLastName("gaetan");
+			admin.setLastName("Doe");
 			admin.setPassword("admin");
 			admin.setUsername("admin");
-			admin.setEmail("gaetan@cy-tech.fr");
+			admin.setEmail("john.doe@cy-tech.fr");
 			admin.setAddress(address);
 			admin.setBirthday(LocalDate.of(2000,1,1));
 			session.merge(admin);
@@ -90,14 +90,6 @@ public class Main {
 			address2.setCountry("France");
 			session2.merge(address2);
 
-			Address address4 = new Address();
-			address4.setNumber("2");
-			address4.setStreet("rue Lemauvais");
-			address4.setCity("Le Vésinet");
-			address4.setPostalCode(78110);
-			address4.setCountry("France");
-			session2.merge(address4);
-
 			// Subject
 			Subject subject = new Subject();
 			subject.setName("info");
@@ -115,18 +107,15 @@ public class Main {
 			subjects.add(subject);
 			subjects.add(subject2);
 
-			List<Subject> subjects1 = new ArrayList<>();
-			subjects1.add(subject3);
-
 			// Professor
 			Professor professor = new Professor();
 			professor.setAddress(address2);
 			professor.setPersonNumber();
-			professor.setEmail("julien@cy-tech.fr");
+			professor.setEmail("alex.smith@cy-tech.fr");
 			professor.setPassword("prof");
 			professor.setUsername("prof");
-			professor.setFirstName("julien");
-			professor.setLastName("julien");
+			professor.setFirstName("Alex");
+			professor.setLastName("Smith");
 			professor.setBirthday(LocalDate.of(2000,1,1));
 			professor.setTeachingSubjects(subjects);
 			session2.merge(professor);
@@ -196,9 +185,9 @@ public class Main {
 			Student student = new Student();
 			student.setPersonNumber();
 			student.setAddress(address3);
-			student.setLastName("guillaume");
-			student.setFirstName("guillaume");
-			student.setEmail("guillaume@cy-tech.fr");
+			student.setLastName("Johnson");
+			student.setFirstName("Emma");
+			student.setEmail("emma.johnson@cy-tech.fr");
 			student.setUsername("student");
 			student.setPassword("student");
 			student.setBirthday(LocalDate.of(2000,1,1));
