@@ -41,18 +41,17 @@ sudo apt install mysql-server
 sudo mysql_secure_installation
 ```
 
-Pour l'initialiser, il vous faut créer la base de donnée en tapant
+Le projet est maintenant prêt à être utilisé.
+
+### Mettre en place la base de données
+Pour initialiser la base de données, il vous faut d'abord la créer en tapant
 
 ```sh
 mysql -u root -p < resetDatabase.sql
 ```
 
-Le projet est maintenant prêt à être utilisé.
-
-### Mettre en place la base de données
-
-Le projet dispose d'un fichier pour mettre en place et peupler la base de données, avec des données par défaut. Il faut pour cela lancer le fichier Main.java.
-Pour ce faire, il va falloir compiler le projet et le lancer :
+Le projet dispose d'un fichier pour mettre en place et peupler la base de données, avec des données par défaut.
+Pour ce faire, il va falloir compiler le projet et lancer le fichier Main.java :
 
 ```php
 mvn compile
