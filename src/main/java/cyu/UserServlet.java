@@ -63,7 +63,7 @@ public class UserServlet extends HttpServlet {
 								request.getRequestDispatcher("/users").forward(request, response);
 								return;
 							}
-							String error = personManager.createStudent(id, email, lastName, firstName, birthday, number, street, city, postalCode, country, classeId);
+							String error = personManager.createStudent(email, lastName, firstName, birthday, number, street, city, postalCode, country, classeId);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
@@ -110,7 +110,7 @@ public class UserServlet extends HttpServlet {
 								request.getRequestDispatcher("/users").forward(request, response);
 								return;
 							}
-							String error = personManager.createProf(id, email, lastName, firstName, birthday, number, street, city, postalCode, country, subjects);
+							String error = personManager.createProf(email, lastName, firstName, birthday, number, street, city, postalCode, country, subjects);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);
@@ -136,7 +136,7 @@ public class UserServlet extends HttpServlet {
 								request.getRequestDispatcher("/users").forward(request, response);
 								return;
 							}
-							String error = personManager.createAdmin(id, email, lastName, firstName, birthday, number, street, city, postalCode, country);
+							String error = personManager.createAdmin(email, lastName, firstName, birthday, number, street, city, postalCode, country);
 							if (error != null && !error.isEmpty()) {
 								System.out.println(error);
 								request.setAttribute("errorMessage", error);

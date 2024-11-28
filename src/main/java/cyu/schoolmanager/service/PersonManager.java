@@ -250,7 +250,7 @@ public class PersonManager {
 	}
 
 
-	public String createStudent(String id, String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, String classeId){
+	public String createStudent(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, String classeId){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
@@ -273,7 +273,6 @@ public class PersonManager {
 			}
 			String password = String.format("%02d%02d%d", birthday.getDayOfMonth(), birthday.getMonthValue(), birthday.getYear());
 			student.setPassword(password);
-			System.out.println("password : " + password);
 
 			String errors = setStudent(email, lastName, firstName, number, street, city, postalCode, Country, student, classeId);
 			if (errors.isEmpty()) {
@@ -296,7 +295,7 @@ public class PersonManager {
 	}
 
 
-	public String createProf(String id, String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, List<Subject> subjectList){
+	public String createProf(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, List<Subject> subjectList){
 		// peut avoir une liste de cours vide
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
@@ -320,7 +319,6 @@ public class PersonManager {
 			}
 			String password = String.format("%02d%02d%d", birthday.getDayOfMonth(), birthday.getMonthValue(), birthday.getYear());
 			professor.setPassword(password);
-			System.out.println("password : " + password);
 
 			String errors = setProf(email, lastName, firstName, number, street, city, postalCode, Country, professor, subjectList);
 			if (errors.isEmpty()) {
@@ -340,7 +338,7 @@ public class PersonManager {
 	}
 
 
-	public String createAdmin(String id, String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country){
+	public String createAdmin(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
@@ -363,7 +361,6 @@ public class PersonManager {
 			}
 			String password = String.format("%02d%02d%d", birthday.getDayOfMonth(), birthday.getMonthValue(), birthday.getYear());
 			admin.setPassword(password);
-			System.out.println("password : " + password);
 
 			String errors = setAdmin(email, lastName, firstName, number, street, city, postalCode, Country, admin);
 			if (errors.isEmpty()) {

@@ -24,7 +24,7 @@ public class ScheduleManager {
 		return instance;
 	}
 
-	public List<CourseOccurence> getListOfCourseOccurence() {
+	public List<CourseOccurence> getListOfCourseOccurrence() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			String request = "FROM CourseOccurence";
@@ -39,7 +39,7 @@ public class ScheduleManager {
 		}
 	}
 
-	public String deleteCourseOccurenceById(String id) {
+	public String deleteCourseOccurrenceById(String id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
@@ -60,7 +60,7 @@ public class ScheduleManager {
 		return null;
 	}
 
-	private List<CourseOccurence> getCourseOccurencesOfCourseForDate(List<Course> courses, LocalDate date) {
+	private List<CourseOccurence> getCourseOccurrencesOfCourseForDate(List<Course> courses, LocalDate date) {
 		List<CourseOccurence> occurrences = new ArrayList<>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
@@ -103,7 +103,7 @@ public class ScheduleManager {
 
 	private Map<String, List<Map<String, String>>> getScheduleForCoursesAndDays(List<LocalDate> days, Map<String, List<Map<String, String>>> schedule, List<Course> courses) {
 		for (LocalDate day: days) {
-			List<CourseOccurence> coursesOfDayInput = getCourseOccurencesOfCourseForDate(courses, day);
+			List<CourseOccurence> coursesOfDayInput = getCourseOccurrencesOfCourseForDate(courses, day);
 			List<Map<String, String>> coursesOfDayOutput = new ArrayList<>();
 			for (CourseOccurence courseOccurence : coursesOfDayInput) {
 				Map<String, String> courseDetails = getCourseDetails(courseOccurence);
@@ -136,7 +136,7 @@ public class ScheduleManager {
 		return schedule;
 	}
 
-	public void getOrCreateCourseOccurence(Professor professor, ClassCategory classCategory, Course course, String classroom, LocalDate day, LocalTime beginning, LocalTime end) throws Exception {
+	public void createCourseOccurrence(Professor professor, ClassCategory classCategory, Course course, String classroom, LocalDate day, LocalTime beginning, LocalTime end) throws Exception {
 		// Création du cours
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
