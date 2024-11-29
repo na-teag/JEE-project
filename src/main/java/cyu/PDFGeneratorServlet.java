@@ -107,7 +107,7 @@ public class PDFGeneratorServlet extends HttpServlet {
             document.close();
         } else {
             // Si l'utilisateur n'est pas connecté ou n'est pas un étudiant, on redirige vers la page d'erreur
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 

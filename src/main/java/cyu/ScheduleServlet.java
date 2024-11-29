@@ -22,12 +22,12 @@ public class ScheduleServlet extends HttpServlet {
 
 		// check the user authenticated
 		if (session == null) {
-			request.getRequestDispatcher("views/login.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request, response);
 			return;
 		}
 		String role = (String) session.getAttribute("role");
 		if (role == null || session.getAttribute("user") == null) {
-			request.getRequestDispatcher("views/login.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request, response);
 			return;
 		}
 
@@ -38,7 +38,7 @@ public class ScheduleServlet extends HttpServlet {
 			if (id == null) { id = user.getPersonNumber(); } // if no schedule specified, set to his own
 			if (!user.getPersonNumber().equals(id)) {
 				request.setAttribute("errorMessage", "Vous n'avez pas l'autorisation d'accéder à cette ressource");
-				request.getRequestDispatcher("views/schedule.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/schedule.jsp").forward(request, response);
 				return;
 			}
 		} else if (role.equals(Admin.class.getName())) {
@@ -46,7 +46,7 @@ public class ScheduleServlet extends HttpServlet {
 			if (id == null) { id = user.getPersonNumber(); }
 		} else {
 			request.setAttribute("errorMessage", "role inconnu, merci de vous reconnecter");
-			request.getRequestDispatcher("views/login.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request, response);
 			return;
 		}
 
@@ -59,7 +59,7 @@ public class ScheduleServlet extends HttpServlet {
 			yearParam = String.format("%04d", LocalDate.now().getYear());
 		}else if (yearParam == null || monthParam == null || dayParam == null) {
 			request.setAttribute("errorMessage", "date incorrecte");
-			request.getRequestDispatcher("views/schedule.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/schedule.jsp").forward(request, response);
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class ScheduleServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			request.setAttribute("errorMessage", "la date est invalide");
-			request.getRequestDispatcher("views/schedule.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/schedule.jsp").forward(request, response);
 			return;
 		}
 
@@ -109,12 +109,12 @@ public class ScheduleServlet extends HttpServlet {
 
 		request.getSession().setAttribute("schedule", schedule);
 		request.getSession().setAttribute("days", sortedDaysMap);
-		request.getRequestDispatcher("views/schedule.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/views/schedule.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("errorMessage", "les requetes post ne sont pas prises en compte");
-		request.getRequestDispatcher("views/schedule.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/views/schedule.jsp").forward(request, response);
 	}
 }

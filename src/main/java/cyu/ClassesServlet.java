@@ -29,7 +29,7 @@ public class ClassesServlet extends HttpServlet {
 				session.setAttribute("classes", classeManager.getListOfClasses());
 				session.setAttribute("promos", promoManager.getListOfPromos());
 				session.setAttribute("pathways", pathwayManager.getListOfPathways());
-				request.getRequestDispatcher("views/classes.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/classes.jsp").forward(request, response);
 			} else if ("/classe".equals(path)) {
 				String action = request.getParameter("action");
 				String name = request.getParameter("name");
@@ -70,7 +70,7 @@ public class ClassesServlet extends HttpServlet {
 				request.getRequestDispatcher("/classes").forward(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("views/error.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
 		}
 
 	}

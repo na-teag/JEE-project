@@ -33,7 +33,7 @@ public class CourseServlet extends HttpServlet {
 				session.setAttribute("subjects", subjectManager.getListOfSubject());
 				session.setAttribute("professors", personManager.getListOfProfessors());
 				session.setAttribute("groups", studentGroupManager.getListOfStudentGroups());
-				request.getRequestDispatcher("views/course.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/course.jsp").forward(request, response);
 			} else if ("/course".equals(path)) {
 				String action = request.getParameter("action");
 				String classroom = request.getParameter("classroom");
@@ -76,7 +76,7 @@ public class CourseServlet extends HttpServlet {
 				request.getRequestDispatcher("/courses").forward(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("views/error.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
 		}
 
 	}

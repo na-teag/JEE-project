@@ -4,6 +4,18 @@
 
 <div class="main-content">
     <h1>Saisie des notes</h1>
+    <c:if test="${not empty sessionScope.message}">
+        <div class="alert alert-success">
+                ${sessionScope.message}
+        </div>
+        <c:remove var="message" scope="session"/>
+    </c:if>
+    <c:if test="${not empty sessionScope.error}">
+        <div class="alert alert-error">
+                ${sessionScope.error}
+        </div>
+        <c:remove var="error" scope="session"/>
+    </c:if>
     <form action="gradesManagement" method="get">
         <label for="courses">Choisir le cours :</label>
         <select id="courses" name="courses" onchange="this.form.submit()">
@@ -57,15 +69,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="context">Contexte :</label>
+                    <label for="context">Contexte(facultatif) :</label>
                     <input type="text" id="context" name="context"
-                           value="${not empty sessionScope.selectedStudentGrade ? sessionScope.selectedStudentGrade.context : ''}" required/>
+                           value="${not empty sessionScope.selectedStudentGrade ? sessionScope.selectedStudentGrade.context : ''}"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="comment">Commentaire :</label>
+                    <label for="comment">Commentaire(facultatif) :</label>
                     <input type="text" id="comment" name="comment"
-                           value="${not empty sessionScope.selectedStudentGrade ? sessionScope.selectedStudentGrade.comment : ''}" required/>
+                           value="${not empty sessionScope.selectedStudentGrade ? sessionScope.selectedStudentGrade.comment : ''}"/>
                 </div>
 
                 <div class="form-group">
@@ -79,19 +91,6 @@
                     ${not empty sessionScope.selectedStudentGrade ? 'Modifier la note' : 'Enregistrer la note'}
             </button>
         </form>
-    </c:if>
-
-    <c:if test="${not empty sessionScope.message}">
-        <div class="alert alert-success">
-                ${sessionScope.message}
-        </div>
-        <c:remove var="message" scope="session"/>
-    </c:if>
-    <c:if test="${not empty sessionScope.error}">
-        <div class="alert alert-error">
-                ${sessionScope.error}
-        </div>
-        <c:remove var="error" scope="session"/>
     </c:if>
 </div>
 

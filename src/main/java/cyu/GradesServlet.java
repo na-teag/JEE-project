@@ -51,9 +51,9 @@ public class GradesServlet extends HttpServlet {
             session.setAttribute("grades", grades);
 
             // Rediriger vers la vue des grades
-            request.getRequestDispatcher("views/grades.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/grades.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 
@@ -70,7 +70,7 @@ public class GradesServlet extends HttpServlet {
                 handleClassSelection(session, studentGroupManager, courseManager, gradesManager, personManager, professor, request, response);
             }
         } else {
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 
@@ -92,7 +92,7 @@ public class GradesServlet extends HttpServlet {
         session.setAttribute("classesList", classesList);
 
 
-        request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
     }
 
     // Gérer la sélection d'une classe et des étudiants associés
@@ -111,7 +111,7 @@ public class GradesServlet extends HttpServlet {
             List<Student> students = getStudentsForGroup(studentGroup, personManager);
             session.setAttribute("studentsList", students);
 
-            request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
 
         } else {
             String studentId = request.getParameter("students");
@@ -126,7 +126,7 @@ public class GradesServlet extends HttpServlet {
                 session.setAttribute("selectedStudentId", null);
                 List<Course> coursesList = courseManager.getCoursesOfProfessor(professor);
                 session.setAttribute("coursesList", coursesList);
-                request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
             }
         }
     }
@@ -155,7 +155,7 @@ public class GradesServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
     }
 
     @Override
@@ -198,19 +198,19 @@ public class GradesServlet extends HttpServlet {
                     }
                     // Rediriger vers la page de confirmation ou rafraîchir les informations
                     session.setAttribute("message", message);
-                    request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+                    request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
                 } catch (NumberFormatException e) {
                     // Si la conversion de la note échoue, afficher un message d'erreur
                     session.setAttribute("error", "La note doit être un nombre valide.");
-                    request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+                    request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
                 }
             } else {
                 // Si l'étudiant ou la note n'est pas fourni, afficher un message d'erreur
                 session.setAttribute("error", "Veuillez sélectionner un étudiant et entrer une note.");
-                request.getRequestDispatcher("views/gradesManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/views/gradesManagement.jsp").forward(request, response);
             }
         } else {
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
     }
 
