@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "course_occurence")
-public class CourseOccurence extends Model{
+@Table(name = "course_occurrence")
+public class CourseOccurrence extends Model{
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Pas de suppression de cours
     @JoinColumn(name = "course_id", nullable = false)
     @NotNull(message = "Le cours ne peut pas être null")

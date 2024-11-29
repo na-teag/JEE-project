@@ -47,13 +47,13 @@
         </a>
         <a href="${pageContext.request.contextPath}/scheduleAdmin">
             <section>
-                <h3>Ajouter une occurence de cours</h3>
+                <h3>Ajouter une occurrence de cours</h3>
                 <p>Ajouter un cours</p>
             </section>
         </a>
         <a href="${pageContext.request.contextPath}/adminDeleteCourse">
             <section>
-                <h3>Supprimer une occurence de cours</h3>
+                <h3>Supprimer une occurrence de cours</h3>
                 <p>Supprimer un cours</p>
             </section>
         </a>

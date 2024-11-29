@@ -34,7 +34,7 @@
         <mapping class="cyu.schoolmanager.ClassCategory"/>
         <mapping class="cyu.schoolmanager.Classe"/>
         <mapping class="cyu.schoolmanager.Course"/>
-        <mapping class="cyu.schoolmanager.CourseOccurence"/>
+        <mapping class="cyu.schoolmanager.CourseOccurrence"/>
         <mapping class="cyu.schoolmanager.Emailable"/>
         <mapping class="cyu.schoolmanager.Grade"/>
         <mapping class="cyu.schoolmanager.Model"/>

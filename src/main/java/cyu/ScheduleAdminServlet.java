@@ -96,7 +96,7 @@ public class ScheduleAdminServlet extends HttpServlet {
 						classroom = null;
 					}
 
-					// Création de l'occurence du cours
+					// Création de l'occurrence du cours
 					scheduleManager.createCourseOccurrence(professor, classCategory, course, classroom, day, beginning, end);
 
 					request.setAttribute("successMessage", "Cours enregistré avec succès !");
