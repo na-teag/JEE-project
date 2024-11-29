@@ -32,7 +32,7 @@ public class UserServlet extends HttpServlet {
 				session.setAttribute("profUsers", personManager.getListOfProfessors());
 				session.setAttribute("classes", classeManager.getListOfClasses());
 				session.setAttribute("subjects", subjectManager.getListOfSubject());
-				request.getRequestDispatcher("views/users.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/users.jsp").forward(request, response);
 			} else if ("/user".equals(path)) {
 				// check that parameters needed everywhere are good
 				String action = request.getParameter("action");
@@ -172,7 +172,7 @@ public class UserServlet extends HttpServlet {
 				request.getRequestDispatcher("/users").forward(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("views/error.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
 		}
 	}
 }

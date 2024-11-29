@@ -15,7 +15,7 @@
 <nav>
     <ul>
         <li><a href="${pageContext.request.contextPath}/">Accueil</a></li>
-        <li><a href="${pageContext.request.contextPath}/views/Contact.jsp">Contacts</a></li>
+        <li><a href="${pageContext.request.contextPath}/contact">Contacts</a></li>
 
         <c:choose>
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.student}">
@@ -29,7 +29,7 @@
             </c:when>
 
             <c:when test="${not empty sessionScope.roles and sessionScope.role == sessionScope.roles.admin}">
-                <li><a href="${pageContext.request.contextPath}/views/indexAdmin.jsp">éditer des objets</a></li>
+                <li><a href="${pageContext.request.contextPath}/indexAdmin">éditer des objets</a></li>
                 <li><a href="${pageContext.request.contextPath}/schedule">Emploi du temps</a></li>
             </c:when>
         </c:choose>

@@ -1,5 +1,5 @@
 # CY Virtuel
-CY Virtuel est le projet noté de développement web de l'année 2023-2024 de CY Tech, réalisé par:
+CY Virtuel est le projet noté de Java EE de l'année 2024-2025 de CY Tech, réalisé par:
 - Gaétan Retel
 - Julien Guyot
 - Matéo Lopez

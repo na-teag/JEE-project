@@ -22,7 +22,7 @@ public class SubjectServlet extends HttpServlet {
         if (session.getAttribute("user") != null && Admin.class.getName().equals(session.getAttribute("role"))){
             if ("/subjects".equals(path)) {
                 session.setAttribute("subjects", subjectManager.getListOfSubject());
-                request.getRequestDispatcher("views/subjects.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/views/subjects.jsp").forward(request, response);
             } else if ("/subject".equals(path)) {
                 String action = request.getParameter("action");
                 String name = request.getParameter("name");
@@ -61,7 +61,7 @@ public class SubjectServlet extends HttpServlet {
                 request.getRequestDispatcher("/subjects").forward(request, response);
             }
         } else {
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
 
     }

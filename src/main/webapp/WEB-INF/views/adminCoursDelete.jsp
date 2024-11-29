@@ -33,7 +33,7 @@
         <td>${occurence.day}</td>
         <td>${occurence.course.subject.name}</td>
         <td>
-          <form action="${pageContext.request.contextPath}/admindeletecours" method="get">
+          <form action="${pageContext.request.contextPath}/adminDeleteCourse" method="get">
             <input type="hidden" name="deleteId" value="${occurence.id}" />
             <button type="submit">Supprimer</button>
           </form>

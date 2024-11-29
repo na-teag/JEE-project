@@ -22,7 +22,7 @@ public class PathwayServlet extends HttpServlet {
 		if (session.getAttribute("user") != null && Admin.class.getName().equals(session.getAttribute("role"))){
 			if ("/pathways".equals(path)) {
 				session.setAttribute("pathways", pathwayManager.getListOfPathways());
-				request.getRequestDispatcher("views/pathways.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/pathways.jsp").forward(request, response);
 			} else if ("/pathway".equals(path)) {
 				String action = request.getParameter("action");
 				String name = request.getParameter("name");
@@ -62,7 +62,7 @@ public class PathwayServlet extends HttpServlet {
 				request.getRequestDispatcher("/pathways").forward(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("views/error.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
 		}
 
 	}

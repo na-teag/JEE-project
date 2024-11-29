@@ -22,7 +22,7 @@ public class ClassCategoryServlet extends HttpServlet {
         if (session.getAttribute("user") != null && Admin.class.getName().equals(session.getAttribute("role"))){
             if ("/classCategories".equals(path)) {
                 session.setAttribute("classCategories", classCategoryManager.getListOfClassCategories());
-                request.getRequestDispatcher("views/classCategories.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/views/classCategories.jsp").forward(request, response);
             } else if ("/classCategory".equals(path)) {
                 String action = request.getParameter("action");
                 String name = request.getParameter("name");
@@ -62,7 +62,7 @@ public class ClassCategoryServlet extends HttpServlet {
                 request.getRequestDispatcher("/classCategories").forward(request, response);
             }
         } else {
-            request.getRequestDispatcher("views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
         }
 
     }

@@ -22,7 +22,7 @@ public class PromoServlet extends HttpServlet {
 		if (session.getAttribute("user") != null && Admin.class.getName().equals(session.getAttribute("role"))){
 			if ("/promos".equals(path)) {
 				session.setAttribute("promos", promoManager.getListOfPromos());
-				request.getRequestDispatcher("views/promos.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/views/promos.jsp").forward(request, response);
 			} else if ("/promo".equals(path)) {
 				String action = request.getParameter("action");
 				String name = request.getParameter("name");
@@ -62,7 +62,7 @@ public class PromoServlet extends HttpServlet {
 				request.getRequestDispatcher("/promos").forward(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("views/error.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request, response);
 		}
 
 	}
