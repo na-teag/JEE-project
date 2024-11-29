@@ -23,18 +23,18 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="occurence" items="${occurences}">
+    <c:forEach var="occurrence" items="${occurrences}">
       <tr>
 
-        <td>${occurence.classroom}</td>
-        <td>${occurence.professor.firstName} ${occurence.professor.lastName}</td>
-        <td>${occurence.beginning}</td>
-        <td>${occurence.end}</td>
-        <td>${occurence.day}</td>
-        <td>${occurence.course.subject.name}</td>
+        <td>${occurrence.classroom}</td>
+        <td>${occurrence.professor.firstName} ${occurrence.professor.lastName}</td>
+        <td>${occurrence.beginning}</td>
+        <td>${occurrence.end}</td>
+        <td>${occurrence.day}</td>
+        <td>${occurrence.course.subject.name}</td>
         <td>
           <form action="${pageContext.request.contextPath}/adminDeleteCourse" method="get">
-            <input type="hidden" name="deleteId" value="${occurence.id}" />
+            <input type="hidden" name="deleteId" value="${occurrence.id}" />
             <button type="submit">Supprimer</button>
           </form>
         </td>

@@ -1,7 +1,7 @@
 package cyu;
 
 import cyu.schoolmanager.Admin;
-import cyu.schoolmanager.CourseOccurence;
+import cyu.schoolmanager.CourseOccurrence;
 import cyu.schoolmanager.service.ScheduleManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,8 +31,8 @@ public class CoursAdminDeleteServlet extends HttpServlet {
 				}
 			}
 
-			List<CourseOccurence> occurences = scheduleManager.getListOfCourseOccurrence();
-			request.setAttribute("occurences", occurences);
+			List<CourseOccurrence> occurrences = scheduleManager.getListOfCourseOccurrence();
+			request.setAttribute("occurrences", occurrences);
 
 			request.getRequestDispatcher("WEB-INF/views/adminCoursDelete.jsp").forward(request, response);
 		} else {

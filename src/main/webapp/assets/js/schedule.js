@@ -2,15 +2,22 @@
 function handleDateChange() {
 	const selectedDate = document.getElementById('date-picker').value;
 	const selectedId = document.getElementById('id-picker').value;
+	let params;
 	if (selectedDate) {
 		const [year, month, day] = selectedDate.split('-');
-		let params = `?day=${day}&month=${month}&year=${year}`;
-		if (selectedId != ""){
+		params = `?day=${day}&month=${month}&year=${year}`;
+		if (selectedId !== ""){
 			params += `&id=${selectedId}`
 		}
-		const contextPath = `${window.location.pathname.split('/')[1]}`;
-		window.location.href = `/${contextPath}/schedule${params}`;
+	} else {
+		if (selectedId !== ""){
+			params = `?id=${selectedId}`;
+		} else {
+			params = "";
+		}
 	}
+	const contextPath = `${window.location.pathname.split('/')[1]}`;
+	window.location.href = `/${contextPath}/schedule${params}`;
 }
 
 

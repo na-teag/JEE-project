@@ -22,7 +22,7 @@ public class Main {
 		session.createQuery("DELETE FROM ClassCategory").executeUpdate();
 		session.createQuery("DELETE FROM Classe").executeUpdate();
 		session.createQuery("DELETE FROM Course").executeUpdate();
-		session.createQuery("DELETE FROM CourseOccurence").executeUpdate();
+		session.createQuery("DELETE FROM CourseOccurrence").executeUpdate();
 		session.createQuery("DELETE FROM Grade").executeUpdate();
 		session.createQuery("DELETE FROM Pathway").executeUpdate();
 		session.createQuery("DELETE FROM Professor").executeUpdate();
@@ -203,24 +203,24 @@ public class Main {
 				monday = date.with(DayOfWeek.MONDAY);
 			}
 
-			// CourseOccurence
-			CourseOccurence courseOccurence1 = new CourseOccurence();
-			courseOccurence1.setCourse(course);
-			courseOccurence1.setClassroom("A688");
-			courseOccurence1.setProfessor(professor);
-			courseOccurence1.setDay(monday);
-			courseOccurence1.setBeginning(LocalTime.of(8, 0));
-			courseOccurence1.setEnd(LocalTime.of(11, 0));
-			courseOccurence1.setCategory(classCategory);
-			session3.merge(courseOccurence1);
+			// CourseOccurrence
+			CourseOccurrence courseOccurrence1 = new CourseOccurrence();
+			courseOccurrence1.setCourse(course);
+			courseOccurrence1.setClassroom("A688");
+			courseOccurrence1.setProfessor(professor);
+			courseOccurrence1.setDay(monday);
+			courseOccurrence1.setBeginning(LocalTime.of(8, 0));
+			courseOccurrence1.setEnd(LocalTime.of(11, 0));
+			courseOccurrence1.setCategory(classCategory);
+			session3.merge(courseOccurrence1);
 
-			CourseOccurence courseOccurence = new CourseOccurence();
-			courseOccurence.setCourse(course);
-			courseOccurence.setDay(monday.plusDays(3));
-			courseOccurence.setBeginning(LocalTime.of(14, 45));
-			courseOccurence.setEnd(LocalTime.of(16, 15));
-			courseOccurence.setCategory(classCategory2);
-			session3.merge(courseOccurence);
+			CourseOccurrence courseOccurrence = new CourseOccurrence();
+			courseOccurrence.setCourse(course);
+			courseOccurrence.setDay(monday.plusDays(3));
+			courseOccurrence.setBeginning(LocalTime.of(14, 45));
+			courseOccurrence.setEnd(LocalTime.of(16, 15));
+			courseOccurrence.setCategory(classCategory2);
+			session3.merge(courseOccurrence);
 
 			// Grade
 			Grade grade = new Grade();
