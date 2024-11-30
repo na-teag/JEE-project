@@ -31,9 +31,9 @@
 
     <form action="gradesManagement" method="get">
         <c:if test="${not empty classesList}">
-            <label for="classes">Choisir la classe :</label>
+            <label for="classes">Choisir la classe ou une filière ou une promo :</label>
             <select id="classes" name="classes" onchange="this.form.submit()">
-                <option value="">Sélectionner une de vos classes</option>
+                <option value="">Sélectionner une de vos classes ou une filière ou une promo</option>
                 <c:forEach var="classe" items="${classesList}">
                     <option value="${classe.id}"
                             <c:if test="${classe.id == sessionScope.classesId}">selected</c:if>>
