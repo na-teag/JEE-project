@@ -92,7 +92,7 @@ public class PathwayManager {
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Pathway>> errors = validator.validate(pathway);
 			if (errors.isEmpty()) {
-				session.update(pathway);
+				session.merge(pathway);
 				transaction.commit();
 				return null;
 			}

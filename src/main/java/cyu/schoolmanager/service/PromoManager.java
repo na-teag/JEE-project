@@ -94,7 +94,7 @@ public class PromoManager {
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Promo>> errors = validator.validate(promo);
 			if (errors.isEmpty()) {
-				session.update(promo);
+				session.merge(promo);
 				transaction.commit();
 				return null;
 			}

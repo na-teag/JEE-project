@@ -52,14 +52,11 @@ public class Course extends Model {
 	public void setProfessor(Professor professor) throws InvalidParameterException {
 		if (this.subject != null) { // faire une boucle pour vérifier les id manuellement
 			List<Long> idList = new ArrayList<>();
-			String list = "cours possibles : [";
 			for (Subject subject : professor.getTeachingSubjects()) {
-				list += subject.getName() + " (" + subject.getId() + ")";
 				idList.add(subject.getId());
 			}
-			list += "]";
 			if (!idList.contains(this.subject.getId())) {
-				throw new InvalidParameterException("Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject.getId() + "\n" + list);
+				throw new InvalidParameterException("Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " n'est pas apte à enseigner le cours de " + this.subject.getName());
 			}
 		}
 		this.professor = professor;
