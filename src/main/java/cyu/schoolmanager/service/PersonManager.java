@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class PersonManager {
@@ -178,6 +179,9 @@ public class PersonManager {
 		return null;
 	}
 
+	private void sendAccountCreationMail(Person person) {
+		MailManager.getInstance().sendEmail("do.not.reply@cytech.fr", person, "Création de compte", "Bonjour " + person.getFirstName() + ",\nVous recevez cet email car un compte viens de vous être créé sur l'ENT de CYTech.\nVotre identifiant est le suivant : " + person.getUsername() + "\nVotre mot de passe est votre date de naissance au format ddMMyyyy\n\nVous retrouverez sur l'ENT toutes les informations nécéssaires pour répondre à vos besoins.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
+	}
 
 
 	private String setProf(String email, String lastName, String firstName, String number, String street, String city, String postalCode, String Country, Professor professor, List<Subject> subjectList) {
@@ -289,7 +293,8 @@ public class PersonManager {
 				transaction.commit();
 				MailManager mailManager = MailManager.getInstance();
 				ClasseManager classeManager = ClasseManager.getInstance();
-				mailManager.sendEmail("do.not.reply@cytech.fr", student, "première inscription à CYTech", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
+				sendAccountCreationMail(student);
+				mailManager.sendEmail("do.not.reply@cytech.fr", student, "première inscription à CYTech", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveaux cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
 				return null;
 			}
 			return errors;
@@ -328,6 +333,7 @@ public class PersonManager {
 
 			String errors = setProf(email, lastName, firstName, number, street, city, postalCode, Country, professor, subjectList);
 			if (errors.isEmpty()) {
+				sendAccountCreationMail(professor);
 				session.save(professor);
 				transaction.commit();
 				return null;
@@ -367,6 +373,7 @@ public class PersonManager {
 
 			String errors = setAdmin(email, lastName, firstName, number, street, city, postalCode, Country, admin);
 			if (errors.isEmpty()) {
+				sendAccountCreationMail(admin);
 				session.save(admin);
 				transaction.commit();
 				return null;
@@ -394,11 +401,11 @@ public class PersonManager {
 			if (errors.isEmpty()) {
 				session.merge(student);
 				transaction.commit();
-				if (formerClasse.getId() != student.getClasse().getId()) {
+				if (!Objects.equals(formerClasse.getId(), student.getClasse().getId())) {
 					// s'il y a un changement de classe, envoyer un mail pour prévenir
 					MailManager mailManager = MailManager.getInstance();
 					ClasseManager classeManager = ClasseManager.getInstance();
-					mailManager.sendEmail("do.not.reply@cytech.fr", student, "Changement dans vos inscriptions", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
+					mailManager.sendEmail("do.not.reply@cytech.fr", student, "Changement dans vos inscriptions", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveaux cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
 				}
 				return null;
 			}
