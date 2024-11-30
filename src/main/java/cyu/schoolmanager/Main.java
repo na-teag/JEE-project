@@ -1,7 +1,9 @@
 package cyu.schoolmanager;
 
+import cyu.schoolmanager.service.CourseManager;
 import cyu.schoolmanager.service.LoginManager;
 import cyu.schoolmanager.service.MailManager;
+import cyu.schoolmanager.service.PersonManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -16,6 +18,17 @@ public class Main {
 	public static void main(String[] args) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
+
+		// remove objects in intermediate tables
+		List<Course> courses = CourseManager.getInstance().getListOfCourses();
+		for (Course course : courses) {
+			course.setStudentGroups(new ArrayList<>());
+		}
+		List<Professor> professors = PersonManager.getInstance().getListOfProfessors();
+		for (Professor professor : professors) {
+			professor.setTeachingSubjects(new ArrayList<>());
+		}
+
 		session.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
 		session.createQuery("DELETE FROM Address").executeUpdate();
 		session.createQuery("DELETE FROM Admin").executeUpdate();
@@ -178,8 +191,9 @@ public class Main {
 			Classe classe2 = new Classe();
 			classe2.setPathway(pathway);
 			classe2.setPromo(promo);
-			classe2.setEmail("ing2-gsi2@cy-tech.fr");
-			session3.merge(classe);
+			classe2.setName("ING2 GSI1");
+			classe2.setEmail("ing1-gsi2@cy-tech.fr");
+			session3.merge(classe2);
 
 			//Student
 			Student student = new Student();
