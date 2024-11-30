@@ -92,7 +92,7 @@ public class ClassCategoryManager {
             Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
             Set<ConstraintViolation<ClassCategory>> errors = validator.validate(classCategory);
             if (errors.isEmpty()) {
-                session.update(classCategory);
+                session.merge(classCategory);
                 transaction.commit();
                 return null;
             }

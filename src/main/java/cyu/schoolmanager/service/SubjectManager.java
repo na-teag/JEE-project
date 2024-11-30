@@ -93,7 +93,7 @@ public class SubjectManager {
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Subject>> errors = validator.validate(subject);
 			if (errors.isEmpty()) {
-				session.update(subject);
+				session.merge(subject);
 				transaction.commit();
 				return null;
 			}

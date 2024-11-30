@@ -54,6 +54,19 @@ public class PersonManager {
 		}
 	}
 
+	public Person getUserByEmail(String email) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			String request = "FROM Person WHERE email = :email";
+			Query<Person> query = session.createQuery(request, Person.class);
+			query.setParameter("email", email);
+
+			return query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public List<Student> getAllStudents() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			session.beginTransaction();
@@ -168,6 +181,10 @@ public class PersonManager {
 
 
 	private String setProf(String email, String lastName, String firstName, String number, String street, String city, String postalCode, String Country, Professor professor, List<Subject> subjectList) {
+		Person person = getUserByEmail(email);
+		if (person != null && !person.getId().equals(professor.getId())) {
+			return "cet email est déjà attribué";
+		}
 		professor.setEmail(email);
 		professor.setLastName(lastName);
 		professor.setFirstName(firstName);
@@ -189,6 +206,10 @@ public class PersonManager {
 	}
 
 	private String setStudent(String email, String lastName, String firstName, String number, String street, String city, String postalCode, String Country, Student student, String classeId) {
+		Person person = getUserByEmail(email);
+		if (person != null && !person.getId().equals(student.getId())) {
+			return "cet email est déjà attribué";
+		}
 		student.setEmail(email);
 		student.setLastName(lastName);
 		student.setFirstName(firstName);
@@ -215,6 +236,10 @@ public class PersonManager {
 	}
 
 	private String setAdmin(String email, String lastName, String firstName, String number, String street, String city, String postalCode, String Country, Admin admin) {
+		Person person = getUserByEmail(email);
+		if (person != null && !person.getId().equals(admin.getId())) {
+			return "cet email est déjà attribué";
+		}
 		admin.setEmail(email);
 		admin.setLastName(lastName);
 		admin.setFirstName(firstName);
@@ -367,7 +392,7 @@ public class PersonManager {
 			Classe formerClasse = student.getClasse();
 			String errors = setStudent(email, lastName, firstName, number, street, city, postalCode, Country, student, classeId);
 			if (errors.isEmpty()) {
-				session.update(student);
+				session.merge(student);
 				transaction.commit();
 				if (formerClasse.getId() != student.getClasse().getId()) {
 					// s'il y a un changement de classe, envoyer un mail pour prévenir
@@ -398,9 +423,13 @@ public class PersonManager {
 			if (professor == null) {
 				return "ce professeur n'existe pas";
 			}
+			List<Course> formerCourses = CourseManager.getInstance().getCoursesOfProfessor(professor);
+			if (!formerCourses.isEmpty()) {
+				return "Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " enseigne déjà des cours de la matière " + formerCourses.get(0).getSubject().getName() + ". Veuillez supprimer ces cours ou leur assigner un autre professeur";
+			}
 			String errors = setProf(email, lastName, firstName, number, street, city, postalCode, Country, professor, subjectList);
 			if (errors.isEmpty()) {
-				session.update(professor);
+				session.merge(professor);
 				transaction.commit();
 				return null;
 			}
@@ -427,7 +456,7 @@ public class PersonManager {
 			}
 			String errors = setAdmin(email, lastName, firstName, number, street, city, postalCode, Country, admin);
 			if (errors.isEmpty()) {
-				session.update(admin);
+				session.merge(admin);
 				transaction.commit();
 				return null;
 			}
@@ -451,7 +480,7 @@ public class PersonManager {
 			Transaction transaction = session.beginTransaction();
 			if (professor != null && !professor.getTeachingSubjects().isEmpty()) {
 				professor.setTeachingSubjects(new ArrayList<>());
-				session.update(professor);
+				session.merge(professor);
 				transaction.commit();
 			}
 			session.close();

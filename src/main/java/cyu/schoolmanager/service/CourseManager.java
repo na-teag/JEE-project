@@ -134,7 +134,7 @@ public class CourseManager {
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Course>> errors = validator.validate(course);
 			if (errors.isEmpty()) {
-				session.update(course);
+				session.merge(course);
 				transaction.commit();
 				return null;
 			}

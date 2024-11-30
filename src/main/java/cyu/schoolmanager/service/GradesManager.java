@@ -71,7 +71,7 @@ public class GradesManager{
             grade.setResult(result);
 
             // Mettre à jour l'objet Grade dans la base de données
-            hibernateSession.update(grade);
+            hibernateSession.merge(grade);
 
             // Valider la transaction
             hibernateSession.getTransaction().commit();

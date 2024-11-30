@@ -132,7 +132,7 @@ public class ClasseManager {
 			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			Set<ConstraintViolation<Classe>> errors = validator.validate(classe);
 			if (errors.isEmpty()) {
-				session.update(classe);
+				session.merge(classe);
 				transaction.commit();
 				return null;
 			}
