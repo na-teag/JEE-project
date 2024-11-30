@@ -30,7 +30,7 @@
 			 		<c:if test="${!status.last}">,</c:if>
 			 	</c:forEach>])">
 			<h4>nom : ${professor.firstName} ${professor.lastName}</h4>
-			<p>numéro étudiant : ${professor.personNumber}</p>
+			<p>numéro enseignant : ${professor.personNumber}</p>
 			<p>email : ${professor.email}</p>
 			<p>adresse
 				: ${professor.address.number} ${professor.address.street}, ${professor.address.postalCode} ${professor.address.city}, ${professor.address.country}</p>
@@ -48,7 +48,7 @@
 		<div class="featured-sections"
 			 onclick="openPopupAdmin(this, false, '${admin.id}', '${admin.email}', '${admin.lastName}', '${admin.firstName}', '${admin.address.number}', '${admin.address.street}', '${admin.address.city}', '${admin.address.postalCode}', '${admin.address.country}')">
 			<h4>nom : ${admin.firstName} ${admin.lastName}</h4>
-			<p>numéro étudiant : ${admin.personNumber}</p>
+			<p>numéro administrateur : ${admin.personNumber}</p>
 			<p>email : ${admin.email}</p>
 			<p>adresse
 				: ${admin.address.number} ${admin.address.street}, ${admin.address.postalCode} ${admin.address.city}, ${admin.address.country}</p>

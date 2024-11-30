@@ -424,8 +424,16 @@ public class PersonManager {
 				return "ce professeur n'existe pas";
 			}
 			List<Course> formerCourses = CourseManager.getInstance().getCoursesOfProfessor(professor);
+			List<Long> subjectIdsList = new ArrayList<>();
 			if (!formerCourses.isEmpty()) {
-				return "Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " enseigne déjà des cours de la matière " + formerCourses.get(0).getSubject().getName() + ". Veuillez supprimer ces cours ou leur assigner un autre professeur";
+				for (Subject subject : subjectList) {
+					subjectIdsList.add(subject.getId());
+				}
+				for (Course course : formerCourses) {
+					if (!subjectIdsList.contains(course.getSubject().getId())) {
+						return "Le professeur " + professor.getFirstName() + " " + professor.getLastName() + " enseigne déjà des cours de la matière " + course.getSubject().getName() + ". Veuillez supprimer ces cours ou leur assigner un autre professeur";
+					}
+				}
 			}
 			String errors = setProf(email, lastName, firstName, number, street, city, postalCode, Country, professor, subjectList);
 			if (errors.isEmpty()) {
