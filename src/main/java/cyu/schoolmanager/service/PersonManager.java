@@ -423,10 +423,11 @@ public class PersonManager {
 			if (professor == null) {
 				return "ce professeur n'existe pas";
 			}
+			// vérifier qu'on n'a pas supprimé la possibilité que le prof enseigne des cours qu'il enseigne déjà
 			List<Course> formerCourses = CourseManager.getInstance().getCoursesOfProfessor(professor);
 			List<Long> subjectIdsList = new ArrayList<>();
 			if (!formerCourses.isEmpty()) {
-				for (Subject subject : subjectList) {
+				for (Subject subject : subjectList) { // faire une liste pour comparer les id, sinon la comparaison est toujours fausse
 					subjectIdsList.add(subject.getId());
 				}
 				for (Course course : formerCourses) {
