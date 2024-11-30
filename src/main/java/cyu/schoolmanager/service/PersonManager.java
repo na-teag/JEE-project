@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,8 +29,7 @@ public class PersonManager {
 	}
 
 	public Person getUserByUsername(String username) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String request = "FROM Person WHERE username = :username";
 			Query<Person> query = session.createQuery(request, Person.class);
 			query.setParameter("username", username);
@@ -38,14 +38,11 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} finally {
-			session.close();
 		}
 	}
 
 	public Person getUserByPersonNumber(String personNumber) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String request = "FROM Person WHERE personNumber = :personNumber";
 			Query<Person> query = session.createQuery(request, Person.class);
 			query.setParameter("personNumber", personNumber);
@@ -54,8 +51,6 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} finally {
-			session.close();
 		}
 	}
 
@@ -110,8 +105,7 @@ public class PersonManager {
 	}
 
 	public List<Student> getStudentsFromClasse(Classe classe) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String hql = "FROM Student s WHERE s.classe = :classe";
 			Query<Student> query = session.createQuery(hql, Student.class);
 			query.setParameter("classe", classe);
@@ -120,50 +114,41 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} finally {
-			session.close();
 		}
 	}
 
 	public List<Student> getSelectedStudentsForPathway(Pathway pathway) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		String hql = "FROM Student s WHERE s.classe.pathway.id = :pathwayId";
-		Query<Student> query = session.createQuery(hql, Student.class);
-		query.setParameter("pathwayId", pathway.getId());
-		List<Student> students = query.getResultList();
-
-		session.getTransaction().commit();
-
-		return students;
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			String hql = "FROM Student s WHERE s.classe.pathway.id = :pathwayId";
+			Query<Student> query = session.createQuery(hql, Student.class);
+			query.setParameter("pathwayId", pathway.getId());
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public List<Student> getSelectedStudentsForPromo(Promo promo) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		String hql = "FROM Student s WHERE s.classe.promo.id = :promoId";
-		Query<Student> query = session.createQuery(hql, Student.class);
-		query.setParameter("promoId", promo.getId());
-		List<Student> students = query.getResultList();
-
-		session.getTransaction().commit();
-
-		return students;
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			String hql = "FROM Student s WHERE s.classe.promo.id = :promoId";
+			Query<Student> query = session.createQuery(hql, Student.class);
+			query.setParameter("promoId", promo.getId());
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public List<Professor> getListOfProfessors() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String request = "FROM Professor";
 			Query<Professor> query = session.createQuery(request, Professor.class);
 			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} finally {
-			session.close();
 		}
 	}
 
@@ -251,8 +236,7 @@ public class PersonManager {
 
 
 	public String createStudent(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, String classeId){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			Student student = new Student();
 
@@ -280,7 +264,7 @@ public class PersonManager {
 				transaction.commit();
 				MailManager mailManager = MailManager.getInstance();
 				ClasseManager classeManager = ClasseManager.getInstance();
-				mailManager.sendEmail("do.not.reply@cytech.fr", student, "Changement dans vos inscription", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
+				mailManager.sendEmail("do.not.reply@cytech.fr", student, "première inscription à CYTech", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
 				return null;
 			}
 			return errors;
@@ -289,16 +273,13 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
-		} finally {
-			session.close();
 		}
 	}
 
 
 	public String createProf(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country, List<Subject> subjectList){
 		// peut avoir une liste de cours vide
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			Professor professor = new Professor();
 
@@ -332,15 +313,12 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
-		} finally {
-			session.close();
 		}
 	}
 
 
 	public String createAdmin(String email, String lastName, String firstName, LocalDate birthday, String number, String street, String city, String postalCode, String Country){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
 			Admin admin = new Admin();
 
@@ -374,8 +352,6 @@ public class PersonManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
-		} finally {
-			session.close();
 		}
 	}
 
@@ -397,7 +373,7 @@ public class PersonManager {
 					// s'il y a un changement de classe, envoyer un mail pour prévenir
 					MailManager mailManager = MailManager.getInstance();
 					ClasseManager classeManager = ClasseManager.getInstance();
-					mailManager.sendEmail("do.not.reply@cytech.fr", student, "Changement dans vos inscription", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
+					mailManager.sendEmail("do.not.reply@cytech.fr", student, "Changement dans vos inscriptions", "Bonjour, Vous recevez cet email car vous venez d'être attribué à une nouvelle classe : " + classeManager.getClasseById(classeId).getName() + ".\nConsultez votre emploi du temps pour voir vos nouveau cours.\n\nBien cordialement, le service administratif.\n\nP.-S. Merci de ne pas répondre à ce mail");
 				}
 				return null;
 			}
@@ -468,8 +444,26 @@ public class PersonManager {
 	}
 
 	public String deletePersonById(String id) {
+		// supprimer les sujets du prof, pour éviter une erreur sql due à la clé étrangère de la table intermédiaire de manytomany
+		Professor professor = getProfessorById(id);
 		Session session = HibernateUtil.getSessionFactory().openSession();
+		try {
+			Transaction transaction = session.beginTransaction();
+			if (professor != null && !professor.getTeachingSubjects().isEmpty()) {
+				professor.setTeachingSubjects(new ArrayList<>());
+				session.update(professor);
+				transaction.commit();
+			}
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session.getTransaction() != null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
+		}
 
+		session = HibernateUtil.getSessionFactory().openSession();
 		try{
 			session.beginTransaction();
 
@@ -482,7 +476,6 @@ public class PersonManager {
 				query.executeUpdate();
 			}
 
-			Professor professor = getProfessorById(id);
 			if (professor != null){
 				CourseManager courseManager = CourseManager.getInstance();
 				if (!courseManager.getCoursesOfProfessor(professor).isEmpty()){
