@@ -21,10 +21,8 @@ git clone https://github.com/na-teag/JEE-project
 Si vous avez déjà Maven installé sur votre système, vous pouvez passer cette étape, car vous avez déjà les dépendances
 nécessaires.
 
-Maven est l'outil qui permet d'installer les dépendances du projet. Pour fonctionner sur votre ordinateur, Composer
-nécessite certaines dépendances.
-
-Pour les installer sous Ubuntu (et distributions similaires), il faut exécuter :
+Maven est l'outil qui permet d'installer les dépendances du projet.
+Pour l'installer sous Ubuntu (et distributions similaires), il faut exécuter :
 
 ```sh
 sudo apt install maven
@@ -32,7 +30,7 @@ sudo apt install maven
 
 ### Environnement
 
-Le projet utilise Hibernate, les variables sont stockées dans le fichier `ressources/META-INF/hibernate.cfg.xml`.
+Le projet utilise Hibernate, les variables sont stockées dans le fichier `src/main/resources/hibernate.cfg.xml`.
 
 Le projet utilise Mysql, pour l'installer il faudra taper les commandes suivantes :
 
