@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/globalManagement.css">
 
 <div class="main-content">
+    <h2>Gérer les classes</h2>
     <c:if test="${not empty errorMessage}">
         <p style="color: red;">${errorMessage}</p>
     </c:if>

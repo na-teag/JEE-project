@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/courseAdd.css">
 
 <div class="test">
+    <br><h2 style="text-align: center">Gérer l'ajout d'occurence de cours</h2>
 <div class="scheduleAdmin">
 
     <!-- Formulaire principal -->
